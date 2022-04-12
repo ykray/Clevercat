@@ -1,0 +1,7 @@
+@mixin transition-enter() {
+  transition: all 0.15s;
+}
+
+@mixin transition-exit() {
+  transition: all 0.1s;
+}
