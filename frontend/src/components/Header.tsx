@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // Assets
 import styles from '../assets/sass/_variables.scss';
 
 // MUI
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 // Components
 import SearchBar from './SearchBar';
@@ -28,14 +28,25 @@ export default function Header() {
             ask
             <span className="highlight">about</span>
           </div>
-          <div className="hide-on-mobile">
-            <SearchBar />
-          </div>
-          <AuthorComponent author={{ user: CLIENT_USER }} />
-        </Stack>
-        <div className="hide-on-desktop">
           <SearchBar />
-        </div>
+          <Stack alignItems={'flex-end'} spacing={2}>
+            <AuthorComponent author={{ user: CLIENT_USER }} />
+
+            <div className={'hide-on-mobile'}>
+              <Button component={Link} to={'/ask'} variant={'contained'}>
+                Ask Question
+              </Button>
+            </div>
+          </Stack>
+        </Stack>
+        <Stack spacing={3}>
+          <SearchBar mobile />
+          <div className="hide-on-desktop">
+            <Button component={Link} to={'/ask'} variant={'contained'}>
+              Ask Question
+            </Button>
+          </div>
+        </Stack>
       </Stack>
     </div>
   );

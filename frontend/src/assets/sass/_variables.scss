@@ -18,8 +18,8 @@ $color-surface-500: #d2d7df;
 $radius: 6px;
 $radius-sm: 3px;
 
-$transition-enter: all 0.25s;
-$transition-exit: all 0.15s;
+$transition-enter: all 0.15s;
+$transition-exit: all 0.1s;
 
 @font-face {
   font-family: 'Gilroy';
@@ -55,5 +55,9 @@ $transition-exit: all 0.15s;
   color_muted_300: $color-muted-300;
   color_muted_400: $color-muted-400;
   color_muted_500: $color-muted-500;
+
+  transition_enter: $transition-enter;
+  transition_exit: $transition-exit;
+
   radius: $radius;
 }

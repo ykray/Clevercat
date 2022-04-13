@@ -18,11 +18,15 @@ import {
   Slide,
   Tooltip,
 } from '@mui/material';
-import { Search as SearchIcon, Close as CloseIcon } from '@mui/icons-material';
+import { Search as SearchIcon, Close as ClearIcon } from '@mui/icons-material';
 import { SearchQuery, SearchScope } from '../utils/Types';
 import { Check as CheckIcon } from '@mui/icons-material';
 
-export default function SearchBar() {
+type Props = {
+  mobile?: boolean;
+};
+
+export default function SearchBar({ mobile = false }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<any>(null);
   const containerRef = useRef(null);
@@ -122,140 +126,146 @@ export default function SearchBar() {
   };
 
   return (
-    <Stack spacing={0}>
-      <TextField
-        focused={searchBarFocus}
-        inputRef={inputRef}
-        className={`search-bar`}
-        placeholder={placeholder}
-        value={searchQuery.query}
-        autoComplete={'off'}
-        onFocus={() => {
-          setSearchBarFocus(true);
-        }}
-        onBlur={() => {
-          setSlideIn(false);
-        }}
-        onChange={handleChange}
-        // onBlur={() => setSearchQuery('')}
-        onKeyDown={(e) => {
-          // Handle "Enter" key press
-          if (e.key === 'Enter') {
-            handleSearch();
-          }
-        }}
-        InputProps={{
-          startAdornment: <SearchIcon className={'search-icon'} />,
-          endAdornment: (
-            <InputAdornment position="start">
-              {searchQuery ? (
-                <Tooltip title={'Clear'} placement={'bottom'} arrow>
-                  <IconButton
-                    disableRipple
+    <div
+      className={
+        mobile ? 'search-bar hide-on-desktop' : 'search-bar hide-on-mobile'
+      }
+      style={{ width: searchBarFocus ? '100%' : '' }}
+    >
+      <Stack spacing={0}>
+        <TextField
+          focused={searchBarFocus}
+          inputRef={inputRef}
+          placeholder={placeholder}
+          value={searchQuery.query}
+          autoComplete={'off'}
+          onFocus={() => {
+            setSearchBarFocus(true);
+          }}
+          onBlur={() => {
+            setSlideIn(false);
+          }}
+          onChange={handleChange}
+          // onBlur={() => setSearchQuery('')}
+          onKeyDown={(e) => {
+            // Handle "Enter" key press
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
+          InputProps={{
+            startAdornment: <SearchIcon className={'search-icon'} />,
+            endAdornment: (
+              <InputAdornment position="start">
+                {searchQuery.query ? (
+                  <Tooltip title={'Clear'} placement={'bottom'} arrow>
+                    <IconButton
+                      disableRipple
+                      onClick={() => {
+                        setSearchQuery({ ...searchQuery, query: '' });
+                      }}
+                      style={{
+                        color: searchQuery ? styles.color_primary_500 : '',
+                      }}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </Tooltip>
+                ) : null}
+              </InputAdornment>
+            ),
+          }}
+        />
+        <div className={'search-scope-container'} ref={containerRef}>
+          <Slide
+            timeout={{ enter: 50, exit: 120 }}
+            direction={'down'}
+            in={slideIn}
+            container={containerRef.current}
+          >
+            <div>
+              <Stack direction={'row'} justifyContent={'flex-end'} spacing={1}>
+                <div
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <Chip
+                    label="Questions"
+                    variant="outlined"
                     onClick={() => {
-                      setSearchQuery({ ...searchQuery, query: '' });
+                      setScopingQuestions(!scopingQuestions);
+                      if (inputRef.current) {
+                        inputRef.current.unbind('blur');
+                      }
                     }}
+                    icon={
+                      scopingQuestions ? (
+                        <CheckIcon
+                          style={{
+                            width: 16,
+                            height: 16,
+                            color: 'white',
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )
+                    }
                     style={{
-                      color: searchQuery ? styles.color_primary_500 : '',
+                      color: scopingQuestions ? 'white' : '',
+                      backgroundColor: scopingQuestions
+                        ? styles.color_primary_500
+                        : '',
+                      borderColor: scopingQuestions
+                        ? styles.color_primary_500
+                        : '',
                     }}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              ) : null}
-            </InputAdornment>
-          ),
-        }}
-        // fullWidth
-        style={{ position: 'relative', width: searchBarFocus ? '100%' : '' }}
-      />
-      <div className={'search-scope'} ref={containerRef}>
-        <Slide
-          timeout={{ enter: 50, exit: 120 }}
-          direction={'down'}
-          in={slideIn}
-          container={containerRef.current}
-        >
-          <div>
-            <Stack direction={'row'} justifyContent={'flex-end'} spacing={1}>
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <Chip
-                  label="Questions"
-                  variant="outlined"
-                  onClick={() => {
-                    setScopingQuestions(!scopingQuestions);
-                    if (inputRef.current) {
-                      inputRef.current.unbind('blur');
+                  />
+                </div>
+                <div
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <Chip
+                    label="Answers"
+                    variant="outlined"
+                    onClick={() => {
+                      setScopingAnswers(!scopingAnswers);
+                      if (inputRef.current) {
+                        inputRef.current.focus();
+                      }
+                    }}
+                    icon={
+                      scopingAnswers ? (
+                        <CheckIcon
+                          style={{
+                            width: 16,
+                            height: 16,
+                            color: 'white',
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )
                     }
-                  }}
-                  icon={
-                    scopingQuestions ? (
-                      <CheckIcon
-                        style={{
-                          width: 16,
-                          height: 16,
-                          color: 'white',
-                        }}
-                      />
-                    ) : (
-                      <></>
-                    )
-                  }
-                  style={{
-                    color: scopingQuestions ? 'white' : '',
-                    backgroundColor: scopingQuestions
-                      ? styles.color_primary_500
-                      : '',
-                    borderColor: scopingQuestions
-                      ? styles.color_primary_500
-                      : '',
-                  }}
-                />
-              </div>
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <Chip
-                  label="Answers"
-                  variant="outlined"
-                  onClick={() => {
-                    setScopingAnswers(!scopingAnswers);
-                    if (inputRef.current) {
-                      inputRef.current.focus();
-                    }
-                  }}
-                  icon={
-                    scopingAnswers ? (
-                      <CheckIcon
-                        style={{
-                          width: 16,
-                          height: 16,
-                          color: 'white',
-                        }}
-                      />
-                    ) : (
-                      <></>
-                    )
-                  }
-                  style={{
-                    color: scopingAnswers ? 'white' : styles.color_text,
-                    backgroundColor: scopingAnswers
-                      ? styles.color_primary_500
-                      : '',
-                    borderColor: scopingAnswers ? styles.color_primary_500 : '',
-                  }}
-                />
-              </div>
-            </Stack>
-          </div>
-        </Slide>
-      </div>
-    </Stack>
+                    style={{
+                      color: scopingAnswers ? 'white' : styles.color_text,
+                      backgroundColor: scopingAnswers
+                        ? styles.color_primary_500
+                        : '',
+                      borderColor: scopingAnswers
+                        ? styles.color_primary_500
+                        : '',
+                    }}
+                  />
+                </div>
+              </Stack>
+            </div>
+          </Slide>
+        </div>
+      </Stack>
+    </div>
   );
 }

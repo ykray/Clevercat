@@ -11,6 +11,7 @@ import Header from './components/Header';
 import QuestionPostComponent from './components/QuestionPostComponent';
 import SearchComponent from './components/SearchComponent';
 import HotQuestions from './components/HotQuestions';
+import Ask from './components/Ask';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path={'/'} element={<HotQuestions />} />
           <Route path={'/q/:qid'} element={<QuestionPostComponent />} />
           <Route path={'/search'} element={<SearchComponent />} />
+          <Route path={'/ask'} element={<Ask />} />
           <Route index element={<HotQuestions />} />
         </Routes>
       </div>

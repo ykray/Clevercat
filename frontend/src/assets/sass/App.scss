@@ -39,6 +39,7 @@ a {
 .wrapper {
   margin: 0 auto;
   width: 53%;
+  min-height: 120vh;
 }
 
 .header {
@@ -234,10 +235,16 @@ a {
 }
 
 .search-bar {
+  width: 40%;
   background-color: white;
+  @include transition-enter();
 
   .MuiOutlinedInput-root {
     border-radius: $radius;
+  }
+
+  .MuiSvgIcon-root {
+    font-size: 1.3rem;
   }
 
   button {
@@ -247,13 +254,6 @@ a {
     }
     color: $color-muted-500;
   }
-
-  .MuiSvgIcon-root {
-    font-size: 1.3rem;
-  }
-
-  width: 80%;
-  @include transition-enter();
 
   input {
     &::placeholder {
@@ -275,7 +275,7 @@ a {
   color: $color-muted-400;
 }
 
-.search-scope {
+.search-scope-container {
   overflow: hidden;
   padding-right: 6px;
   padding-top: 7px;
@@ -395,7 +395,6 @@ a {
 }
 
 .hide-on-mobile {
-  width: 50%;
   display: block;
 }
 

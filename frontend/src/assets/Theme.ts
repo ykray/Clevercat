@@ -52,20 +52,90 @@ const Theme = createTheme({
         },
       },
     },
-    MuiButton: {
+    MuiListSubheader: {
       styleOverrides: {
         root: {
-          paddingTop: 9,
-          paddingBottom: 9,
-          paddingLeft: 20,
-          paddingRight: 20,
-          border: `2px solid ${styles.color_primary_400}`,
+          fontFamily: 'GilroyBold',
           fontSize: '1.1rem',
-          fontFamily: 'GilroySemibold',
-          textTransform: 'none',
-          borderRadius: styles.radius,
+          letterSpacing: '-0.3px',
+          color: styles.color_muted_400,
+          backgroundColor: styles.color_surface_400,
         },
       },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            color: 'white',
+            backgroundColor: styles.color_primary_500,
+            transition: styles.transition_enter,
+          },
+          fontFamily: 'GilroySemibold',
+          fontSize: '1rem',
+          color: styles.color_primary_500,
+          backgroundColor: styles.color_surface_400,
+          transition: styles.transition_exit,
+        },
+      },
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: 'outlined' },
+          style: {
+            '@media only screen and (max-width: 600px)': {
+              fontSize: '1.4rem',
+              width: '100%',
+              paddingTop: 12,
+              paddingBottom: 10,
+              paddingLeft: 20,
+              paddingRight: 20,
+            },
+            '&:hover': {
+              border: `1.3px solid ${styles.color_primary_500}`,
+              boxShadow: 'none',
+            },
+            paddingTop: 8,
+            paddingBottom: 7,
+            paddingLeft: 17,
+            paddingRight: 17,
+            border: `1.3px solid ${styles.color_primary_400}`,
+            fontSize: '1rem',
+            fontFamily: 'GilroySemibold',
+            textTransform: 'none',
+            borderRadius: styles.radius,
+          },
+        },
+        {
+          props: { variant: 'contained' },
+          style: {
+            '@media only screen and (max-width: 600px)': {
+              fontSize: '1.4rem',
+              width: '100%',
+              paddingTop: 12,
+              paddingBottom: 10,
+              paddingLeft: 20,
+              paddingRight: 20,
+            },
+            '&:hover': {
+              backgroundColor: styles.color_primary_500,
+              boxShadow: 'none',
+              opacity: 0.9,
+            },
+            paddingTop: 8,
+            paddingBottom: 7,
+            paddingLeft: 17,
+            paddingRight: 17,
+            border: `none`,
+            fontSize: '1rem',
+            fontFamily: 'GilroySemibold',
+            textTransform: 'none',
+            boxShadow: 'none',
+            borderRadius: styles.radius,
+          },
+        },
+      ],
     },
     MuiInputAdornment: {
       styleOverrides: {

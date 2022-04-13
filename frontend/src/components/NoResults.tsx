@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // MUI
 import { Button, Stack } from '@mui/material';
@@ -20,7 +21,13 @@ export default function NoResults() {
         src={NoResultsImage}
         alt={'No results placeholder'}
       />
-      <Button className="button-primary" endIcon={<AskIcon />}>
+      <Button
+        component={Link}
+        to={'/ask'}
+        className="button-primary"
+        variant={'outlined'}
+        endIcon={<AskIcon />}
+      >
         Be the first to ask!
       </Button>
     </Stack>
