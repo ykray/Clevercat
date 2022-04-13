@@ -43,7 +43,7 @@ a {
 
 .header {
   padding-top: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 }
 
 .feed {
@@ -338,9 +338,11 @@ a {
 
 .no-results {
   display: block;
-  margin: 0 auto;
-  margin-top: 40px;
-  width: 200px;
+  padding-top: 20px;
+
+  img {
+    width: 200px;
+  }
 }
 
 .button-primary {
@@ -354,10 +356,9 @@ a {
   background-color: transparent;
   color: $color-primary-500;
   font-family: 'GilroySemibold';
-  font-size: 1.25rem;
   letter-spacing: -0.3px;
-  padding-top: 16px;
-  padding-bottom: 15px;
+  padding-top: 13px;
+  padding-bottom: 11px;
   padding-left: 25px;
   padding-right: 25px;
   border-radius: $radius;
@@ -469,10 +470,6 @@ a {
     padding-right: 20px;
   }
 
-  .no-results {
-    width: 240px;
-  }
-
   .search-bar {
     width: 100%;
 
@@ -495,5 +492,13 @@ a {
 
   .MuiChip-root * {
     padding: 20px;
+  }
+
+  .no-results {
+    margin: 0 auto;
+
+    img {
+      width: 240px;
+    }
   }
 }

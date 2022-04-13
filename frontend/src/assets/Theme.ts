@@ -29,6 +29,10 @@ const Theme = createTheme({
   components: {
     MuiChip: {
       styleOverrides: {
+        icon: {
+          padding: 0,
+          paddingLeft: 5,
+        },
         root: {
           fontSize: '0.85rem',
           fontFamily: 'Roboto',
@@ -51,11 +55,12 @@ const Theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          paddingTop: 11,
-          paddingBottom: 11,
+          paddingTop: 9,
+          paddingBottom: 9,
           paddingLeft: 20,
           paddingRight: 20,
           border: `2px solid ${styles.color_primary_400}`,
+          fontSize: '1.1rem',
           fontFamily: 'GilroySemibold',
           textTransform: 'none',
           borderRadius: styles.radius,

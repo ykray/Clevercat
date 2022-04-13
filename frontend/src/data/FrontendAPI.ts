@@ -36,6 +36,7 @@ export default class API {
     });
   };
 
+  // Search API
   static Search = class {
     static search = (
       searchQuery: string,
@@ -61,7 +62,7 @@ export default class API {
     };
   };
 
-  // MARK: - Answers API
+  // Answers API
   static Answers = class {
     static checkIfVoted = (
       answerID: any,
@@ -119,7 +120,7 @@ export default class API {
     };
   };
 
-  // MARK: - Questions API
+  // Questions API
   static Questions = class {
     static getQuestionPost = (qid: string): Promise<QuestionPost> => {
       return new Promise((resolve, reject) => {

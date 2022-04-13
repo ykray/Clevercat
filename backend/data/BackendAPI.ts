@@ -67,7 +67,7 @@ export default class API {
     });
   };
 
-  // MARK: Search API
+  // Search API
   static Search = class {
     // Full text search all questions
     static search = (searchQuery: string, searchScope: SearchScope) => {
@@ -188,7 +188,7 @@ export default class API {
     };
   };
 
-  // MARK: - Questions API
+  // Questions API
   static Questions = class {
     static getQuestionPost = (qid: string) => {
       const query = {
@@ -261,7 +261,7 @@ export default class API {
     };
   };
 
-  // MARK: - Answers API
+  // Answers API
   static Answers = class {
     static checkIfVoted = (
       answerID: any,

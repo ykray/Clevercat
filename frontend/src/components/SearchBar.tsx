@@ -19,7 +19,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { Search as SearchIcon, Close as CloseIcon } from '@mui/icons-material';
-import { SearchScope } from '../utils/Types';
+import { SearchQuery, SearchScope } from '../utils/Types';
 import { Check as CheckIcon } from '@mui/icons-material';
 
 export default function SearchBar() {
@@ -27,12 +27,15 @@ export default function SearchBar() {
   const inputRef = useRef<any>(null);
   const containerRef = useRef(null);
 
-  // States
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [scopeQuestions, setScopeQuestions] = useState(false);
-  const [scopeAnswers, setScopeAnswers] = useState(false);
-  const [searchScope, setSearchScope] = useState<SearchScope>(SearchScope.Full);
+
+  // States
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
+    query: '',
+    scope: SearchScope.Full,
+  });
+  const [scopingQuestions, setScopingQuestions] = useState<boolean>(false);
+  const [scopingAnswers, setScopingAnswers] = useState<boolean>(false);
   const [placeholder, setPlaceholder] = useState<string>(
     'Search questions & answers...'
   );
@@ -41,26 +44,35 @@ export default function SearchBar() {
 
   useEffect(() => {
     // TODO: - Fix params
-    setSearchQuery(searchParams.get('q') ?? '');
-    setSearchScope(searchParams.get('scope') as SearchScope);
+    const query = searchParams.get('q') ?? '';
+    const scope =
+      (searchParams.get('scope') ?? 'full') === 'questions'
+        ? SearchScope.Questions
+        : (searchParams.get('scope') ?? 'full') === 'answers'
+        ? SearchScope.Answers
+        : SearchScope.Full;
+
+    setSearchQuery({
+      query,
+      scope: scope,
+    });
   }, [searchParams]);
 
   useEffect(() => {
-    setSearchParams({ q: searchQuery, scope: searchScope });
-    if (scopeQuestions && scopeAnswers) {
-      setSearchScope(SearchScope.Full);
-    } else if (scopeQuestions) {
-      setSearchScope(SearchScope.Questions);
-    } else if (scopeAnswers) {
-      setSearchScope(SearchScope.Answers);
+    if (scopingQuestions && scopingAnswers) {
+      setSearchQuery({ ...searchQuery, scope: SearchScope.Full });
+    } else if (scopingQuestions) {
+      setSearchQuery({ ...searchQuery, scope: SearchScope.Questions });
+    } else if (scopingAnswers) {
+      setSearchQuery({ ...searchQuery, scope: SearchScope.Answers });
     } else {
       // Default: full text search
-      setSearchScope(SearchScope.Full);
+      setSearchQuery({ ...searchQuery, scope: SearchScope.Full });
     }
-  }, [scopeQuestions, scopeAnswers]);
+  }, [scopingQuestions, scopingAnswers]);
 
   useEffect(() => {
-    switch (searchScope) {
+    switch (searchQuery.scope) {
       case SearchScope.Questions:
         setPlaceholder('Search questions');
         break;
@@ -71,7 +83,7 @@ export default function SearchBar() {
         setPlaceholder('Search questions and answers');
         break;
     }
-  }, [searchScope]);
+  }, [searchQuery]);
 
   useEffect(() => {
     if (searchBarFocus) {
@@ -90,18 +102,23 @@ export default function SearchBar() {
   }, [slideIn]);
 
   const handleSearch = () => {
-    navigate({
-      pathname: 'search',
-      search: createSearchParams({
-        q: searchQuery,
-        scope: searchScope,
-      }).toString(),
-    });
+    if (searchQuery) {
+      navigate({
+        pathname: 'search',
+        search: createSearchParams({
+          q: searchQuery.query,
+          scope: searchQuery.scope,
+        }).toString(),
+      });
+    }
   };
 
   const handleChange = (e: any) => {
     const value = e.target.value;
-    setSearchQuery(value);
+    setSearchQuery({
+      query: value,
+      scope: searchQuery.scope,
+    });
   };
 
   return (
@@ -111,7 +128,7 @@ export default function SearchBar() {
         inputRef={inputRef}
         className={`search-bar`}
         placeholder={placeholder}
-        value={searchQuery}
+        value={searchQuery.query}
         autoComplete={'off'}
         onFocus={() => {
           setSearchBarFocus(true);
@@ -135,7 +152,9 @@ export default function SearchBar() {
                 <Tooltip title={'Clear'} placement={'bottom'} arrow>
                   <IconButton
                     disableRipple
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => {
+                      setSearchQuery({ ...searchQuery, query: '' });
+                    }}
                     style={{
                       color: searchQuery ? styles.color_primary_500 : '',
                     }}
@@ -168,13 +187,13 @@ export default function SearchBar() {
                   label="Questions"
                   variant="outlined"
                   onClick={() => {
-                    setScopeQuestions(!scopeQuestions);
+                    setScopingQuestions(!scopingQuestions);
                     if (inputRef.current) {
                       inputRef.current.unbind('blur');
                     }
                   }}
                   icon={
-                    scopeQuestions ? (
+                    scopingQuestions ? (
                       <CheckIcon
                         style={{
                           width: 16,
@@ -187,11 +206,13 @@ export default function SearchBar() {
                     )
                   }
                   style={{
-                    color: scopeQuestions ? 'white' : '',
-                    backgroundColor: scopeQuestions
+                    color: scopingQuestions ? 'white' : '',
+                    backgroundColor: scopingQuestions
                       ? styles.color_primary_500
                       : '',
-                    borderColor: scopeQuestions ? styles.color_primary_500 : '',
+                    borderColor: scopingQuestions
+                      ? styles.color_primary_500
+                      : '',
                   }}
                 />
               </div>
@@ -204,13 +225,13 @@ export default function SearchBar() {
                   label="Answers"
                   variant="outlined"
                   onClick={() => {
-                    setScopeAnswers(!scopeAnswers);
+                    setScopingAnswers(!scopingAnswers);
                     if (inputRef.current) {
                       inputRef.current.focus();
                     }
                   }}
                   icon={
-                    scopeAnswers ? (
+                    scopingAnswers ? (
                       <CheckIcon
                         style={{
                           width: 16,
@@ -223,11 +244,11 @@ export default function SearchBar() {
                     )
                   }
                   style={{
-                    color: scopeAnswers ? 'white' : styles.color_text,
-                    backgroundColor: scopeAnswers
+                    color: scopingAnswers ? 'white' : styles.color_text,
+                    backgroundColor: scopingAnswers
                       ? styles.color_primary_500
                       : '',
-                    borderColor: scopeAnswers ? styles.color_primary_500 : '',
+                    borderColor: scopingAnswers ? styles.color_primary_500 : '',
                   }}
                 />
               </div>

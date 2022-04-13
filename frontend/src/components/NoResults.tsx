@@ -9,9 +9,14 @@ import NoResultsImage from '../assets/images/no-results.png';
 
 export default function NoResults() {
   return (
-    <Stack alignItems={'center'} justifyContent={'center'} spacing={8}>
+    <Stack
+      className={'no-results'}
+      alignItems={'flex-start'}
+      justifyContent={'center'}
+      spacing={8}
+    >
       <img
-        className={'no-results wobble'}
+        className={'wobble'}
         src={NoResultsImage}
         alt={'No results placeholder'}
       />

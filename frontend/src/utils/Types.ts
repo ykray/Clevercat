@@ -60,3 +60,8 @@ export enum SearchScope {
   Answers = 'answers',
   Full = 'full',
 }
+
+export type SearchQuery = {
+  query: string;
+  scope: SearchScope;
+};
