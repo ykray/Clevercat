@@ -3,7 +3,7 @@ import SpellChecker from 'spellchecker';
 import chalk from 'chalk';
 
 // Types
-import { KarmaVote, SearchScope } from '../src/Types';
+import { Answer, BestAnswer, KarmaVote, SearchScope } from '../src/Types';
 
 // Utils
 import log from '../utils/Logger';
@@ -216,12 +216,44 @@ export default class API {
           .then((res) => {
             const question = res.rows[0];
             // Get answers to question
-            this.getAnswers(qid).then((answers) => {
-              resolve({
-                question,
-                answers,
+            this.getAnswers(qid).then((answers: Answer[]) => {
+              // Get best answer (if exists)
+              this.getBestAnswer(qid).then((bestAnswer: BestAnswer) => {
+                if (bestAnswer) {
+                  const bestAnswer_index = answers.findIndex(
+                    (x: Answer) => x.qid === bestAnswer.qid
+                  );
+                  answers[bestAnswer_index].bestAnswer = true;
+                }
+
+                resolve({
+                  question,
+                  answers,
+                });
               });
             });
+          })
+          .catch((error) => {
+            log.fatal(error);
+            reject(error);
+          });
+      });
+    };
+
+    static getBestAnswer = (qid: string) => {
+      const query = {
+        text: `--sql
+          SELECT *
+          FROM BestAnswers b
+          WHERE b.qid = $1;
+        `,
+        values: [qid],
+      };
+
+      return new Promise((resolve, reject) => {
+        Pool.query(query)
+          .then((res: any) => {
+            resolve(res.rows[0]);
           })
           .catch((error) => {
             log.fatal(error);

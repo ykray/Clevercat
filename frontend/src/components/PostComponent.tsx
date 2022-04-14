@@ -13,8 +13,7 @@ import { QuestionPost } from '../utils/Types';
 import AnswerComponent from './AnswerComponent';
 import QuestionComponent from './QuestionComponent';
 
-export default function QuestionPostComponent() {
-  // const qid = 'aa045eeb-5f3c-4251-965b-e01843cd84d2';
+export default function PostComponent() {
   let { qid } = useParams();
 
   // States

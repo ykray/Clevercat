@@ -8,7 +8,7 @@ import Theme from './assets/Theme';
 
 // Components
 import Header from './components/Header';
-import QuestionPostComponent from './components/QuestionPostComponent';
+import PostComponent from './components/PostComponent';
 import SearchComponent from './components/SearchComponent';
 import HotQuestions from './components/HotQuestions';
 import Ask from './components/Ask';
@@ -21,7 +21,7 @@ function App() {
 
         <Routes>
           <Route path={'/'} element={<HotQuestions />} />
-          <Route path={'/q/:qid'} element={<QuestionPostComponent />} />
+          <Route path={'/q/:qid'} element={<PostComponent />} />
           <Route path={'/search'} element={<SearchComponent />} />
           <Route path={'/ask'} element={<Ask />} />
           <Route index element={<HotQuestions />} />

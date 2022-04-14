@@ -11,12 +11,19 @@ export type Question = {
 };
 
 export type Answer = {
-  qid: string;
-  uid: string;
+  qid: string; // part of answer ID
+  uid: string; // part of answer ID
   username: string;
   status: string;
   a_timestamp: Date;
   body: string;
+  bestAnswer?: boolean;
+};
+
+export type BestAnswer = {
+  qid: string;
+  uid: string;
+  ba_timestamp: Date;
 };
 
 export type QuestionPost = {
@@ -43,8 +50,8 @@ export type Author = {
 };
 
 export type KarmaVote = {
-  qid: string;
-  uid: string;
+  qid: string; // part of answer ID
+  uid: string; // part of answer ID
   voter_uid: string;
   type: VoteType;
 };

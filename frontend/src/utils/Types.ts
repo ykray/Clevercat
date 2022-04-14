@@ -17,6 +17,7 @@ export type Answer = {
   status: string;
   a_timestamp: Date;
   body: string;
+  bestAnswer?: boolean;
 };
 
 export type QuestionPost = {

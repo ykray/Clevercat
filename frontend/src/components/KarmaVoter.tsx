@@ -83,11 +83,7 @@ export const KarmaVoter = ({ answer }: Props) => {
 
   return (
     <div className="karma-container">
-      <Stack
-        justifyContent={'center'}
-        alignItems={'center'}
-        style={{ marginLeft: -15, marginTop: 5 }}
-      >
+      <Stack justifyContent={'center'} alignItems={'center'}>
         <Tooltip title={'Upvote answer'} placement={'right'} arrow>
           <IconButton
             name="upvote"

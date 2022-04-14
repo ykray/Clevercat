@@ -112,6 +112,16 @@ a {
 }
 
 .answer-container {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 2px solid transparent;
+  border-radius: $radius;
+
+  h3 {
+    margin: 0;
+  }
   .answer-body {
     p {
       font-size: 1rem;
