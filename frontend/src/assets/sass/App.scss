@@ -271,6 +271,18 @@ a {
   }
 }
 
+.ask-container {
+  h1 {
+    margin: 0;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-size: 1.3rem;
+    color: $color-muted-500;
+    margin-bottom: 15px;
+  }
+}
+
 .search-icon {
   color: $color-muted-400;
 }

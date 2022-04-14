@@ -52,11 +52,38 @@ const Theme = createTheme({
         },
       },
     },
+
+    MuiMenu: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgba(183, 188, 196, 0.7)',
+          backdropFilter: 'blur(20px)',
+          transition: styles.transition_enter,
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxShadow: `none`,
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          width: 300,
+          backgroundColor: styles.color_surface_400,
+          boxShadow: 'none',
+          borderRadius: styles.radius,
+        },
+      },
+    },
     MuiListSubheader: {
       styleOverrides: {
         root: {
           fontFamily: 'GilroyBold',
-          fontSize: '1.1rem',
+          fontSize: '1rem',
           letterSpacing: '-0.3px',
           color: styles.color_muted_400,
           backgroundColor: styles.color_surface_400,
@@ -68,9 +95,11 @@ const Theme = createTheme({
         root: {
           '&:hover': {
             color: 'white',
+            paddingLeft: 50,
             backgroundColor: styles.color_primary_500,
             transition: styles.transition_enter,
           },
+          paddingLeft: 45,
           fontFamily: 'GilroySemibold',
           fontSize: '1rem',
           color: styles.color_primary_500,
@@ -137,6 +166,40 @@ const Theme = createTheme({
         },
       ],
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .Mui-error': {
+            color: 'red',
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Roboto',
+          fontSize: '1rem',
+          fontWeight: 'normal',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: styles.radius,
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontSize: '1rem',
+          fontFamily: 'Roboto',
+          fontWeight: 'normal',
+        },
+      },
+    },
     MuiInputAdornment: {
       styleOverrides: {
         root: {
@@ -158,14 +221,6 @@ const Theme = createTheme({
           paddingBottom: 6,
           color: 'white',
           backgroundColor: styles.color_primary_500,
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'white',
-          boxShadow: 'none',
         },
       },
     },

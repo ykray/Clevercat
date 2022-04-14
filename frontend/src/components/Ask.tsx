@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // MUI
 import {
@@ -8,99 +8,123 @@ import {
   ListSubheader,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   TextField,
 } from '@mui/material';
-import {
-  Science as ScienceIcon,
-  Memory as TechIcon,
-  Restaurant as FoodIcon,
-} from '@mui/icons-material';
+
+// Data
+import topics, { Topic } from '../data/Topics';
 
 type Props = {};
 
 const Ask = ({}: Props) => {
-  const topics = [
-    {
-      icon: (
-        <ScienceIcon
-          style={{ marginTop: -3, paddingRight: 6, width: 20, height: 20 }}
-        />
-      ),
-      category: 'Science',
-      topics: ['Computer Science', 'Physics', 'Biology', 'Astronomy'],
-    },
-    {
-      icon: (
-        <TechIcon
-          style={{ marginTop: -3, paddingRight: 6, width: 23, height: 23 }}
-        />
-      ),
-      category: 'Technology',
-      topics: [
-        'Electronics',
-        'Smartphones',
-        'Software',
-        'Artificial Intelligence',
-      ],
-    },
-    {
-      icon: (
-        <FoodIcon
-          style={{ marginTop: -3, paddingRight: 6, width: 18, height: 18 }}
-        />
-      ),
-      category: 'Food',
-      topics: ['Baking', 'Cooking', 'Recipes'],
-    },
-  ];
+  const [selectedTopic, setSelectedTopic] = useState<string>();
+  const [title, setTitle] = useState<string>('');
+  const [body, setBody] = useState<string>('');
+  const [errorTitle, setErrorTitle] = useState<boolean>(false);
+  const [errorBody, setErrorBody] = useState<boolean>(false);
+
+  const handleTopicSelect = (e: SelectChangeEvent) => {
+    setSelectedTopic(e.target.value);
+  };
 
   const renderTopics = () => {
-    return topics.map((items) => {
-      return items.topics.map((topic, i) => {
+    return topics.map((topic: Topic) => {
+      return topic.subTopics.map((subTopic, i) => {
         if (i === 0) {
           return (
-            <>
-              <ListSubheader>
-                <Stack
-                  direction={'row'}
-                  alignItems={'center'}
-                  justifyContent={'flex-start'}
-                >
-                  {items.icon}
-                  {items.category}
-                </Stack>
-              </ListSubheader>
-              <MenuItem value={1}>{topic}</MenuItem>
-            </>
+            <ListSubheader>
+              <Stack
+                direction={'row'}
+                alignItems={'center'}
+                justifyContent={'flex-start'}
+              >
+                {topic.icon}
+                {topic.category}
+              </Stack>
+            </ListSubheader>
           );
         }
-        return <MenuItem value={2}>{topic}</MenuItem>;
+        return <MenuItem value={subTopic}>{subTopic}</MenuItem>;
       });
     });
   };
 
+  const ask = () => {
+    if (title) {
+      if (body) {
+        // Handle ask
+      } else {
+        setErrorBody(true);
+      }
+    } else {
+      setErrorTitle(true);
+    }
+  };
+
+  const handleChange = (e: any) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name === 'title') {
+      setErrorTitle(false);
+      setTitle(value);
+    } else if (name === 'body') {
+      setErrorBody(false);
+      setBody(value);
+    }
+  };
+
   return (
-    <div>
-      <h1>Ask a Question</h1>
+    <div className={'ask-container'}>
+      <h1>Ask a question</h1>
 
-      <Stack spacing={3}>
-        <TextField placeholder={'How to xyz?'} label={'Title'} />
-        <TextField
-          placeholder={
-            'Enter a description to help people understand your question'
-          }
-          label={'Body'}
-        />
+      <Stack alignItems={'flex-start'} spacing={3}>
+        <div style={{ width: '100%' }}>
+          <h3>1. Create a title</h3>
+          <TextField
+            name={'title'}
+            placeholder={'How to xyz?'}
+            value={title}
+            onChange={handleChange}
+            fullWidth
+            error={errorTitle}
+          />
+        </div>
+        <div style={{ width: '100%' }}>
+          <h3>2. Explain your question</h3>
+          <TextField
+            name={'body'}
+            placeholder={"I've been trying to do xyz but..."}
+            value={body}
+            onChange={handleChange}
+            multiline
+            fullWidth
+            helperText={
+              'Try to be descriptive and provide details to help users better answer your question.'
+            }
+            error={errorBody}
+          />
+        </div>
 
-        <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 400 }}>
+        <h3>3. Choose a topic</h3>
+        <FormControl sx={{ m: 1, width: 200 }}>
           <InputLabel htmlFor="grouped-select">Topic</InputLabel>
-          <Select defaultValue="" id="grouped-select" label="Topic">
+
+          <Select
+            value={selectedTopic}
+            onChange={handleTopicSelect}
+            id="topic-select"
+            label="Topic"
+          >
             {renderTopics()}
           </Select>
         </FormControl>
 
-        <Button variant={'contained'}>Ask Question</Button>
+        <Button variant={'contained'} style={{ width: 'auto' }} onClick={ask}>
+          Ask Question
+        </Button>
       </Stack>
     </div>
   );
