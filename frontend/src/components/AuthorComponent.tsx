@@ -1,27 +1,35 @@
-import React, { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import chroma from 'chroma-js';
-
-// Utils
-import { randomColor } from '../utils/Helpers';
 
 // Data
 import { Author, AuthorType } from '../utils/Types';
 
 // MUI
 import { Stack } from '@mui/material';
+import API from '../data/FrontendAPI';
 
 type Props = {
-  author: Author;
+  uid: string; // to fetch user
+  authorType?: AuthorType | null;
+  timestamp?: Date;
 };
 
-const AuthorComponent = ({ author }: Props) => {
-  const color = author.user.color ?? randomColor();
-  // const colorLighter = chroma(color).set('lab.l', 125).hex('rgb');
+const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
+  const [author, setAuthor] = useState<Author>();
+
+  useEffect(() => {
+    API.Users.getUser(uid).then((user) => {
+      setAuthor({
+        user: user,
+        authorType: authorType,
+        timestamp: timestamp,
+      });
+    });
+  }, []);
 
   // Functions
   const renderTimestamp = () => {
-    if (author.timestamp) {
+    if (author && author.timestamp) {
       const timestamp = format(
         new Date(author.timestamp),
         "MMMM d, Y 'at' h:mm aaa"
@@ -38,23 +46,35 @@ const AuthorComponent = ({ author }: Props) => {
   };
 
   const renderAvatar = () => {
-    const letter = author.user.username[0].toUpperCase();
+    if (author) {
+      const letter = author.user.username[0].toUpperCase();
 
-    return (
-      <div className={'author-avatar'} style={{ backgroundColor: color }}>
-        {letter}
-      </div>
-    );
+      return (
+        <div
+          className={'author-avatar'}
+          style={{
+            backgroundColor: author.user.color,
+          }}
+        >
+          {letter}
+        </div>
+      );
+    }
   };
 
-  return (
-    <div
-      className={`author ${
-        author.authorType === AuthorType.Asker
-          ? 'author-asker'
-          : 'author-answerer'
-      }`}
-    >
+  const getClassName = () => {
+    if (authorType !== null) {
+      if (authorType === AuthorType.Asker) {
+        return 'author-asker';
+      } else {
+        return 'author-answerer';
+      }
+    }
+    return 'author-answerer';
+  };
+
+  return author ? (
+    <div className={`author ${getClassName()}`}>
       <Stack justifyContent={'flex-end'} spacing={'5px'}>
         {renderTimestamp()}
         <Stack
@@ -79,7 +99,7 @@ const AuthorComponent = ({ author }: Props) => {
         </Stack>
       </Stack>
     </div>
-  );
+  ) : null;
 };
 
 export default AuthorComponent;

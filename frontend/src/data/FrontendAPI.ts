@@ -1,9 +1,25 @@
 import { ENDPOINT } from '../utils/Constants';
 
 // Utils
-import { KarmaVote, QuestionPost, SearchScope } from '../utils/Types';
+import { KarmaVote, QuestionPost, SearchScope, User } from '../utils/Types';
 
 export default class API {
+  static getTopics = () => {
+    return new Promise((resolve, reject) => {
+      fetch(`${ENDPOINT}/topics`)
+        .then((res) => {
+          return res.text();
+        })
+        .then((res) => {
+          const topics = JSON.parse(res);
+          resolve(topics);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
   static getSpellingSuggestions = (string: string): Promise<string[]> => {
     return new Promise((resolve, reject) => {
       fetch(`${ENDPOINT}/spellcheck/${string}`)
@@ -103,7 +119,7 @@ export default class API {
 
     static vote = (karmaVote: KarmaVote) => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/upvote`, {
+        fetch(`${ENDPOINT}/vote`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -114,6 +130,24 @@ export default class API {
             resolve(res.text());
           })
           .catch((error) => {
+            reject(error);
+          });
+      });
+    };
+  };
+
+  static Users = class {
+    static getUser = (uid: string): Promise<User> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/u/${uid}`)
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            resolve(JSON.parse(res));
+          })
+          .catch((error) => {
+            console.log(error);
             reject(error);
           });
       });

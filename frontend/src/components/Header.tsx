@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
-// Assets
-import styles from '../assets/sass/_variables.scss';
+// Utils
+import { CLIENT_USER } from '../utils/Constants';
 
 // MUI
 import { Button, Stack } from '@mui/material';
@@ -10,7 +10,6 @@ import { Button, Stack } from '@mui/material';
 // Components
 import SearchBar from './SearchBar';
 import AuthorComponent from './AuthorComponent';
-import { CLIENT_USER } from '../utils/Constants';
 
 export default function Header() {
   const location = useLocation();
@@ -31,7 +30,7 @@ export default function Header() {
           </div>
           <SearchBar />
           <Stack alignItems={'flex-end'} spacing={2}>
-            <AuthorComponent author={{ user: CLIENT_USER }} />
+            <AuthorComponent uid={CLIENT_USER.uid} />
 
             {location.pathname === '/ask' ? null : (
               <div className={'hide-on-mobile'}>
@@ -45,7 +44,12 @@ export default function Header() {
         <Stack spacing={3}>
           <SearchBar mobile />
           {location.pathname === '/ask' ? null : (
-            <div className="hide-on-desktop">
+            <div
+              className="hide-on-desktop"
+              style={{
+                marginBottom: 30,
+              }}
+            >
               <Button component={Link} to={'/ask'} variant={'contained'}>
                 Ask Question
               </Button>

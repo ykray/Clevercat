@@ -50,7 +50,7 @@ export const KarmaVoter = ({ answer }: Props) => {
       qid: answer.qid,
       uid: answer.uid,
       voter_uid: CLIENT_USER.uid,
-      type: VoteType.Upvote,
+      vote: VoteType.Upvote,
     };
 
     API.Answers.vote(karmaVote)
@@ -68,7 +68,7 @@ export const KarmaVoter = ({ answer }: Props) => {
       qid: answer.qid,
       uid: answer.uid,
       voter_uid: CLIENT_USER.uid,
-      type: VoteType.Downvote,
+      vote: VoteType.Downvote,
     };
 
     API.Answers.vote(karmaVote)

@@ -21,10 +21,30 @@ app.get('/', (req, res) => {
   res.status(200).send('hi');
 });
 
+app.get('/topics', (req, res) => {
+  API.getTopics()
+    .then((topics) => {
+      res.status(200).send(topics);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.get('/hot', (req, res) => {
   API.getHotQuestions()
     .then((posts) => {
       res.status(200).send(posts);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+app.get('/u/:uid', (req, res) => {
+  API.Users.getUser(req.params.uid)
+    .then((user) => {
+      res.status(200).send(user);
     })
     .catch((error) => {
       res.status(500).send(error);
@@ -79,8 +99,8 @@ app.get('/spellcheck/:string', (req, res) => {
 });
 
 // POST
-app.post('/upvote', (req, res) => {
-  API.Answers.upvote(req.body)
+app.post('/vote', (req, res) => {
+  API.Answers.vote(req.body)
     .then((response) => {
       res.status(200).send(response);
     })

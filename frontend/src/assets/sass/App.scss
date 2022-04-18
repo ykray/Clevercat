@@ -13,6 +13,7 @@ h3 {
   font-size: 1.35rem;
   letter-spacing: -0.3px;
   line-height: 2rem;
+  color: $color-text;
   @include transition-exit();
 }
 
@@ -40,6 +41,7 @@ a {
   margin: 0 auto;
   width: 53%;
   min-height: 120vh;
+  margin-bottom: 100px;
 }
 
 .header {
@@ -93,18 +95,35 @@ a {
 }
 
 .question-topic {
-  margin-left: -5px;
   display: inline-block;
-  background-color: $color-primary-400;
   color: $color-primary-500;
   border-radius: $radius;
-  padding-left: 9px;
-  padding-right: 9px;
-  padding-top: 13px;
-  padding-bottom: 14px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  line-height: 2px;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    &:last-child {
+      &::after {
+        content: '';
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+    &::after {
+      content: '>';
+      color: $color-muted-200;
+      margin-right: 7px;
+      margin-left: 7px;
+    }
+
+    display: inline-block;
+    font-family: 'Gilroy-Semibold';
+    font-size: 1rem;
+  }
 }
 
 .answers {
@@ -116,10 +135,11 @@ a {
   padding-bottom: 12px;
   padding-left: 15px;
   padding-right: 15px;
-  border: 2px solid transparent;
+  // border: 1.6px solid transparent;
   border-radius: $radius;
 
   h3 {
+    color: $color-primary-500;
     margin: 0;
   }
   .answer-body {
@@ -150,6 +170,7 @@ a {
 }
 
 .author {
+  min-width: 131px;
   margin-top: 5px;
 
   .timestamp {
@@ -477,6 +498,18 @@ a {
 }
 
 @media only screen and (max-width: 600px) {
+  h1 {
+    font-size: 2.3rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
   .hide-on-mobile {
     display: none;
   }
@@ -520,6 +553,51 @@ a {
 
     img {
       width: 240px;
+    }
+  }
+
+  .logo {
+    font-size: 2.3rem;
+  }
+
+  .question-topic {
+    font-size: 1rem;
+  }
+
+  .author {
+    .author-avatar {
+      $size: 47px;
+
+      border-radius: $radius;
+      width: $size;
+      height: $size;
+      text-align: center;
+      line-height: $size * 1.1;
+      font-family: 'GilroySemibold';
+      font-size: $size * 0.6;
+      color: white;
+    }
+
+    .timestamp {
+      p {
+        font-size: 0.9rem;
+      }
+    }
+
+    .author-username {
+      margin-bottom: 2px;
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    .author-status {
+      padding-top: 6px;
+      padding-bottom: 6px;
+
+      p {
+        font-size: 0.9rem;
+      }
     }
   }
 }

@@ -1,12 +1,13 @@
 // Colors
-$color-primary-300: rgb(238, 245, 253);
+$color-primary-300: #f1f8ff;
 $color-primary-400: #e8f3fc;
 $color-primary-500: #227afe;
 
 $color-secondary-500: #ff7c3f;
 
-$color-green-400: #ebffdf;
-$color-green-500: #5dda0a;
+$color-green-300: #dffff2;
+$color-green-400: #8af1b0;
+$color-green-500: #18ed78;
 
 $color-text: #162231;
 
@@ -49,6 +50,7 @@ $transition-exit: all 0.1s;
 
   color_secondary_500: $color-secondary-500;
 
+  color_green_300: $color-green-300;
   color_green_400: $color-green-400;
   color_green_500: $color-green-500;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // MUI
 import {
@@ -14,11 +14,13 @@ import {
 } from '@mui/material';
 
 // Data
-import topics, { Topic } from '../data/Topics';
+import { Topic } from '../data/Topics';
+import API from '../data/FrontendAPI';
 
 type Props = {};
 
 const Ask = ({}: Props) => {
+  const [topics, setTopics] = useState<string[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string>();
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
@@ -29,25 +31,51 @@ const Ask = ({}: Props) => {
     setSelectedTopic(e.target.value);
   };
 
+  useEffect(() => {
+    API.getTopics().then((topics: any) => {
+      setTopics(topics.map((t: any) => t.topic_path));
+    });
+  }, []);
+
   const renderTopics = () => {
-    return topics.map((topic: Topic) => {
-      return topic.subTopics.map((subTopic, i) => {
-        if (i === 0) {
-          return (
-            <ListSubheader>
-              <Stack
-                direction={'row'}
-                alignItems={'center'}
-                justifyContent={'flex-start'}
-              >
-                {topic.icon}
-                {topic.category}
-              </Stack>
-            </ListSubheader>
-          );
-        }
-        return <MenuItem value={subTopic}>{subTopic}</MenuItem>;
-      });
+    return topics.map((topic: string) => {
+      if (!topic.includes('.')) {
+        return (
+          <ListSubheader>
+            <Stack
+              direction={'row'}
+              alignItems={'center'}
+              justifyContent={'flex-start'}
+            >
+              {/* {topic.icon} */}
+              {topic}
+            </Stack>
+          </ListSubheader>
+        );
+      } else {
+        const subTopic = topic
+          .replace(/([A-Z])/g, ' $1') // SubTopic -> Sub Topic
+          .split('.')
+          .pop();
+        return <MenuItem value={topic}>{subTopic}</MenuItem>;
+      }
+      // return topic.subTopics.map((subTopic, i) => {
+      //   if (i === 0) {
+      //     return (
+      //       <ListSubheader>
+      //         <Stack
+      //           direction={'row'}
+      //           alignItems={'center'}
+      //           justifyContent={'flex-start'}
+      //         >
+      //           {topic.icon}
+      //           {topic.category}
+      //         </Stack>
+      //       </ListSubheader>
+      //     );
+      //   }
+      //   return <MenuItem value={subTopic}>{subTopic}</MenuItem>;
+      // });
     });
   };
 

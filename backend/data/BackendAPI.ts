@@ -9,6 +9,24 @@ import { Answer, BestAnswer, KarmaVote, SearchScope } from '../src/Types';
 import log from '../utils/Logger';
 
 export default class API {
+  static getTopics = () => {
+    return new Promise((resolve, reject) => {
+      Pool.query(
+        `--sql
+          SELECT t.topic_path
+          FROM topics t;
+        `
+      )
+        .then((res) => {
+          resolve(res.rows);
+        })
+        .catch((error) => {
+          log.fatal(error);
+          reject(error);
+        });
+    });
+  };
+
   static getSpellingSuggestions = (string: string) => {
     return new Promise((resolve, reject) => {
       const numSuggestions = 5;
@@ -92,20 +110,37 @@ export default class API {
         values: [searchQuery],
       };
       const query_all = {
+        // (OLD) - Basic text search
+        // text: `--sql
+        //   -- Search questions
+        //   SELECT q.*
+        //   FROM Questions q
+        //   WHERE q.title ILIKE '%' || $1 || '%'
+        //   OR q.body ILIKE '%' || $1 || '%'
+        //   OR q.topic ILIKE '%' || $1 || '%'
+        //   UNION
+        //   -- Search answers
+        //   SELECT q.*
+        //   FROM Answers a
+        //     JOIN Questions q ON a.qid = q.qid
+        //   WHERE a.body ILIKE '%' || $1 || '%'
+        //   LIMIT 20;
+        // `,
+        // (NEW) - TSVECTOR-powered, lexeme text search
         text: `--sql
-          -- Search questions
-          SELECT q.*
-          FROM Questions q
-          WHERE q.title ILIKE '%' || $1 || '%'
-          OR q.body ILIKE '%' || $1 || '%'
-          OR q.topic ILIKE '%' || $1 || '%'
-          UNION
-          -- Search answers
-          SELECT q.*
-          FROM Answers a
-            JOIN Questions q ON a.qid = q.qid
-          WHERE a.body ILIKE '%' || $1 || '%'
-          LIMIT 20;
+          WITH variables (term) AS (VALUES ($1))
+          SELECT DISTINCT ON (q.qid) q.*,
+            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) AS tsv_search,
+            TS_RANK(TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')),
+            PLAINTO_TSQUERY(v.term)) AS rank
+          FROM 
+            variables v,
+            questions q 
+              JOIN answers a ON q.qid = a.qid
+          WHERE
+            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term) AND
+            q.topic = 'Science.Biology'
+          ORDER BY q.qid, rank DESC;
         `,
         values: [searchQuery],
       };
@@ -163,7 +198,7 @@ export default class API {
     };
   };
 
-  // MARK: - Users API
+  // Users API
   static Users = class {
     static getUser = (uid: string) => {
       const query = {
@@ -182,6 +217,7 @@ export default class API {
             resolve(user);
           })
           .catch((error) => {
+            log.fatal(error);
             reject(error);
           });
       });
@@ -194,17 +230,8 @@ export default class API {
       const query = {
         text: `--sql
           SELECT
-            q.qid,
-            q.uid,
-            q.title,
-            q.body,
-            q.topic,
-            q.resolved,
-            q.q_timestamp,
-            u.username,
-            u.status
+            q.*
           FROM Questions q
-            JOIN Users u ON q.uid = u.uid
           WHERE qid::TEXT = $1
           FETCH FIRST ROW ONLY;
         `,
@@ -269,12 +296,9 @@ export default class API {
             a.qid,
             a.body,
             a.uid,
-            u.username,
-            u.status,
             a.a_timestamp
           FROM Answers a
             JOIN Questions q ON a.qid = q.qid
-            JOIN Users u ON a.uid = u.uid
           WHERE a.qid::TEXT = $1;
         `,
         values: [qid],
@@ -349,23 +373,37 @@ export default class API {
       });
     };
 
-    static upvote = (karmaVote: KarmaVote) => {
+    static vote = (karmaVote: KarmaVote) => {
       const query = {
         text: `--sql
           INSERT INTO Karma(qid, uid, voter_uid, vote)
-          VALUES ($1, $2, $3, $4);
+          VALUES ($1, $2, $3, $4)
+          ON CONFLICT (qid, uid, voter_uid)
+            DO UPDATE SET vote = $4;
         `,
         values: [
           karmaVote.qid,
           karmaVote.uid,
           karmaVote.voter_uid,
-          karmaVote.type,
+          karmaVote.vote,
         ],
       };
 
       return new Promise((resolve, reject) => {
         Pool.query(query)
           .then((res) => {
+            log.info(
+              chalk.bold('voter_uid:'),
+              chalk.yellow(karmaVote.voter_uid),
+              `${
+                karmaVote.vote === 1
+                  ? chalk.italic.green('upvoted')
+                  : chalk.italic.redBright('downvoted')
+              } ${chalk.bold('answer:')}`,
+              `\n${chalk.bold('qid:')} ${chalk.blue(
+                karmaVote.qid
+              )}\n${chalk.bold('uid:')} ${chalk.yellow(karmaVote.uid)}`
+            );
             resolve(res);
           })
           .catch((error) => {

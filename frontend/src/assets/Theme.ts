@@ -56,9 +56,8 @@ const Theme = createTheme({
     MuiMenu: {
       styleOverrides: {
         root: {
-          backgroundColor: 'rgba(183, 188, 196, 0.7)',
-          backdropFilter: 'blur(20px)',
-          transition: styles.transition_enter,
+          backgroundColor: 'rgba(183, 188, 196, 0.65)',
+          backdropFilter: 'blur(7px)',
         },
       },
     },

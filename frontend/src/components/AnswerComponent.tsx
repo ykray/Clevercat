@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../assets/sass/_variables.scss';
 
 // Data
-import { Answer, Author, AuthorType } from '../utils/Types';
+import { Answer, AuthorType } from '../utils/Types';
 
 // Components
 import KarmaVoter from './KarmaVoter';
@@ -17,28 +17,19 @@ type Props = {
 };
 
 const AnswerComponent = ({ answer }: Props) => {
-  const author: Author = {
-    user: {
-      uid: answer.uid,
-      username: answer.username,
-      status: answer.status,
-    },
-    authorType: AuthorType.Answerer,
-    timestamp: answer.a_timestamp,
-  };
-
   return (
     <div
       className="answer-container"
       style={{
-        borderColor: answer.bestAnswer ? styles.color_surface_400 : '',
+        backgroundColor: answer.bestAnswer ? styles.color_primary_300 : '',
+        borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
       }}
     >
       {answer.bestAnswer ? (
-        <Stack direction={'row'} alignItems={'center'} spacing={2}>
+        <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
           <BestAnswerIcon
             style={{
-              color: styles.color_green_500,
+              color: styles.color_primary_500,
               width: 23,
               height: 23,
             }}
@@ -64,7 +55,11 @@ const AnswerComponent = ({ answer }: Props) => {
           <div className="answer-body">
             <p>{answer.body}</p>
           </div>
-          <AuthorComponent author={author} />
+          <AuthorComponent
+            uid={answer.uid}
+            authorType={AuthorType.Answerer}
+            timestamp={answer.a_timestamp}
+          />
         </Stack>
       </Stack>
     </div>

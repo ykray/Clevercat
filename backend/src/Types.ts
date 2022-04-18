@@ -6,7 +6,6 @@ export type Question = {
   title: string;
   body: string;
   topic: string;
-  resolved: boolean;
   q_timestamp: Date;
 };
 
@@ -53,7 +52,7 @@ export type KarmaVote = {
   qid: string; // part of answer ID
   uid: string; // part of answer ID
   voter_uid: string;
-  type: VoteType;
+  vote: VoteType;
 };
 
 export enum VoteType {

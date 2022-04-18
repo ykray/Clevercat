@@ -139,6 +139,7 @@ export default function SearchBar({ mobile = false }: Props) {
           placeholder={placeholder}
           value={searchQuery.query}
           autoComplete={'off'}
+          spellCheck={false}
           onFocus={() => {
             setSearchBarFocus(true);
           }}

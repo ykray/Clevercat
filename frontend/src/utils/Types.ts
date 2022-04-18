@@ -2,11 +2,11 @@ export type Question = {
   qid: string;
   uid: string;
   username: string;
+  color: string;
   status: string;
   title: string;
   body: string;
   topic: string;
-  resolved: boolean;
   q_timestamp: Date;
 };
 
@@ -14,6 +14,7 @@ export type Answer = {
   qid: string;
   uid: string;
   username: string;
+  color: string;
   status: string;
   a_timestamp: Date;
   body: string;
@@ -35,12 +36,12 @@ export type User = {
   username: string;
   bio?: string;
   status: string;
-  color?: string;
+  color: string;
 };
 
 export type Author = {
   user: User;
-  authorType?: AuthorType;
+  authorType?: AuthorType | null;
   timestamp?: Date;
 };
 
@@ -48,7 +49,7 @@ export type KarmaVote = {
   qid: string;
   uid: string;
   voter_uid: string;
-  type: VoteType;
+  vote: VoteType;
 };
 
 export enum VoteType {

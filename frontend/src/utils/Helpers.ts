@@ -5,6 +5,11 @@ export const randomColor = (): string => {
     '#5c549d',
     '#ffbc1a',
     '#52e9dd',
+    '#ffad5c',
+    '#a3d837',
+    '#6f37d8',
+    '#1ac9bb',
+    '#52c3ed',
   ];
   const randomColor: string = colors[Math.floor(Math.random() * colors.length)];
 
