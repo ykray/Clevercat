@@ -8,7 +8,7 @@ import { Answer, KarmaVote, VoteType } from '../utils/Types';
 import API from '../data/FrontendAPI';
 
 // utils
-import { CLIENT_USER } from '../utils/Constants';
+import { CLIENT_UID } from '../utils/Constants';
 
 // MUI
 import { IconButton, Stack, Tooltip } from '@mui/material';
@@ -31,7 +31,7 @@ export const KarmaVoter = ({ answer }: Props) => {
         qid: answer.qid,
         uid: answer.uid,
       },
-      CLIENT_USER.uid
+      CLIENT_UID
     ).then((voted) => {
       setVote(voted);
     });
@@ -49,7 +49,7 @@ export const KarmaVoter = ({ answer }: Props) => {
     const karmaVote: KarmaVote = {
       qid: answer.qid,
       uid: answer.uid,
-      voter_uid: CLIENT_USER.uid,
+      voter_uid: CLIENT_UID,
       vote: VoteType.Upvote,
     };
 
@@ -67,7 +67,7 @@ export const KarmaVoter = ({ answer }: Props) => {
     const karmaVote: KarmaVote = {
       qid: answer.qid,
       uid: answer.uid,
-      voter_uid: CLIENT_USER.uid,
+      voter_uid: CLIENT_UID,
       vote: VoteType.Downvote,
     };
 

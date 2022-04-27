@@ -50,13 +50,13 @@ export default class API {
     };
 
     return new Promise((resolve, reject) => {
-      var feedResults: any[] = [];
+      let feedResults: any[] = [];
 
       Pool.query(query)
         .then((res) => {
           // 1. Get all questions matching query
           const questions = res.rows;
-          var q_promises: any = [];
+          let q_promises: any = [];
 
           // 2. For each question, get its' answers
           questions.map((question) => {
@@ -64,7 +64,7 @@ export default class API {
               new Promise((resolve, reject) => {
                 API.Questions.getAnswers(question.qid).then((answers) => {
                   feedResults.push({
-                    question: question,
+                    question,
                     answers,
                   });
                   resolve(true);
@@ -133,9 +133,9 @@ export default class API {
             TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) AS tsv_search,
             TS_RANK(TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')),
             PLAINTO_TSQUERY(v.term)) AS rank
-          FROM 
+          FROM
             variables v,
-            questions q 
+            questions q
               JOIN answers a ON q.qid = a.qid
           WHERE
             TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term) AND
@@ -152,13 +152,13 @@ export default class API {
           : query_all;
 
       return new Promise((resolve, reject) => {
-        var searchResults: any[] = [];
+        let searchResults: any[] = [];
 
         Pool.query(query)
           .then((res) => {
             // 1. Get all questions matching query
             const questions = res.rows;
-            var q_promises: any = [];
+            let q_promises: any = [];
 
             // 2. For each question, get its' answers
             questions.map((question) => {
@@ -166,7 +166,7 @@ export default class API {
                 new Promise((resolve, reject) => {
                   API.Questions.getAnswers(question.qid).then((answers) => {
                     searchResults.push({
-                      question: question,
+                      question,
                       answers,
                     });
                     resolve(true);
@@ -200,6 +200,77 @@ export default class API {
 
   // Users API
   static Users = class {
+    static updateBio = (body: any) => {
+      const uid = body.uid;
+      const newBio: string = body.newBio;
+
+      const query = {
+        text: `--sql
+          UPDATE Users
+          SET bio = $2
+          WHERE uid::text = $1;
+          `,
+        values: [uid, newBio.trim()],
+      };
+
+      return new Promise((resolve, reject) => {
+        Pool.query(query)
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            log.fatal(error);
+            reject(error);
+          });
+      });
+    };
+
+    static getUserQuestions = (uid: string) => {
+      const query = {
+        text: `--sql
+          SELECT *
+          FROM Questions
+          WHERE uid::text = $1;
+          `,
+        values: [uid],
+      };
+
+      return new Promise((resolve, reject) => {
+        let feedResults: any[] = [];
+
+        Pool.query(query)
+          .then((res) => {
+            // 1. Get all questions matching query
+            const questions = res.rows;
+            let q_promises: any = [];
+
+            // 2. For each question, get its' answers
+            questions.map((question) => {
+              q_promises.push(
+                new Promise((resolve, reject) => {
+                  API.Questions.getAnswers(question.qid).then((answers) => {
+                    feedResults.push({
+                      question,
+                      answers,
+                    });
+                    resolve(true);
+                  });
+                })
+              );
+            });
+
+            Promise.all(q_promises).then(() => {
+              log.info(feedResults);
+              resolve(feedResults);
+            });
+          })
+          .catch((error) => {
+            log.fatal(error);
+            reject(error);
+          });
+      });
+    };
+
     static getUser = (uid: string) => {
       const query = {
         text: `--sql
@@ -328,7 +399,7 @@ export default class API {
         text: `--sql
           SELECT vote
           FROM Karma
-          WHERE 
+          WHERE
             qid::TEXT = $1 AND
             uid::TEXT = $2 AND
             voter_uid::TEXT = $3

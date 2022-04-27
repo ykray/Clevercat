@@ -136,7 +136,48 @@ export default class API {
     };
   };
 
+  // Users API
   static Users = class {
+    static updateBio = (uid: string, newBio: string) => {
+      const body = {
+        uid,
+        newBio: newBio.trim(),
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/updateBio`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => {
+            resolve(res.text());
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    };
+
+    static getUserQuestions = (uid: string): Promise<QuestionPost[]> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/u/${uid}/questions`)
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            const results: QuestionPost[] = JSON.parse(res);
+            console.log(results);
+            resolve(results);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    };
+
     static getUser = (uid: string): Promise<User> => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/u/${uid}`)

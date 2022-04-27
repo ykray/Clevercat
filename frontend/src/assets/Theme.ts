@@ -52,7 +52,29 @@ const Theme = createTheme({
         },
       },
     },
-
+    MuiSnackbarContent: {
+      styleOverrides: {
+        root: {
+          color: 'white',
+          fontSize: '1rem',
+          fontFamily: 'GilroySemibold',
+          letterSpacing: '-0.1px',
+        },
+      },
+    },
+    MuiSnackbar: {
+      styleOverrides: {
+        root: {
+          '& .MuiPaper-root': {
+            backgroundColor: styles.color_green_500,
+            paddingLeft: 18,
+            paddingRight: 18,
+            borderRadius: styles.radius,
+            minWidth: '0',
+          },
+        },
+      },
+    },
     MuiMenu: {
       styleOverrides: {
         root: {

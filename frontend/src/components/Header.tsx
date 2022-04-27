@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 // Utils
-import { CLIENT_USER } from '../utils/Constants';
+import { CLIENT_UID } from '../utils/Constants';
 
 // MUI
 import { Button, Stack } from '@mui/material';
@@ -30,7 +30,7 @@ export default function Header() {
           </div>
           <SearchBar />
           <Stack alignItems={'flex-end'} spacing={2}>
-            <AuthorComponent uid={CLIENT_USER.uid} />
+            <AuthorComponent uid={CLIENT_UID} />
 
             {location.pathname === '/ask' ? null : (
               <div className={'hide-on-mobile'}>

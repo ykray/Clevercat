@@ -59,12 +59,12 @@ a {
   font-size: 2rem;
   letter-spacing: -0.7px;
   color: $color-text;
+}
 
-  .highlight {
-    font-family: 'GilroyBold';
-    font-style: normal;
-    color: $color-primary-500;
-  }
+.highlight {
+  font-family: 'GilroyBold';
+  font-style: normal;
+  color: $color-primary-500;
 }
 
 .search-container {
@@ -135,8 +135,8 @@ a {
   padding-bottom: 12px;
   padding-left: 15px;
   padding-right: 15px;
-  // border: 1.6px solid transparent;
-  border-radius: $radius;
+  border: 2px solid transparent;
+  border-radius: $radius * 3;
 
   h3 {
     color: $color-primary-500;
@@ -199,16 +199,18 @@ a {
     padding-bottom: 4px;
     padding-left: 1px;
     padding-right: 1px;
-    background-color: $color-muted-400;
+    background-color: $color-primary-400;
     border-radius: $radius-sm;
 
     p {
       margin: 0;
       padding: 6px;
       line-height: 0;
-      font-size: 0.65rem;
+      font-family: 'GilroyBold';
+      font-size: 0.7rem;
+      letter-spacing: 1px;
       font-weight: bold;
-      color: white;
+      color: $color-primary-500;
       text-transform: uppercase;
     }
   }
@@ -218,6 +220,45 @@ a {
   $size: 41px;
 
   border-radius: $radius;
+  width: $size;
+  height: $size;
+  text-align: center;
+  line-height: $size * 1.1;
+  font-family: 'GilroySemibold';
+  font-size: $size * 0.6;
+  color: white;
+}
+
+.profile-container {
+  h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  input {
+    height: 12px;
+  }
+}
+
+.profile-status {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: $radius;
+  background-color: $color-primary-400;
+
+  p {
+    font-family: 'GilroyBold';
+    color: $color-primary-500;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    line-height: 2rem;
+    text-transform: uppercase;
+  }
+}
+
+.profile-avatar {
+  $size: 100px;
+
+  border-radius: $radius * 2.5;
   width: $size;
   height: $size;
   text-align: center;
