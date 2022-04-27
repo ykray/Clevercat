@@ -33,7 +33,7 @@ p {
 }
 
 a {
-  color: inherit;
+  color: $color-primary-500;
   text-decoration: none;
 }
 
@@ -65,6 +65,12 @@ a {
   font-family: 'GilroyBold';
   font-style: normal;
   color: $color-primary-500;
+}
+
+.highlight-2 {
+  font-family: 'Roboto';
+  font-style: bold;
+  color: $color-muted-300;
 }
 
 .search-container {
@@ -219,6 +225,7 @@ a {
 .author-avatar {
   $size: 41px;
 
+  cursor: pointer;
   border-radius: $radius;
   width: $size;
   height: $size;

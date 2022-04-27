@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 // MUI
-import { Snackbar, SnackbarContent, Stack, TextField } from '@mui/material';
-import { Check as SuccessIcon } from '@mui/icons-material';
+import { Snackbar, Stack, TextField } from '@mui/material';
 
 // Data
 import API from '../data/FrontendAPI';
@@ -15,6 +15,10 @@ import { QuestionPost, User } from '../utils/Types';
 import Feed from './Feed';
 
 export default function Profile() {
+  const { username } = useParams();
+
+  // States
+  const [notFound, setNotFound] = useState(false);
   const [user, setUser] = useState<User>();
   const [posts, setPosts] = useState<QuestionPost[]>([]);
   const [bioInput, setBioInput] = useState<string>();
@@ -22,17 +26,20 @@ export default function Profile() {
   const [snackbarMessage, setSnackbarMessage] = useState<string>();
 
   useEffect(() => {
-    API.Users.getUser(CLIENT_UID).then((user) => {
-      setUser(user);
-    });
-
-    API.Users.getUserQuestions(CLIENT_UID).then((res) => {
-      setPosts(res);
-    });
+    API.Users.getUserFromUsername(String(username))
+      .then((user) => {
+        setUser(user);
+      })
+      .catch((error) => {
+        setNotFound(true);
+      });
   }, []);
 
   useEffect(() => {
     if (user) {
+      API.Users.getUserQuestions(CLIENT_UID).then((res) => {
+        setPosts(res);
+      });
       setBioInput(user.bio);
     }
   }, [user]);
@@ -87,6 +94,7 @@ export default function Profile() {
                 </div>
               </Stack>
               <TextField
+                contentEditable={'false'}
                 value={bioInput}
                 label={'Bio'}
                 onChange={(e: any) => {
@@ -113,5 +121,14 @@ export default function Profile() {
         // action={action}
       />
     </div>
+  ) : notFound ? (
+    <>
+      <h1>Nothing to see here.</h1>
+      <p>
+        User <span className={'highlight-2'}>@{username}</span> doesn't exist (
+        <span style={{ fontStyle: 'italic' }}>yet,</span>{' '}
+        {<Link to={'/signup'}>claim this username!</Link>}).
+      </p>
+    </>
   ) : null;
 }

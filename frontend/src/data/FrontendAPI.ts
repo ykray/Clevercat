@@ -178,6 +178,22 @@ export default class API {
       });
     };
 
+    static getUserFromUsername = (username: string): Promise<User> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/usernames/${username}`)
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            resolve(JSON.parse(res));
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static getUser = (uid: string): Promise<User> => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/u/${uid}`)

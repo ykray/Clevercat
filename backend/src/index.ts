@@ -22,6 +22,16 @@ app.get('/', (req, res) => {
 });
 
 // Users GET
+app.get('/usernames/:username', (req, res) => {
+  API.Users.getUserFromUsername(req.params.username)
+    .then((user) => {
+      res.status(200).send(user);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.get('/u/:uid', (req, res) => {
   API.Users.getUser(req.params.uid)
     .then((user) => {

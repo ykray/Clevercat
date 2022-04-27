@@ -271,6 +271,28 @@ export default class API {
       });
     };
 
+    static getUserFromUsername = (username: string) => {
+      const query = {
+        text: `--sql
+          SELECT *
+          FROM Users
+          WHERE username = $1;
+          `,
+        values: [username.trim()],
+      };
+
+      return new Promise((resolve, reject) => {
+        Pool.query(query)
+          .then((res) => {
+            const user = res.rows[0];
+            resolve(user);
+          })
+          .catch((error) => {
+            log.fatal(error);
+            reject(error);
+          });
+      });
+    };
     static getUser = (uid: string) => {
       const query = {
         text: `--sql

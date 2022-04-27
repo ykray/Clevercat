@@ -8,7 +8,6 @@ import { Author, AuthorType } from '../utils/Types';
 import { Stack } from '@mui/material';
 import API from '../data/FrontendAPI';
 import { Link } from 'react-router-dom';
-import { CLIENT_UID } from '../utils/Constants';
 
 type Props = {
   uid: string; // to fetch user
@@ -51,19 +50,11 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
     if (author) {
       const letter = author.user.username[0].toUpperCase();
 
-      return author.user.uid === CLIENT_UID ? (
-        <Link to={'/profile'}>
-          <div
-            className={'author-avatar'}
-            style={{
-              backgroundColor: author.user.color,
-            }}
-          >
-            {letter}
-          </div>
-        </Link>
-      ) : (
+      return (
         <div
+          onClick={() => {
+            window.location.href = `/@${author.user.username}`;
+          }}
           className={'author-avatar'}
           style={{
             backgroundColor: author.user.color,

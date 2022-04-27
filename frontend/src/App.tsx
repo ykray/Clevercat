@@ -25,7 +25,7 @@ function App() {
           <Route path={'/q/:qid'} element={<PostComponent />} />
           <Route path={'/search'} element={<SearchComponent />} />
           <Route path={'/ask'} element={<Ask />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/@:username" element={<Profile />} />
           <Route index element={<HotQuestions />} />
         </Routes>
       </div>
