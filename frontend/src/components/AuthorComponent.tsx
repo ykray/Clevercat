@@ -7,10 +7,9 @@ import { Author, AuthorType } from '../utils/Types';
 // MUI
 import { Stack } from '@mui/material';
 import API from '../data/FrontendAPI';
-import { Link } from 'react-router-dom';
 
 type Props = {
-  uid: string; // to fetch user
+  uid: string | undefined; // to fetch user
   authorType?: AuthorType | null;
   timestamp?: Date;
 };
@@ -19,14 +18,16 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
   const [author, setAuthor] = useState<Author>();
 
   useEffect(() => {
-    API.Users.getUser(uid).then((user) => {
-      setAuthor({
-        user: user,
-        authorType: authorType,
-        timestamp: timestamp,
+    if (uid) {
+      API.Users.getUser(uid).then((user) => {
+        setAuthor({
+          user: user,
+          authorType: authorType,
+          timestamp: timestamp,
+        });
       });
-    });
-  }, []);
+    }
+  });
 
   // Functions
   const renderTimestamp = () => {

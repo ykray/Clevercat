@@ -14,9 +14,7 @@ export default class API {
           const topics = JSON.parse(res);
           resolve(topics);
         })
-        .catch((error) => {
-          reject(error);
-        });
+        .catch((error) => reject(error));
     });
   };
 
@@ -29,9 +27,7 @@ export default class API {
         .then((res: any) => {
           resolve(JSON.parse(res));
         })
-        .catch((error) => {
-          reject(error);
-        });
+        .catch((error) => reject(error));
     });
   };
 
@@ -46,10 +42,55 @@ export default class API {
           console.log(results);
           resolve(results);
         })
-        .catch((error) => {
-          reject(error);
-        });
+        .catch((error) => reject(error));
     });
+  };
+
+  // Auth API
+  static Auth = class {
+    static login = (username: string, password: string) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/login`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        })
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            resolve(JSON.parse(res));
+          })
+          .catch((error) => reject(error));
+      });
+    };
+
+    static logout = () => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/logout`)
+          .then((res) => {})
+          .catch((error) => reject(error));
+      });
+    };
+
+    static currentUser = (): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/ping`, { credentials: 'include' })
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
   };
 
   // Search API
@@ -94,9 +135,7 @@ export default class API {
           .then((res: any) => {
             resolve(Number(res) || 0);
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     };
 
@@ -111,9 +150,7 @@ export default class API {
           .then((res: any) => {
             resolve(Number(res));
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     };
 
@@ -129,23 +166,21 @@ export default class API {
           .then((res) => {
             resolve(res.text());
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     };
   };
 
   // Users API
   static Users = class {
-    static updateBio = (uid: string, newBio: string) => {
+    static updateBio = (newBio: string) => {
       const body = {
-        uid,
         newBio: newBio.trim(),
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/updateBio`, {
+          credentials: 'include',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -155,9 +190,7 @@ export default class API {
           .then((res) => {
             resolve(res.text());
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     };
 
@@ -169,12 +202,9 @@ export default class API {
           })
           .then((res) => {
             const results: QuestionPost[] = JSON.parse(res);
-            console.log(results);
             resolve(results);
           })
-          .catch((error) => {
-            reject(error);
-          });
+          .catch((error) => reject(error));
       });
     };
 

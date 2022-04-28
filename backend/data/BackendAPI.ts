@@ -50,13 +50,13 @@ export default class API {
     };
 
     return new Promise((resolve, reject) => {
-      let feedResults: any[] = [];
+      const feedResults: any[] = [];
 
       Pool.query(query)
         .then((res) => {
           // 1. Get all questions matching query
           const questions = res.rows;
-          let q_promises: any = [];
+          const q_promises: any = [];
 
           // 2. For each question, get its' answers
           questions.map((question) => {
@@ -152,13 +152,13 @@ export default class API {
           : query_all;
 
       return new Promise((resolve, reject) => {
-        let searchResults: any[] = [];
+        const searchResults: any[] = [];
 
         Pool.query(query)
           .then((res) => {
             // 1. Get all questions matching query
             const questions = res.rows;
-            let q_promises: any = [];
+            const q_promises: any = [];
 
             // 2. For each question, get its' answers
             questions.map((question) => {
@@ -200,82 +200,100 @@ export default class API {
 
   // Users API
   static Users = class {
-    static updateBio = (body: any) => {
-      const uid = body.uid;
-      const newBio: string = body.newBio;
+    static login = (req: any, res: any) => {
+      const { user } = req;
+      res.json(user);
+    };
+
+    static logout = (req: any, res: any, next: any) => {
+      req.session.destroy((err: any) => {
+        if (err) return next(err);
+        req.logout();
+        res.sendStatus(200);
+      });
+    };
+
+    static ping = (req: any, res: any) => {
+      res.status(200).send(req.user);
+    };
+
+    static updateBio = (req: any, res: any) => {
+      const newBio: string = req.body.newBio;
+      log.debug(req.user);
 
       const query = {
         text: `--sql
           UPDATE Users
           SET bio = $2
-          WHERE uid::text = $1;
+          WHERE uid::text = $1
           `,
-        values: [uid, newBio.trim()],
+        values: [req.user, newBio.trim()],
       };
 
-      return new Promise((resolve, reject) => {
-        Pool.query(query)
-          .then((res) => {
-            resolve(res);
-          })
-          .catch((error) => {
-            log.fatal(error);
-            reject(error);
-          });
-      });
+      Pool.query(query)
+        .then((results) => {
+          const test = {
+            uid: req.user,
+            bio: newBio,
+          };
+          console.log(chalk.blueBright(chalk.bold('UPDATED')), test);
+          res.status(200).send(results);
+        })
+        .catch((error) => {
+          log.fatal('Failed to update bio:', error);
+          res.status(400).send(error);
+        });
     };
 
-    static getUserQuestions = (uid: string) => {
+    static getUserQuestions = (req: any, res: any) => {
       const query = {
         text: `--sql
           SELECT *
-          FROM Questions
+          FROM questions
           WHERE uid::text = $1;
           `,
-        values: [uid],
+        values: [req.params.uid],
       };
 
-      return new Promise((resolve, reject) => {
-        let feedResults: any[] = [];
+      const feedResults: any[] = [];
 
-        Pool.query(query)
-          .then((res) => {
-            // 1. Get all questions matching query
-            const questions = res.rows;
-            let q_promises: any = [];
+      Pool.query(query)
+        .then((results) => {
+          // 1. Get all questions matching query
+          const questions = results.rows;
+          const q_promises: any = [];
 
-            // 2. For each question, get its' answers
-            questions.map((question) => {
-              q_promises.push(
-                new Promise((resolve, reject) => {
-                  API.Questions.getAnswers(question.qid).then((answers) => {
-                    feedResults.push({
-                      question,
-                      answers,
-                    });
-                    resolve(true);
+          // 2. For each question, get its' answers
+          questions.map((question) => {
+            q_promises.push(
+              new Promise((resolve, reject) => {
+                API.Questions.getAnswers(question.qid).then((answers) => {
+                  feedResults.push({
+                    question,
+                    answers,
                   });
-                })
-              );
-            });
-
-            Promise.all(q_promises).then(() => {
-              log.info(feedResults);
-              resolve(feedResults);
-            });
-          })
-          .catch((error) => {
-            log.fatal(error);
-            reject(error);
+                  resolve(true);
+                });
+              })
+            );
           });
-      });
+
+          Promise.all(q_promises).then(() => {
+            log.info(feedResults);
+            res.status(200).send(feedResults);
+          });
+        })
+        .catch((error) => {
+          log.fatal(error);
+          res.status(400).send(error);
+        });
     };
 
     static getUserFromUsername = (username: string) => {
       const query = {
         text: `--sql
           SELECT *
-          FROM Users
+          FROM users
           WHERE username = $1;
           `,
         values: [username.trim()],
@@ -293,6 +311,7 @@ export default class API {
           });
       });
     };
+
     static getUser = (uid: string) => {
       const query = {
         text: `--sql

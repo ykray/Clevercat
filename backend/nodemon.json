@@ -1,5 +1,5 @@
 {
-  "watch": ["data", "src"],
+  "watch": ["data", "middleware", "src", "utils"],
   "exec": "ts-node",
   "ext": "js, ts, json"
 }

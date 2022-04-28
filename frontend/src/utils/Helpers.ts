@@ -1,3 +1,5 @@
+import API from '../data/FrontendAPI';
+
 export const randomColor = (): string => {
   const colors: string[] = [
     '#5dda0a',

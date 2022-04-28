@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/utils/Types.ts"],
+  "include": ["src", "src/utils/Types.ts", "webpack.config.js"],
   "exclude": ["node_modules", "build"]
 }

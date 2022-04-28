@@ -1,8 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-
-// Utils
-import { CLIENT_UID } from '../utils/Constants';
 
 // MUI
 import { Button, Stack } from '@mui/material';
@@ -10,10 +7,12 @@ import { Button, Stack } from '@mui/material';
 // Components
 import SearchBar from './SearchBar';
 import AuthorComponent from './AuthorComponent';
+import { UserContext } from '../App';
 
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const currentUser = useContext(UserContext);
 
   return (
     <div className="header">
@@ -30,7 +29,7 @@ export default function Header() {
           </div>
           <SearchBar />
           <Stack alignItems={'flex-end'} spacing={2}>
-            <AuthorComponent uid={CLIENT_UID} />
+            <AuthorComponent uid={currentUser} />
 
             {location.pathname === '/ask' ? null : (
               <div className={'hide-on-mobile'}>

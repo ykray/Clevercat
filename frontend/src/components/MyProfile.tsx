@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 // MUI
@@ -7,15 +7,16 @@ import { Snackbar, Stack, TextField } from '@mui/material';
 // Data
 import API from '../data/FrontendAPI';
 
+// Utils
+
+import { CLIENT_UID } from '../utils/Constants';
+
 // Types
 import { QuestionPost, User } from '../utils/Types';
 import Feed from './Feed';
-import { UserContext } from '../App';
 
-export default function Profile() {
+export default function MyProfile() {
   const { username } = useParams();
-
-  const currentUser = useContext(UserContext);
 
   // States
   const [notFound, setNotFound] = useState(false);
@@ -26,6 +27,7 @@ export default function Profile() {
   const [snackbarMessage, setSnackbarMessage] = useState<string>();
 
   useEffect(() => {
+    // API.Auth.ping();
     API.Users.getUserFromUsername(String(username))
       .then((user) => {
         setUser(user);
@@ -37,7 +39,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
-      API.Users.getUserQuestions(user.uid).then((res) => {
+      API.Users.getUserQuestions(CLIENT_UID).then((res) => {
         setPosts(res);
       });
       setBioInput(user.bio ?? '');
@@ -93,23 +95,19 @@ export default function Profile() {
                   <p>{user.status}</p>
                 </div>
               </Stack>
-              {currentUser === user.uid ? (
-                <TextField
-                  value={bioInput}
-                  label={'Bio'}
-                  onChange={(e: any) => {
-                    setBioInput(e.target.value);
-                  }}
-                  onBlur={(e: any) => {
-                    API.Users.updateBio(e.target.value).then(() => {
-                      setSnackbarMessage('Your bio has been updated!');
-                      setSnackbarOpen(true);
-                    });
-                  }}
-                />
-              ) : (
-                <p>{user.bio}</p>
-              )}
+              <TextField
+                value={bioInput}
+                label={'Bio'}
+                onChange={(e: any) => {
+                  setBioInput(e.target.value);
+                }}
+                onBlur={(e: any) => {
+                  API.Users.updateBio(e.target.value).then(() => {
+                    setSnackbarMessage('Your bio has been updated!');
+                    setSnackbarOpen(true);
+                  });
+                }}
+              />
             </Stack>
           </Stack>
         </Stack>

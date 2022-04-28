@@ -4,7 +4,11 @@
   "jsRules": {},
   "rules": {
     "trailing-comma": [false],
-    "no-console": false
+    "no-console": false,
+    "variable-name": false,
+    "no-shadowed-variable": false,
+    "max-classes-per-file": false,
+    "no-var-requires": false
   },
   "rulesDirectory": []
 }
