@@ -30,29 +30,30 @@ export default function Header() {
               <span className="highlight">about</span>
             </div>
             <SearchBar />
-            {currentUser ? (
-              <Stack alignItems={'flex-end'} spacing={2}>
-                <AuthorComponent uid={currentUser} />
+            {
+              currentUser ? (
+                <Stack alignItems={'flex-end'} spacing={2}>
+                  <AuthorComponent uid={currentUser} />
 
-                {location.pathname === '/ask' ? null : (
+                  {/* {location.pathname === '/ask' ? null : (
                   <div className={'hide-on-mobile'}>
                     <Button component={Link} to={'/ask'} variant={'contained'}>
                       Ask Question
                     </Button>
                   </div>
-                )}
-              </Stack>
-            ) : location.pathname === '/ask' ? null : (
-              <div className={'hide-on-mobile'}>
-                <Button component={Link} to={'/ask'} variant={'contained'}>
-                  Ask Question
-                </Button>
-              </div>
-            )}
+                )} */}
+                </Stack>
+              ) : location.pathname === '/ask' ? null : null
+              // <div className={'hide-on-mobile'}>
+              //   <Button component={Link} to={'/ask'} variant={'contained'}>
+              //     Ask Question
+              //   </Button>
+              // </div>
+            }
           </Stack>
           <Stack spacing={3}>
             <SearchBar mobile />
-            {location.pathname === '/ask' ? null : (
+            {/* {location.pathname === '/ask' ? null : (
               <div
                 className="hide-on-desktop"
                 style={{
@@ -63,7 +64,7 @@ export default function Header() {
                   Ask Question
                 </Button>
               </div>
-            )}
+            )} */}
           </Stack>
         </Stack>
       </div>
