@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // MUI
 import {
@@ -23,9 +23,12 @@ type Props = {};
 
 const Ask = ({}: Props) => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [topics, setTopics] = useState<string[]>([]);
-  const [topic, setTopic] = useState<string>();
+  const [topic, setTopic] = useState<string | undefined>(
+    searchParams.get('topic') ?? undefined
+  );
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [errorTitle, setErrorTitle] = useState<boolean>(false);
@@ -40,6 +43,10 @@ const Ask = ({}: Props) => {
       setTopics(topics.map((t: any) => t.topic_path));
     });
   }, []);
+
+  useEffect(() => {
+    console.log(topic);
+  }, [topic]);
 
   const renderTopics = () => {
     return topics.map((topic: string) => {

@@ -1,5 +1,6 @@
+import { Button } from '@mui/material';
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import API from '../data/FrontendAPI';
 import { QuestionPost } from '../utils/Types';
 import Feed from './Feed';
@@ -19,17 +20,35 @@ export default function TopicFeed() {
   }, []);
 
   const renderPosts = () => {
+    const lastDelim = topicPath.lastIndexOf('.') + 1;
+    const topic = topicPath
+      .substring(lastDelim, topicPath.length)
+      .replace(/([A-Z])/g, ' $1');
+
     return posts && posts.length > 0 ? (
       <>
         <TopicHierarchy topicPath={topicPath} />
+        <h1>
+          <span className={'highlight'}>{topic}</span> questions
+        </h1>
         <Feed posts={posts} hideTopic />
       </>
     ) : (
       <>
         <TopicHierarchy topicPath={topicPath} />
+        <h1>
+          No <span className={'highlight'}>{topic}</span> questions
+        </h1>
+        <Button
+          component={Link}
+          to={`/ask?topic=${topicPath}`}
+          variant={'contained'}
+        >
+          Ask Question
+        </Button>
       </>
     );
   };
 
-  return <>{renderPosts()}</>;
+  return <div className={'topic-feed'}>{renderPosts()}</div>;
 }
