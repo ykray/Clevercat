@@ -6,14 +6,20 @@ import reactStringReplace from 'react-string-replace';
 import { Fade, Grow, Stack } from '@mui/material';
 
 // Data
-import { QuestionPost } from '../utils/Types';
+import { Question, QuestionPost } from '../utils/Types';
 import NoResults from './NoResults';
+import TopicHierarchy from './TopicHierarchy';
 
 type Props = {
   searchQuery?: string | null;
   posts: QuestionPost[];
+  hideTopic?: boolean;
 };
-export const Feed = ({ searchQuery = null, posts }: Props) => {
+export const Feed = ({
+  searchQuery = null,
+  posts,
+  hideTopic = false,
+}: Props) => {
   const postsNum = posts?.length || 0;
 
   const [grow, setGrow] = useState(false);
@@ -36,6 +42,9 @@ export const Feed = ({ searchQuery = null, posts }: Props) => {
               <Fade in={fadeIn} timeout={800}>
                 <Link to={`/q/${post.question.qid}`}>
                   <div className={'search-result'}>
+                    {!hideTopic ? (
+                      <TopicHierarchy noClick topicPath={post.question.topic} />
+                    ) : null}
                     <h2>
                       {searchQuery
                         ? reactStringReplace(
@@ -49,7 +58,6 @@ export const Feed = ({ searchQuery = null, posts }: Props) => {
                           )
                         : post.question.title}
                     </h2>
-
                     <p>
                       {answers.length > 0 ? (
                         searchQuery ? (

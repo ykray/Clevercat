@@ -1,25 +1,18 @@
-// Data
+// Utils
 import { AuthorType, Question } from '../utils/Types';
+
+// Components
 import AuthorComponent from './AuthorComponent';
+import TopicHierarchy from './TopicHierarchy';
 
 type Props = {
   question: Question;
 };
 
 const QuestionComponent = ({ question }: Props) => {
-  const renderTopicHierarchy = () => {
-    const topicHierarchy = question.topic.split('.');
-
-    return topicHierarchy.map((topic) => {
-      return <li>{topic.replace(/([A-Z])/g, ' $1')}</li>;
-    });
-  };
-
   return (
     <div className={'question'}>
-      <div className={'question-topic'}>
-        <ul>{renderTopicHierarchy()}</ul>
-      </div>
+      <TopicHierarchy topicPath={question.topic} />
       <h1 className={'question-title'}>{question.title}</h1>
       <div className="question-body">
         <p>{question.body}</p>

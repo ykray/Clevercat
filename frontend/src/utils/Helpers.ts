@@ -1,4 +1,5 @@
 import API from '../data/FrontendAPI';
+import { Question } from './Types';
 
 export const randomColor = (): string => {
   const colors: string[] = [

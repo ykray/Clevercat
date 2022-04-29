@@ -18,6 +18,7 @@ import HotQuestions from './components/HotQuestions';
 import Ask from './components/Ask';
 import API from './data/FrontendAPI';
 import FloatingAsk from './components/FloatingAsk';
+import TopicFeed from './components/TopicFeed';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -46,7 +47,8 @@ function App() {
             <Route path={'/q/:qid'} element={<PostComponent />} />
             <Route path={'/search'} element={<SearchComponent />} />
             <Route path={'/ask'} element={<Ask />} />
-            <Route path="/@:username" element={<Profile />} />
+            <Route path={'/@:username'} element={<Profile />} />
+            <Route path={'/topics/*'} element={<TopicFeed />} />
             <Route index element={<HotQuestions />} />
           </Routes>
 

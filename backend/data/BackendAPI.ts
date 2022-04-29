@@ -16,7 +16,55 @@ import log from '../utils/Logger';
 import pool from '../src/Pool';
 
 export default class API {
-  static getTopics = () => {
+  static getTopicFeed = (req: any, res: any) => {
+    const topicPath: string = req.params.topicPath;
+    const query = {
+      text: `--sql
+        SELECT *
+        FROM Questions
+        WHERE topic::text LIKE '%' || $1 || '%'
+        ORDER BY q_timestamp DESC
+        LIMIT 10;
+      `,
+      values: [topicPath],
+    };
+
+    const feedResults: any[] = [];
+
+    log.info(req.params.topicPath);
+    Pool.query(query)
+      .then((results) => {
+        // 1. Get all questions matching query
+        const questions = results.rows;
+        const q_promises: any = [];
+
+        // 2. For each question, get its' answers
+        questions.map((question) => {
+          q_promises.push(
+            new Promise((resolve, reject) => {
+              API.Questions.getAnswers(question.qid).then((answers) => {
+                feedResults.push({
+                  question,
+                  answers,
+                });
+                resolve(true);
+              });
+            })
+          );
+        });
+
+        Promise.all(q_promises).then(() => {
+          log.info(feedResults);
+          res.status(200).send(feedResults);
+        });
+      })
+      .catch((error) => {
+        log.fatal(error);
+        res.status(400).send(error);
+      });
+  };
+
+  static getAllTopics = () => {
     return new Promise((resolve, reject) => {
       Pool.query(
         `--sql

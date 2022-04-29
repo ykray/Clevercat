@@ -12,7 +12,48 @@ const Types_1 = require("../src/Types");
 const Logger_1 = __importDefault(require("../utils/Logger"));
 const Pool_2 = __importDefault(require("../src/Pool"));
 class API {
-    static getTopics = () => {
+    static getTopicFeed = (req, res) => {
+        const topicPath = req.params.topicPath;
+        const query = {
+            text: `--sql
+        SELECT *
+        FROM Questions
+        WHERE topic::text LIKE '%' || $1 || '%'
+        ORDER BY q_timestamp DESC
+        LIMIT 10;
+      `,
+            values: [topicPath],
+        };
+        const feedResults = [];
+        Logger_1.default.info(req.params.topicPath);
+        Pool_1.default.query(query)
+            .then((results) => {
+            // 1. Get all questions matching query
+            const questions = results.rows;
+            const q_promises = [];
+            // 2. For each question, get its' answers
+            questions.map((question) => {
+                q_promises.push(new Promise((resolve, reject) => {
+                    API.Questions.getAnswers(question.qid).then((answers) => {
+                        feedResults.push({
+                            question,
+                            answers,
+                        });
+                        resolve(true);
+                    });
+                }));
+            });
+            Promise.all(q_promises).then(() => {
+                Logger_1.default.info(feedResults);
+                res.status(200).send(feedResults);
+            });
+        })
+            .catch((error) => {
+            Logger_1.default.fatal(error);
+            res.status(400).send(error);
+        });
+    };
+    static getAllTopics = () => {
         return new Promise((resolve, reject) => {
             Pool_1.default.query(`--sql
           SELECT t.topic_path
@@ -231,7 +272,7 @@ class API {
                 .query(query)
                 .then((results) => {
                 // Question asked!
-                console.log(chalk_1.default.blueBright(chalk_1.default.bold('NEW'), 'question'), question);
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('NEW'), 'question:'), question);
                 res.status(200).send(results.rows[0]);
             })
                 .catch((error) => {

@@ -36,7 +36,7 @@ const Ask = ({}: Props) => {
   };
 
   useEffect(() => {
-    API.getTopics().then((topics: any) => {
+    API.getAllTopics().then((topics: any) => {
       setTopics(topics.map((t: any) => t.topic_path));
     });
   }, []);

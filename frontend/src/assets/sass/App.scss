@@ -146,23 +146,52 @@ a {
   }
 
   li {
+    cursor: pointer;
+    margin-left: -8px;
+    display: inline-block;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 7px;
+    padding-bottom: 5px;
+    border-radius: $radius;
+    line-height: 1rem;
+    font-family: 'Gilroy-Semibold';
+    font-size: 1rem;
+
+    a {
+      color: $color-muted-300;
+    }
+
+    &:hover {
+      &::after {
+        background-color: none;
+      }
+
+      a {
+        color: $color-muted-500;
+      }
+      background-color: white;
+      box-shadow: 0px 4px 7px $color-surface-500;
+    }
+
     &:last-child {
+      a {
+        color: $color-primary-500;
+      }
+
       &::after {
         content: '';
         margin-right: 0;
-        margin-left: 0;
+        margin: 0;
       }
     }
+
     &::after {
       content: '>';
       color: $color-muted-200;
-      margin-right: 7px;
-      margin-left: 7px;
+      margin-right: 5px;
+      margin-left: 12px;
     }
-
-    display: inline-block;
-    font-family: 'Gilroy-Semibold';
-    font-size: 1rem;
   }
 }
 
@@ -228,14 +257,14 @@ a {
     p {
       margin: 0;
       line-height: 1rem;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: $color-text;
     }
   }
 
   .author-status {
-    padding-top: 4px;
+    padding-top: 6px;
     padding-bottom: 4px;
     padding-left: 1px;
     padding-right: 1px;
@@ -247,7 +276,7 @@ a {
       padding: 6px;
       line-height: 0;
       font-family: 'GilroyBold';
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       letter-spacing: 1px;
       font-weight: bold;
       color: $color-primary-500;
@@ -281,6 +310,7 @@ a {
 }
 
 .profile-status {
+  padding-top: 2px;
   padding-left: 10px;
   padding-right: 10px;
   border-radius: $radius;
@@ -289,7 +319,7 @@ a {
   p {
     font-family: 'GilroyBold';
     color: $color-primary-500;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     letter-spacing: 1px;
     line-height: 2rem;
     text-transform: uppercase;
@@ -685,18 +715,18 @@ a {
     }
 
     .author-username {
-      margin-bottom: 2px;
+      margin-bottom: 0px;
       p {
         font-size: 1rem;
       }
     }
 
     .author-status {
-      padding-top: 6px;
+      padding-top: 9px;
       padding-bottom: 6px;
 
       p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
       }
     }
   }

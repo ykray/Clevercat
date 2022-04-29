@@ -186,8 +186,9 @@ app.post('/vote', (req, res) => {
 });
 
 // Other Routes
-app.get('/topics', (req, res) => {
-  API.getTopics()
+app.get('/topics/:topicPath', API.getTopicFeed);
+app.get('/all-topics', (req, res) => {
+  API.getAllTopics()
     .then((topics) => {
       res.status(200).send(topics);
     })

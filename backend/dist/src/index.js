@@ -169,8 +169,9 @@ app.post('/vote', (req, res) => {
     });
 });
 // Other Routes
-app.get('/topics', (req, res) => {
-    BackendAPI_1.default.getTopics()
+app.get('/topics/:topicPath', BackendAPI_1.default.getTopicFeed);
+app.get('/all-topics', (req, res) => {
+    BackendAPI_1.default.getAllTopics()
         .then((topics) => {
         res.status(200).send(topics);
     })

@@ -10,9 +10,26 @@ import {
 } from '../utils/Types';
 
 export default class API {
-  static getTopics = () => {
+  static getTopicFeed = (topicPath: string): Promise<QuestionPost[]> => {
     return new Promise((resolve, reject) => {
-      fetch(`${ENDPOINT}/topics`)
+      fetch(`${ENDPOINT}/topics/${topicPath}`)
+        .then((res) => {
+          return res.text();
+        })
+        .then((res) => {
+          const results: QuestionPost[] = JSON.parse(res);
+          resolve(results);
+        })
+        .catch((error) => {
+          console.log(error);
+          reject(error);
+        });
+    });
+  };
+
+  static getAllTopics = () => {
+    return new Promise((resolve, reject) => {
+      fetch(`${ENDPOINT}/all-topics`)
         .then((res) => {
           return res.text();
         })
@@ -45,7 +62,6 @@ export default class API {
         })
         .then((res) => {
           const results: QuestionPost[] = JSON.parse(res);
-          console.log(results);
           resolve(results);
         })
         .catch((error) => reject(error));
