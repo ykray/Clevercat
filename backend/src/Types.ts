@@ -12,6 +12,7 @@ export type Question = {
 export type Answer = {
   qid: string; // part of answer ID
   uid: string; // part of answer ID
+  q_uid: string;
   username: string;
   status: string;
   a_timestamp: Date;

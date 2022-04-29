@@ -78,6 +78,7 @@ const Theme = createTheme({
     MuiMenu: {
       styleOverrides: {
         root: {
+          paddingBottom: 200,
           backgroundColor: 'rgba(183, 188, 196, 0.65)',
           backdropFilter: 'blur(7px)',
         },
@@ -86,17 +87,18 @@ const Theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          boxShadow: `none`,
+          borderRadius: 9,
+          boxShadow: `0px 10px 20px ${styles.color_surface_500}`,
         },
       },
     },
     MuiList: {
       styleOverrides: {
         root: {
-          width: 300,
+          minWidth: 250,
           backgroundColor: styles.color_surface_400,
           boxShadow: 'none',
-          borderRadius: styles.radius,
+          borderRadius: 9,
         },
       },
     },
@@ -106,7 +108,7 @@ const Theme = createTheme({
           fontFamily: 'GilroyBold',
           fontSize: '1rem',
           letterSpacing: '-0.3px',
-          color: styles.color_muted_400,
+          color: styles.color_muted_300,
           backgroundColor: styles.color_surface_400,
         },
       },
@@ -114,16 +116,36 @@ const Theme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
+          '&.Mui-selected': {
+            fontSize: '1.1rem',
+            color: styles.color_primary_500,
+            backgroundColor: 'white',
+            boxShadow: `0px 7px 7px rgba(0, 0, 0, 0.05)`,
+            zIndex: 9999,
+          },
           '&:hover': {
-            color: 'white',
-            paddingLeft: 50,
-            backgroundColor: styles.color_primary_500,
+            '&.Mui-selected': {
+              color: styles.color_primary_500,
+              backgroundColor: 'white',
+              boxShadow: `0px 7px 7px ${styles.color_primary_400}`,
+              zIndex: 9999,
+            },
+            // color: styles.color_primary_500,
+            backgroundColor: 'rgba(34, 122, 254, 0.08)',
+            boxShadow: `none`,
             transition: styles.transition_enter,
           },
-          paddingLeft: 45,
+          borderRadius: 5,
+          marginLeft: 7,
+          marginRight: 7,
+          marginTop: 4,
+          marginBottom: 4,
+          paddingLeft: 20,
+          paddingTop: 7,
+          paddingBottom: 7,
           fontFamily: 'GilroySemibold',
           fontSize: '1rem',
-          color: styles.color_primary_500,
+          color: styles.color_muted_500,
           backgroundColor: styles.color_surface_400,
           transition: styles.transition_exit,
         },

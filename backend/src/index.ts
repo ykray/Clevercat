@@ -101,18 +101,14 @@ app.use(passport.session());
 app.use(express.json());
 
 // ROUTES
-
-// GET
 app.get('/', (req, res) => {
   res.status(200).send('hi');
 });
 app.get('/logout', API.Users.logout);
-app.get('/ping', requiresLogin, API.Users.ping);
-
-// POST
+app.get('/current-user', requiresLogin, API.Users.currentUser);
 app.post('/login', passport.authenticate('local'), API.Users.login);
 
-// Users GET
+// Users Routes
 app.get('/usernames/:username', (req, res) => {
   API.Users.getUserFromUsername(req.params.username)
     .then((user) => {
@@ -132,13 +128,11 @@ app.get('/u/:uid', (req, res) => {
       res.status(500).send(error);
     });
 });
-
 app.get('/u/:uid/questions', API.Users.getUserQuestions);
-
-// Users POST
 app.post('/updateBio', API.Users.updateBio);
+app.post('/ask', API.Users.askQuestion);
 
-// Search GET
+// Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {
   const scope = JSON.parse(req.params.searchScope);
   API.Search.search(req.params.searchQuery, scope)
@@ -150,7 +144,7 @@ app.get('/search/:searchScope/:searchQuery', (req, res) => {
     });
 });
 
-// Questions GET
+// Questions Routes
 app.get('/q/:qid', (req, res) => {
   API.Questions.getQuestionPost(req.params.qid)
     .then((questionPost) => {
@@ -161,7 +155,7 @@ app.get('/q/:qid', (req, res) => {
     });
 });
 
-// Answers GET
+// Answers Routes
 app.get('/votes/:answerID/:voter_uid', (req, res) => {
   API.Answers.checkIfVoted(req.params.answerID, req.params.voter_uid)
     .then((response) => {
@@ -181,8 +175,6 @@ app.get('/karma/:answerID', (req, res) => {
       res.status(500).send(error);
     });
 });
-
-// Answers POST
 app.post('/vote', (req, res) => {
   API.Answers.vote(req.body)
     .then((response) => {
@@ -193,7 +185,7 @@ app.post('/vote', (req, res) => {
     });
 });
 
-// Other GET
+// Other Routes
 app.get('/topics', (req, res) => {
   API.getTopics()
     .then((topics) => {
@@ -203,7 +195,6 @@ app.get('/topics', (req, res) => {
       res.status(500).send(error);
     });
 });
-
 app.get('/hot', (req, res) => {
   API.getHotQuestions()
     .then((posts) => {
@@ -213,7 +204,6 @@ app.get('/hot', (req, res) => {
       res.status(500).send(error);
     });
 });
-
 app.get('/spellcheck/:string', (req, res) => {
   API.getSpellingSuggestions(req.params.string).then((corrections) => {
     res.status(200).send(corrections);

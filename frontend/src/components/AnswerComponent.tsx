@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styles from '../assets/sass/_variables.scss';
 
 // Data
@@ -9,14 +9,21 @@ import KarmaVoter from './KarmaVoter';
 import AuthorComponent from './AuthorComponent';
 
 // MUI
-import { Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import { Stars as BestAnswerIcon } from '@mui/icons-material';
+import { UserContext } from '../App';
 
 type Props = {
   answer: Answer;
 };
 
 const AnswerComponent = ({ answer }: Props) => {
+  const currentUser = useContext(UserContext);
+
+  const handleBest = () => {
+    // TODO:
+  };
+
   return (
     <div
       className="answer-container"
@@ -25,18 +32,7 @@ const AnswerComponent = ({ answer }: Props) => {
         borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
       }}
     >
-      {answer.bestAnswer ? (
-        <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
-          <BestAnswerIcon
-            style={{
-              color: styles.color_primary_500,
-              width: 23,
-              height: 23,
-            }}
-          />
-          <h3>Best Answer</h3>
-        </Stack>
-      ) : null}
+      {currentUser === answer.uid}
 
       <Stack direction={'row'} spacing={1}>
         <Stack

@@ -17,10 +17,10 @@ const QuestionComponent = ({ question }: Props) => {
 
   return (
     <div className={'question'}>
-      <h1 className={'question-title'}>{question.title}</h1>
       <div className={'question-topic'}>
         <ul>{renderTopicHierarchy()}</ul>
       </div>
+      <h1 className={'question-title'}>{question.title}</h1>
       <div className="question-body">
         <p>{question.body}</p>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // MUI
 import {
@@ -14,21 +15,24 @@ import {
 } from '@mui/material';
 
 // Data
-import { Topic } from '../data/Topics';
+import styles from '../assets/sass/_variables.scss';
 import API from '../data/FrontendAPI';
+import { Question } from '../utils/Types';
 
 type Props = {};
 
 const Ask = ({}: Props) => {
+  const navigate = useNavigate();
+
   const [topics, setTopics] = useState<string[]>([]);
-  const [selectedTopic, setSelectedTopic] = useState<string>();
+  const [topic, setTopic] = useState<string>();
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
   const [errorTitle, setErrorTitle] = useState<boolean>(false);
   const [errorBody, setErrorBody] = useState<boolean>(false);
 
   const handleTopicSelect = (e: SelectChangeEvent) => {
-    setSelectedTopic(e.target.value);
+    setTopic(e.target.value);
   };
 
   useEffect(() => {
@@ -41,7 +45,7 @@ const Ask = ({}: Props) => {
     return topics.map((topic: string) => {
       if (!topic.includes('.')) {
         return (
-          <ListSubheader>
+          <ListSubheader key={topic}>
             <Stack
               direction={'row'}
               alignItems={'center'}
@@ -57,7 +61,11 @@ const Ask = ({}: Props) => {
           .replace(/([A-Z])/g, ' $1') // SubTopic -> Sub Topic
           .split('.')
           .pop();
-        return <MenuItem value={topic}>{subTopic}</MenuItem>;
+        return (
+          <MenuItem key={topic} value={topic}>
+            {subTopic}
+          </MenuItem>
+        );
       }
       // return topic.subTopics.map((subTopic, i) => {
       //   if (i === 0) {
@@ -79,10 +87,18 @@ const Ask = ({}: Props) => {
     });
   };
 
-  const ask = () => {
+  const handleClick = () => {
     if (title) {
       if (body) {
-        // Handle ask
+        const _topic = topic ?? 'Miscellaneous';
+        const question: Question = {
+          title,
+          body,
+          topic: _topic,
+        };
+        API.Users.askQuestion(question).then((res: any) => {
+          navigate(`/q/${res.qid}`);
+        });
       } else {
         setErrorBody(true);
       }
@@ -137,20 +153,25 @@ const Ask = ({}: Props) => {
         </div>
 
         <h3>3. Choose a topic</h3>
-        <FormControl sx={{ m: 1, width: 200 }}>
+        <FormControl sx={{ m: 1, width: 250 }}>
           <InputLabel htmlFor="grouped-select">Topic</InputLabel>
 
           <Select
-            value={selectedTopic}
+            value={topic}
             onChange={handleTopicSelect}
             id="topic-select"
             label="Topic"
+            style={{ color: styles.color_primary_500 }}
           >
             {renderTopics()}
           </Select>
         </FormControl>
 
-        <Button variant={'contained'} style={{ width: 'auto' }} onClick={ask}>
+        <Button
+          variant={'contained'}
+          style={{ width: 'auto' }}
+          onClick={handleClick}
+        >
           Ask Question
         </Button>
       </Stack>

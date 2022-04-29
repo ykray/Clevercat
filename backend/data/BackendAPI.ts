@@ -3,10 +3,17 @@ import SpellChecker from 'spellchecker';
 import chalk from 'chalk';
 
 // Types
-import { Answer, BestAnswer, KarmaVote, SearchScope } from '../src/Types';
+import {
+  Answer,
+  BestAnswer,
+  KarmaVote,
+  Question,
+  SearchScope,
+} from '../src/Types';
 
 // Utils
 import log from '../utils/Logger';
+import pool from '../src/Pool';
 
 export default class API {
   static getTopics = () => {
@@ -74,7 +81,7 @@ export default class API {
           });
 
           Promise.all(q_promises).then(() => {
-            log.info(feedResults);
+            // log.info(feedResults);
             resolve(feedResults);
           });
         })
@@ -186,7 +193,7 @@ export default class API {
                   ', in scope: ' +
                   chalk.bold.blue(searchScope)
               );
-              log.info(searchResults);
+              // log.info(searchResults);
               resolve(searchResults);
             });
           })
@@ -213,7 +220,7 @@ export default class API {
       });
     };
 
-    static ping = (req: any, res: any) => {
+    static currentUser = (req: any, res: any) => {
       res.status(200).send(req.user);
     };
 
@@ -242,6 +249,33 @@ export default class API {
         .catch((error) => {
           log.fatal('Failed to update bio:', error);
           res.status(400).send(error);
+        });
+    };
+
+    static askQuestion = (req: any, res: any) => {
+      const question: Question = req.body;
+      const query = {
+        text: `--sql
+          INSERT INTO questions(uid, title, body, topic)
+          VALUES ($1, $2, $3, $4)
+          RETURNING qid
+          `,
+        values: [req.user, question.title, question.body, question.topic],
+      };
+
+      pool
+        .query(query)
+        .then((results) => {
+          // Question asked!
+          console.log(
+            chalk.blueBright(chalk.bold('NEW'), 'question:'),
+            question
+          );
+          res.status(200).send(results.rows[0]);
+        })
+        .catch((error) => {
+          log.fatal(error);
+          res.sendStatus(400);
         });
     };
 
@@ -279,7 +313,7 @@ export default class API {
           });
 
           Promise.all(q_promises).then(() => {
-            log.info(feedResults);
+            // log.info(feedResults);
             res.status(200).send(feedResults);
           });
         })
@@ -364,6 +398,12 @@ export default class API {
                   );
                   answers[bestAnswer_index].bestAnswer = true;
                 }
+                answers = answers.map((answer) => ({
+                  ...answer,
+                  q_uid: 's',
+                }));
+
+                log.debug(answers);
 
                 resolve({
                   question,
@@ -431,6 +471,29 @@ export default class API {
 
   // Answers API
   static Answers = class {
+    static best = (req: any, res: any) => {
+      const query = {
+        text: `--sql
+          INSERT INTO bestAnswer(qid, uid)
+          VALUES ($1, $2)
+          ON CONFLICT (qid, uid)
+            DO UPDATE SET uid = $2;
+        `,
+        values: [req.body.qid, req.body.uid],
+      };
+
+      return new Promise((resolve, reject) => {
+        pool
+          .query(query)
+          .then((results) => {
+            resolve(results);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    };
+
     static checkIfVoted = (
       answerID: any,
       voter_uid: string

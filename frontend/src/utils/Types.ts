@@ -1,17 +1,18 @@
 export type Question = {
-  qid: string;
-  uid: string;
-  username: string;
-  color: string;
-  status: string;
+  qid?: string;
+  uid?: string;
+  username?: string;
+  color?: string;
+  status?: string;
   title: string;
   body: string;
   topic: string;
-  q_timestamp: Date;
+  q_timestamp?: Date;
 };
 
 export type Answer = {
   qid: string;
+  q_uid: string;
   uid: string;
   username: string;
   color: string;

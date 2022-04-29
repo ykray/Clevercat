@@ -1,7 +1,13 @@
 import { ENDPOINT } from '../utils/Constants';
 
 // Utils
-import { KarmaVote, QuestionPost, SearchScope, User } from '../utils/Types';
+import {
+  KarmaVote,
+  Question,
+  QuestionPost,
+  SearchScope,
+  User,
+} from '../utils/Types';
 
 export default class API {
   static getTopics = () => {
@@ -78,7 +84,9 @@ export default class API {
 
     static currentUser = (): Promise<string> => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/ping`, { credentials: 'include' })
+        fetch(`${ENDPOINT}/current-user`, {
+          credentials: 'include',
+        })
           .then((res) => {
             return res.text();
           })
@@ -173,6 +181,29 @@ export default class API {
 
   // Users API
   static Users = class {
+    static askQuestion = (question: Question) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/ask`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(question),
+        })
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            resolve(JSON.parse(res));
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static updateBio = (newBio: string) => {
       const body = {
         newBio: newBio.trim(),

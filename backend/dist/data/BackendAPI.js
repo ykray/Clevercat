@@ -10,6 +10,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const Types_1 = require("../src/Types");
 // Utils
 const Logger_1 = __importDefault(require("../utils/Logger"));
+const Pool_2 = __importDefault(require("../src/Pool"));
 class API {
     static getTopics = () => {
         return new Promise((resolve, reject) => {
@@ -63,7 +64,7 @@ class API {
                     }));
                 });
                 Promise.all(q_promises).then(() => {
-                    Logger_1.default.info(feedResults);
+                    // log.info(feedResults);
                     resolve(feedResults);
                 });
             })
@@ -163,7 +164,7 @@ class API {
                             chalk_1.default.italic.greenBright(`'${searchQuery}'`) +
                             ', in scope: ' +
                             chalk_1.default.bold.blue(searchScope));
-                        Logger_1.default.info(searchResults);
+                        // log.info(searchResults);
                         resolve(searchResults);
                     });
                 })
@@ -188,7 +189,7 @@ class API {
                 res.sendStatus(200);
             });
         };
-        static ping = (req, res) => {
+        static currentUser = (req, res) => {
             res.status(200).send(req.user);
         };
         static updateBio = (req, res) => {
@@ -214,6 +215,28 @@ class API {
                 .catch((error) => {
                 Logger_1.default.fatal('Failed to update bio:', error);
                 res.status(400).send(error);
+            });
+        };
+        static askQuestion = (req, res) => {
+            const question = req.body;
+            const query = {
+                text: `--sql
+          INSERT INTO questions(uid, title, body, topic)
+          VALUES ($1, $2, $3, $4)
+          RETURNING qid
+          `,
+                values: [req.user, question.title, question.body, question.topic],
+            };
+            Pool_2.default
+                .query(query)
+                .then((results) => {
+                // Question asked!
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('NEW'), 'question'), question);
+                res.status(200).send(results.rows[0]);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal(error);
+                res.sendStatus(400);
             });
         };
         static getUserQuestions = (req, res) => {
@@ -244,7 +267,7 @@ class API {
                     }));
                 });
                 Promise.all(q_promises).then(() => {
-                    Logger_1.default.info(feedResults);
+                    // log.info(feedResults);
                     res.status(200).send(feedResults);
                 });
             })
@@ -321,6 +344,11 @@ class API {
                                 const bestAnswer_index = answers.findIndex((x) => x.qid === bestAnswer.qid);
                                 answers[bestAnswer_index].bestAnswer = true;
                             }
+                            answers = answers.map((answer) => ({
+                                ...answer,
+                                q_uid: 's',
+                            }));
+                            Logger_1.default.debug(answers);
                             resolve({
                                 question,
                                 answers,
@@ -382,6 +410,27 @@ class API {
     };
     // Answers API
     static Answers = class {
+        static best = (req, res) => {
+            const query = {
+                text: `--sql
+          INSERT INTO bestAnswer(qid, uid)
+          VALUES ($1, $2)
+          ON CONFLICT (qid, uid)
+            DO UPDATE SET uid = $2;
+        `,
+                values: [req.body.qid, req.body.uid],
+            };
+            return new Promise((resolve, reject) => {
+                Pool_2.default
+                    .query(query)
+                    .then((results) => {
+                    resolve(results);
+                })
+                    .catch((error) => {
+                    reject(error);
+                });
+            });
+        };
         static checkIfVoted = (answerID, voter_uid) => {
             const _answerID = JSON.parse(answerID);
             const query = {

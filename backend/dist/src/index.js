@@ -91,15 +91,13 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.use(express_1.default.json());
 // ROUTES
-// GET
 app.get('/', (req, res) => {
     res.status(200).send('hi');
 });
 app.get('/logout', BackendAPI_1.default.Users.logout);
-app.get('/ping', requiresLogin, BackendAPI_1.default.Users.ping);
-// POST
+app.get('/current-user', requiresLogin, BackendAPI_1.default.Users.currentUser);
 app.post('/login', passport_1.default.authenticate('local'), BackendAPI_1.default.Users.login);
-// Users GET
+// Users Routes
 app.get('/usernames/:username', (req, res) => {
     BackendAPI_1.default.Users.getUserFromUsername(req.params.username)
         .then((user) => {
@@ -119,9 +117,9 @@ app.get('/u/:uid', (req, res) => {
     });
 });
 app.get('/u/:uid/questions', BackendAPI_1.default.Users.getUserQuestions);
-// Users POST
 app.post('/updateBio', BackendAPI_1.default.Users.updateBio);
-// Search GET
+app.post('/ask', BackendAPI_1.default.Users.askQuestion);
+// Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {
     const scope = JSON.parse(req.params.searchScope);
     BackendAPI_1.default.Search.search(req.params.searchQuery, scope)
@@ -132,7 +130,7 @@ app.get('/search/:searchScope/:searchQuery', (req, res) => {
         res.status(500).send(error);
     });
 });
-// Questions GET
+// Questions Routes
 app.get('/q/:qid', (req, res) => {
     BackendAPI_1.default.Questions.getQuestionPost(req.params.qid)
         .then((questionPost) => {
@@ -142,7 +140,7 @@ app.get('/q/:qid', (req, res) => {
         res.status(500).send(error);
     });
 });
-// Answers GET
+// Answers Routes
 app.get('/votes/:answerID/:voter_uid', (req, res) => {
     BackendAPI_1.default.Answers.checkIfVoted(req.params.answerID, req.params.voter_uid)
         .then((response) => {
@@ -161,7 +159,6 @@ app.get('/karma/:answerID', (req, res) => {
         res.status(500).send(error);
     });
 });
-// Answers POST
 app.post('/vote', (req, res) => {
     BackendAPI_1.default.Answers.vote(req.body)
         .then((response) => {
@@ -171,7 +168,7 @@ app.post('/vote', (req, res) => {
         res.status(500).send(error);
     });
 });
-// Other GET
+// Other Routes
 app.get('/topics', (req, res) => {
     BackendAPI_1.default.getTopics()
         .then((topics) => {
