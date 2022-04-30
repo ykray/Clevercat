@@ -94,7 +94,7 @@ app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.status(200).send('hi');
 });
-app.get('/logout', BackendAPI_1.default.Users.logout);
+app.get('/logout', requiresLogin, BackendAPI_1.default.Users.logout);
 app.get('/current-user', requiresLogin, BackendAPI_1.default.Users.currentUser);
 app.post('/login', passport_1.default.authenticate('local'), BackendAPI_1.default.Users.login);
 // Users Routes

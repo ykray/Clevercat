@@ -1,14 +1,18 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import styles from '../assets/sass/_variables.scss';
 
 // MUI
-import { Button, Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 
 // Components
 import SearchBar from './SearchBar';
 import AuthorComponent from './AuthorComponent';
 import { UserContext } from '../App';
-import { Logout, PersonAdd } from '@mui/icons-material';
+import { LogoutSharp } from '@mui/icons-material';
+
+// Data
+import API from '../data/FrontendAPI';
 
 export default function Header() {
   const location = useLocation();
@@ -32,8 +36,25 @@ export default function Header() {
             <SearchBar />
             {
               currentUser ? (
-                <Stack alignItems={'flex-end'} spacing={2}>
+                <Stack alignItems={'flex-end'} direction={'row'} spacing={0}>
                   <AuthorComponent uid={currentUser} />
+                  <Tooltip title={'Logout'} placement={'top'} arrow>
+                    <IconButton
+                      onClick={() => {
+                        API.Auth.logout().then((res) => {
+                          navigate('/');
+                        });
+                      }}
+                    >
+                      <LogoutSharp
+                        style={{
+                          color: styles.color_muted_400,
+                          width: 26,
+                          height: 26,
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
 
                   {/* {location.pathname === '/ask' ? null : (
                   <div className={'hide-on-mobile'}>

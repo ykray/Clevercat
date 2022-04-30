@@ -261,9 +261,17 @@ export default class API {
     };
 
     static logout = (req: any, res: any, next: any) => {
-      req.session.destroy((err: any) => {
-        if (err) return next(err);
+      req.session.destroy((error: any) => {
+        if (error) {
+          log.fatal(error);
+          res.status(400).send(error);
+        }
+        console.log(
+          chalk.bold.blueBright('Logged out:'),
+          chalk.greenBright(req.user)
+        );
         req.logout();
+        // res.clearCookie('connect.sid');
         res.sendStatus(200);
       });
     };

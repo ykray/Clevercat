@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 type Props = {
   noClick?: boolean;
@@ -18,9 +17,11 @@ export default function TopicHierarchy({ noClick = false, topicPath }: Props) {
     return topicHierarchy.map((topic) => {
       return (
         <li style={{ pointerEvents: noClick ? 'none' : 'auto' }} key={topic}>
-          <a onClick={() => (window.location.href = `/topics/${path(topic)}`)}>
+          <span
+            onClick={() => (window.location.href = `/topics/${path(topic)}`)}
+          >
             {topic.replace(/([A-Z])/g, ' $1')}
-          </a>
+          </span>
         </li>
       );
     });

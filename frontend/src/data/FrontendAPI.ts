@@ -70,6 +70,19 @@ export default class API {
 
   // Auth API
   static Auth = class {
+    static logout = () => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/logout`)
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static login = (username: string, password: string) => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/login`, {
@@ -86,14 +99,6 @@ export default class API {
           .then((res) => {
             resolve(JSON.parse(res));
           })
-          .catch((error) => reject(error));
-      });
-    };
-
-    static logout = () => {
-      return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/logout`)
-          .then((res) => {})
           .catch((error) => reject(error));
       });
     };

@@ -13,7 +13,6 @@ export default function TopicFeed() {
   const [posts, setPosts] = useState<QuestionPost[]>([]);
 
   useEffect(() => {
-    console.log(topicPath);
     API.getTopicFeed(topicPath).then((res) => {
       setPosts(res);
     });

@@ -145,7 +145,6 @@ a {
 
 .question-topic {
   display: inline-block;
-  color: $color-primary-500;
   border-radius: $radius;
   margin-bottom: 17px;
 
@@ -167,8 +166,9 @@ a {
     line-height: 1rem;
     font-family: 'Gilroy-Semibold';
     font-size: 1rem;
+    @include transition-exit;
 
-    a {
+    span {
       color: $color-muted-300;
     }
 
@@ -176,6 +176,7 @@ a {
       &::after {
         background-color: none;
       }
+      @include transition-enter;
 
       a {
         color: $color-muted-500;
@@ -185,7 +186,7 @@ a {
     }
 
     &:last-child {
-      a {
+      span {
         color: $color-primary-500;
       }
 
@@ -452,26 +453,32 @@ a {
   color: $color-primary-500;
 }
 
-.search-result {
+.feed-result {
   &:hover {
     h2 {
       color: $color-primary-500;
       @include transition-enter();
     }
-    background-color: $color-primary-300;
+    background-color: white;
     border-color: $color-primary-500;
     @include transition-enter();
   }
 
-  p {
+  .feed-result-body {
     display: -webkit-box;
     max-width: 100%;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.625;
     color: $color-muted-500;
+  }
+
+  .feed-more-answers {
+    font-family: 'GilroySemibold';
+    color: $color-primary-500;
+    font-size: 0.9rem;
   }
 
   h2 {
@@ -485,7 +492,8 @@ a {
   padding-right: 20px;
   padding-top: 17px;
   padding-bottom: 17px;
-  background-color: $color-surface-400;
+  border: 1px solid $color-surface-500;
+  background-color: white;
   border-radius: $radius;
   @include transition-exit();
 }

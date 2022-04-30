@@ -223,10 +223,14 @@ class API {
             res.json(user);
         };
         static logout = (req, res, next) => {
-            req.session.destroy((err) => {
-                if (err)
-                    return next(err);
+            req.session.destroy((error) => {
+                if (error) {
+                    Logger_1.default.fatal(error);
+                    res.status(400).send(error);
+                }
+                console.log(chalk_1.default.bold.blueBright('Logged out:'), chalk_1.default.greenBright(req.user));
                 req.logout();
+                // res.clearCookie('connect.sid');
                 res.sendStatus(200);
             });
         };

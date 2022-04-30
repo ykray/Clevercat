@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
+// Assets
+import styles from '../assets/sass/_variables.scss';
+
 // MUI
 import { Fade, Grow, Stack } from '@mui/material';
 
 // Data
-import { Question, QuestionPost } from '../utils/Types';
+import { QuestionPost } from '../utils/Types';
 import NoResults from './NoResults';
 import TopicHierarchy from './TopicHierarchy';
 
@@ -22,11 +25,11 @@ export const Feed = ({
 }: Props) => {
   const postsNum = posts?.length || 0;
 
-  const [grow, setGrow] = useState(false);
+  const [growIn, setGrowIn] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
 
   useEffect(() => {
-    setGrow(true);
+    setGrowIn(true);
     setFadeIn(true);
   }, [posts]);
 
@@ -38,10 +41,10 @@ export const Feed = ({
 
           // TODO: - Prioritize best answers
           return (
-            <Grow in={grow} timeout={500} key={post.question.qid}>
+            <Grow in={growIn} timeout={500} key={post.question.qid}>
               <Fade in={fadeIn} timeout={800}>
                 <Link to={`/q/${post.question.qid}`}>
-                  <div className={'search-result'}>
+                  <div className={'feed-result'}>
                     {!hideTopic ? (
                       <TopicHierarchy noClick topicPath={post.question.topic} />
                     ) : null}
@@ -58,7 +61,7 @@ export const Feed = ({
                           )
                         : post.question.title}
                     </h2>
-                    <p>
+                    <div>
                       {answers.length > 0 ? (
                         searchQuery ? (
                           reactStringReplace(
@@ -69,14 +72,27 @@ export const Feed = ({
                             )
                           )
                         ) : (
-                          answers[0].body
+                          <Stack
+                            alignItems={'center'}
+                            justifyContent={'center'}
+                            spacing={2}
+                          >
+                            <p className={'feed-result-body'}>
+                              {answers[0].body}
+                            </p>
+
+                            {answers.length > 1 ? (
+                              <span className={'feed-more-answers'}>
+                                + {answers.length - 1} more answer
+                                {answers.length - 1 === 1 ? '' : 's'}
+                              </span>
+                            ) : null}
+                          </Stack>
                         )
                       ) : (
-                        <span style={{ fontStyle: 'italic' }}>
-                          No answers yet
-                        </span>
+                        <p style={{ fontStyle: 'italic' }}>No answers yet</p>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </Link>
               </Fade>

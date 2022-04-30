@@ -19,6 +19,7 @@ import Ask from './components/Ask';
 import API from './data/FrontendAPI';
 import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
+import ScrollToTop from './components/ScrollToTop';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -28,6 +29,7 @@ function App() {
 
   const getCurrentUser = async () => {
     const curr = await API.Auth.currentUser();
+    console.log(curr);
     setCurrentUser(curr);
   };
 
@@ -38,6 +40,7 @@ function App() {
   return (
     <UserContext.Provider value={currentUser}>
       <ThemeProvider theme={Theme}>
+        <ScrollToTop />
         <div className={'wrapper'}>
           <Header />
 

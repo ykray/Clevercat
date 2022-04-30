@@ -104,7 +104,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).send('hi');
 });
-app.get('/logout', API.Users.logout);
+app.get('/logout', requiresLogin, API.Users.logout);
 app.get('/current-user', requiresLogin, API.Users.currentUser);
 app.post('/login', passport.authenticate('local'), API.Users.login);
 

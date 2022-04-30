@@ -13,11 +13,9 @@ export default function FloatingAsk() {
   return (
     <div className={'floating-ask'} onClick={() => navigate('/ask')}>
       <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
-        <p>Ask a new question!</p>
+        <p>Ask a question!</p>
         <IconButton>
-          <SendRounded
-           
-          />
+          <SendRounded />
         </IconButton>
       </Stack>
     </div>
