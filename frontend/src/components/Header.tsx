@@ -51,10 +51,10 @@ export default function Header() {
 
       const renderTopics = () => {
         return (
-          <Stack direction={'row'} spacing={3}>
+          <Stack direction={'row'} justifyContent={'space-between'}>
             {Object.keys(categories).map((category: any) => {
               return (
-                <Stack direction={'column'} spacing={'10px'}>
+                <Stack direction={'column'} spacing={'6px'}>
                   {categories[category].map((x: Topic) => {
                     return (
                       <p

@@ -12,6 +12,7 @@ $color-green-500: #0aba76;
 $color-text-header: #162231;
 $color-text-body: #2c3641;
 
+$color-muted-100: #d9e1ec;
 $color-muted-200: #96adce;
 $color-muted-300: #859bb9;
 $color-muted-400: #71849f;
@@ -65,6 +66,7 @@ $transition-exit: all 0.08s;
   color_text-header: $color-text-header;
   color_text-body: $color-text-body;
 
+  color_muted_100: $color-muted-100;
   color_muted_200: $color-muted-200;
   color_muted_300: $color-muted-300;
   color_muted_400: $color-muted-400;
