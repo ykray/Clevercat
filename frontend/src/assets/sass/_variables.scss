@@ -9,13 +9,15 @@ $color-green-300: #bffbd2;
 $color-green-400: #8af1a4;
 $color-green-500: #0aba76;
 
-$color-text: #162231;
+$color-text-header: #162231;
+$color-text-body: #2c3641;
 
 $color-muted-200: #96adce;
 $color-muted-300: #859bb9;
 $color-muted-400: #71849f;
 $color-muted-500: #425368;
 
+$color-surface-300: #f5f8fc;
 $color-surface-400: #f1f4f9;
 $color-surface-500: #d2d7df;
 $color-surface-600: #b7bec8;
@@ -55,11 +57,13 @@ $transition-exit: all 0.1s;
   color_green_400: $color-green-400;
   color_green_500: $color-green-500;
 
+  color_surface_300: $color-surface-300;
   color_surface_400: $color-surface-400;
   color_surface_500: $color-surface-500;
   color_surface_600: $color-surface-600;
 
-  color_text: $color-text;
+  color_text-header: $color-text-header;
+  color_text-body: $color-text-body;
 
   color_muted_200: $color-muted-200;
   color_muted_300: $color-muted-300;

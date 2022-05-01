@@ -80,6 +80,20 @@ export default function Profile() {
     ) : null;
   };
 
+  const renderStatus = () => {
+    if (user) {
+      const statusClassName = user.status.split(' ').reverse().pop();
+
+      return (
+        <div className={`profile-status ${statusClassName}`}>
+          <p>{user.status}</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return user ? (
     <div className={'profile-container'}>
       <Stack spacing={10}>
@@ -89,9 +103,7 @@ export default function Profile() {
             <Stack spacing={3}>
               <Stack direction={'row'} spacing={'12px'}>
                 <h2>{user.username}</h2>
-                <div className={'profile-status'}>
-                  <p>{user.status}</p>
-                </div>
+                {renderStatus()}
               </Stack>
               {currentUser === user.uid ? (
                 <TextField

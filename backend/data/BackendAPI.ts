@@ -277,7 +277,12 @@ export default class API {
     };
 
     static currentUser = (req: any, res: any) => {
-      res.status(200).send(req.user);
+      log.debug(req.user);
+      if (req.user) {
+        res.status(200).send(req.user);
+      } else {
+        res.sendStatus(400);
+      }
     };
 
     static updateBio = (req: any, res: any) => {

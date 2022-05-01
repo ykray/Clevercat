@@ -78,6 +78,20 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
     return 'author-answerer';
   };
 
+  const renderAuthorStatus = () => {
+    if (author) {
+      const statusClassName = author.user.status.split(' ').reverse().pop();
+
+      return (
+        <div className={`author-status ${statusClassName}`}>
+          <p>{author.user.status}</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
+
   return author ? (
     <div className={`author ${getClassName()}`}>
       <Stack justifyContent={'flex-end'} spacing={'5px'}>
@@ -97,9 +111,7 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
             <div className={'author-username'}>
               <p>{author.user.username}</p>
             </div>
-            <div className={'author-status'}>
-              <p>{author.user.status}</p>
-            </div>
+            {renderAuthorStatus()}
           </Stack>
         </Stack>
       </Stack>

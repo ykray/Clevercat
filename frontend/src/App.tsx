@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
+// MUI
 import { ThemeProvider } from '@mui/material';
 
 // Assets
@@ -10,7 +11,6 @@ import Theme from './assets/Theme';
 // Components
 import Login from './components/Login';
 import Profile from './components/Profile';
-
 import Header from './components/Header';
 import SearchComponent from './components/SearchComponent';
 import PostComponent from './components/PostComponent';

@@ -235,7 +235,13 @@ class API {
             });
         };
         static currentUser = (req, res) => {
-            res.status(200).send(req.user);
+            Logger_1.default.debug(req.user);
+            if (req.user) {
+                res.status(200).send(req.user);
+            }
+            else {
+                res.sendStatus(400);
+            }
         };
         static updateBio = (req, res) => {
             const newBio = req.body.newBio;

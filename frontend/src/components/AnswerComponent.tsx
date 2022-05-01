@@ -28,7 +28,7 @@ const AnswerComponent = ({ answer }: Props) => {
     <div
       className="answer-container"
       style={{
-        // backgroundColor: answer.bestAnswer ? styles.color_primary_300 : '',
+        backgroundColor: answer.bestAnswer ? styles.color_primary_300 : '',
         borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
       }}
     >

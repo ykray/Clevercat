@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Button,
   FormControl,
+  FormHelperText,
   InputLabel,
   ListSubheader,
   MenuItem,
@@ -33,6 +34,7 @@ const Ask = ({}: Props) => {
   const [body, setBody] = useState<string>('');
   const [errorTitle, setErrorTitle] = useState<boolean>(false);
   const [errorBody, setErrorBody] = useState<boolean>(false);
+  const [errorTopic, setErrorTopic] = useState<boolean>(false);
 
   const handleTopicSelect = (e: SelectChangeEvent) => {
     setTopic(e.target.value);
@@ -45,67 +47,56 @@ const Ask = ({}: Props) => {
   }, []);
 
   useEffect(() => {
-    console.log(topic);
+    setErrorTopic(false);
   }, [topic]);
 
   const renderTopics = () => {
-    return topics.map((topic: string) => {
-      if (!topic.includes('.')) {
+    return topics.map((topicPath: string) => {
+      if (!topicPath.includes('.')) {
         return (
-          <ListSubheader key={topic}>
-            <Stack
-              direction={'row'}
-              alignItems={'center'}
-              justifyContent={'flex-start'}
-            >
-              {/* {topic.icon} */}
-              {topic}
-            </Stack>
-          </ListSubheader>
+          <MenuItem
+            key={topicPath}
+            value={topicPath}
+            style={{
+              paddingLeft: 10,
+              color:
+                topicPath === topic
+                  ? styles.color_primary_500
+                  : styles.color_muted_300,
+            }}
+          >
+            {topicPath}
+          </MenuItem>
         );
       } else {
-        const subTopic = topic
-          .replace(/([A-Z])/g, ' $1') // SubTopic -> Sub Topic
+        const subTopic = topicPath
+          .replace(/([A-Z])/g, ' $1') // "SubTopic" -> "Sub Topic"
           .split('.')
           .pop();
         return (
-          <MenuItem key={topic} value={topic}>
+          <MenuItem key={topicPath} value={topicPath}>
             {subTopic}
           </MenuItem>
         );
       }
-      // return topic.subTopics.map((subTopic, i) => {
-      //   if (i === 0) {
-      //     return (
-      //       <ListSubheader>
-      //         <Stack
-      //           direction={'row'}
-      //           alignItems={'center'}
-      //           justifyContent={'flex-start'}
-      //         >
-      //           {topic.icon}
-      //           {topic.category}
-      //         </Stack>
-      //       </ListSubheader>
-      //     );
-      //   }
-      //   return <MenuItem value={subTopic}>{subTopic}</MenuItem>;
-      // });
     });
   };
 
   const handleClick = () => {
     if (title) {
       if (body) {
-        const _topic = topic ?? 'Miscellaneous';
-        const question: Question = {
-          title,
-          body,
-          topic: _topic,
-        };
-        API.Users.askQuestion(question).then((res: any) => {
-          navigate(`/q/${res.qid}`);
-        });
+        if (topic) {
+          const question: Question = {
+            title,
+            body,
+            topic,
+          };
+          API.Users.askQuestion(question).then((res: any) => {
+            navigate(`/q/${res.qid}`);
+          });
+        } else {
+          setErrorTopic(true);
+        }
       } else {
         setErrorBody(true);
       }
@@ -160,7 +151,8 @@ const Ask = ({}: Props) => {
         </div>
 
         <h3>3. Choose a topic</h3>
-        <FormControl sx={{ m: 1, width: 250 }}>
+        <p>Choose a subtopic that is a best fit for your question.</p>
+        <FormControl sx={{ m: 1 }} error={errorTopic}>
           <InputLabel htmlFor="grouped-select">Topic</InputLabel>
 
           <Select
@@ -168,7 +160,7 @@ const Ask = ({}: Props) => {
             onChange={handleTopicSelect}
             id="topic-select"
             label="Topic"
-            style={{ color: styles.color_primary_500 }}
+            style={{ color: styles.color_primary_500, width: 250 }}
           >
             {renderTopics()}
           </Select>
