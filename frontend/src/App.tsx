@@ -20,6 +20,7 @@ import API from './data/FrontendAPI';
 import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
 import ScrollToTop from './components/ScrollToTop';
+import Footer from './components/Footer';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -55,6 +56,7 @@ function App() {
             <Route index element={<HotQuestions />} />
           </Routes>
 
+          <Footer />
           {location.pathname === '/ask' ? null : <FloatingAsk />}
         </div>
       </ThemeProvider>

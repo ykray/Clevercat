@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../assets/sass/_variables.scss';
 
 // MUI
-import { IconButton, Stack } from '@mui/material';
+import { IconButton, Stack, Tooltip } from '@mui/material';
 import { SendRounded } from '@mui/icons-material';
 
 export default function FloatingAsk() {
@@ -13,10 +13,11 @@ export default function FloatingAsk() {
   return (
     <div className={'floating-ask'} onClick={() => navigate('/ask')}>
       <Stack direction={'row'} alignItems={'center'} spacing={'20px'}>
-        <p>Ask a question!</p>
-        <IconButton>
-          <SendRounded />
-        </IconButton>
+        <Tooltip title={'Ask a question!'} placement={'left'} arrow>
+          <IconButton>
+            <SendRounded />
+          </IconButton>
+        </Tooltip>
       </Stack>
     </div>
   );

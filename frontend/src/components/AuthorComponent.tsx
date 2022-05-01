@@ -80,12 +80,13 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
 
   const renderAuthorStatus = () => {
     if (author) {
+      // IDEA: - Maybe differentiate statuses by color
       const statusClassName = author.user.status.split(' ').reverse().pop();
 
       return (
-        <div className={`author-status ${statusClassName}`}>
-          <p>{author.user.status}</p>
-        </div>
+        <p className={`author-status ${statusClassName}`}>
+          {author.user.status}
+        </p>
       );
     } else {
       return null;
@@ -96,19 +97,25 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
     <div className={`author ${getClassName()}`}>
       <Stack justifyContent={'flex-end'} spacing={'5px'}>
         {renderTimestamp()}
+
         <Stack
           direction={'row'}
           justifyContent={'flex-start'}
-          alignItems={'flex-start'}
+          alignItems={'center'}
           spacing={'10px'}
         >
           {renderAvatar()}
           <Stack
             justifyContent={'center'}
             alignItems={'flex-start'}
-            spacing={'4px'}
+            spacing={'3px'}
           >
-            <div className={'author-username'}>
+            <div
+              className={'author-username'}
+              onClick={() => {
+                window.location.href = `/@${author.user.username}`;
+              }}
+            >
               <p>{author.user.username}</p>
             </div>
             {renderAuthorStatus()}

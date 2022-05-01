@@ -38,7 +38,7 @@ export default function HotQuestions() {
       >
         <HotIcon
           style={{
-            color: styles.color_secondary_500,
+            color: styles.color_primary_500,
             width: 23,
             height: 23,
             marginTop: -4,
