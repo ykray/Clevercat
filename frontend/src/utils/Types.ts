@@ -1,3 +1,8 @@
+export type Topic = {
+  category: string;
+  subtopic: string | null;
+};
+
 export type Question = {
   qid?: string;
   uid?: string;

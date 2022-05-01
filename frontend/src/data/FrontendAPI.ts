@@ -6,6 +6,7 @@ import {
   Question,
   QuestionPost,
   SearchScope,
+  Topic,
   User,
 } from '../utils/Types';
 
@@ -27,14 +28,39 @@ export default class API {
     });
   };
 
-  static getAllTopics = () => {
+  static getAllTopics = (): Promise<Topic[]> => {
     return new Promise((resolve, reject) => {
       fetch(`${ENDPOINT}/all-topics`)
         .then((res) => {
           return res.text();
         })
         .then((res) => {
-          const topics = JSON.parse(res);
+          const resJson = JSON.parse(res);
+          var topics: Topic[] = [];
+
+          resJson.forEach((obj: any) => {
+            const topicPath = obj['topic_path'];
+
+            if (!topicPath.includes('.')) {
+              topics.push({
+                category: topicPath,
+                subtopic: null,
+              });
+            } else {
+              const category = topicPath.split('.').reverse().pop();
+              const subtopic = topicPath
+                .replace(/([A-Z])/g, ' $1')
+                .split('.')
+                .pop()
+                .trim();
+
+              topics.push({
+                category,
+                subtopic: subtopic,
+              });
+            }
+          });
+          // console.log(resJson, topics);
           resolve(topics);
         })
         .catch((error) => reject(error));

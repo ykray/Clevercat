@@ -56,9 +56,9 @@ function App() {
             <Route index element={<HotQuestions />} />
           </Routes>
 
-          <Footer />
           {location.pathname === '/ask' ? null : <FloatingAsk />}
         </div>
+        <Footer />
       </ThemeProvider>
     </UserContext.Provider>
   );

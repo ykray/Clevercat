@@ -5,9 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Button,
   FormControl,
-  FormHelperText,
   InputLabel,
-  ListSubheader,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -18,7 +16,7 @@ import {
 // Data
 import styles from '../assets/sass/_variables.scss';
 import API from '../data/FrontendAPI';
-import { Question } from '../utils/Types';
+import { Question, Topic } from '../utils/Types';
 
 type Props = {};
 
@@ -26,8 +24,8 @@ const Ask = ({}: Props) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [topics, setTopics] = useState<string[]>([]);
-  const [topic, setTopic] = useState<string | undefined>(
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [selectedTopic, setSelectedTopic] = useState<string | undefined>(
     searchParams.get('topic') ?? undefined
   );
   const [title, setTitle] = useState<string>('');
@@ -37,45 +35,41 @@ const Ask = ({}: Props) => {
   const [errorTopic, setErrorTopic] = useState<boolean>(false);
 
   const handleTopicSelect = (e: SelectChangeEvent) => {
-    setTopic(e.target.value);
+    setSelectedTopic(e.target.value);
   };
 
   useEffect(() => {
-    API.getAllTopics().then((topics: any) => {
-      setTopics(topics.map((t: any) => t.topic_path));
-    });
+    API.getAllTopics().then((topics) => setTopics(topics));
   }, []);
 
   useEffect(() => {
     setErrorTopic(false);
-  }, [topic]);
+  }, [selectedTopic]);
 
   const renderTopics = () => {
-    return topics.map((topicPath: string) => {
-      if (!topicPath.includes('.')) {
+    return topics.map((topic) => {
+      // is a subtopic
+      if (topic.subtopic) {
+        return (
+          <MenuItem key={topic.subtopic} value={topic.subtopic}>
+            {topic.subtopic}
+          </MenuItem>
+        );
+      } else {
+        // is a category
         return (
           <MenuItem
-            key={topicPath}
-            value={topicPath}
+            key={topic.category}
+            value={topic.category}
             style={{
               paddingLeft: 10,
               color:
-                topicPath === topic
+                topic.category === selectedTopic
                   ? styles.color_primary_500
                   : styles.color_muted_300,
             }}
           >
-            {topicPath}
-          </MenuItem>
-        );
-      } else {
-        const subTopic = topicPath
-          .replace(/([A-Z])/g, ' $1') // "SubTopic" -> "Sub Topic"
-          .split('.')
-          .pop();
-        return (
-          <MenuItem key={topicPath} value={topicPath}>
-            {subTopic}
+            {topic.category}
           </MenuItem>
         );
       }
@@ -85,11 +79,11 @@ const Ask = ({}: Props) => {
   const handleClick = () => {
     if (title) {
       if (body) {
-        if (topic) {
+        if (selectedTopic) {
           const question: Question = {
             title,
             body,
-            topic,
+            topic: selectedTopic,
           };
           API.Users.askQuestion(question).then((res: any) => {
             navigate(`/q/${res.qid}`);
@@ -156,7 +150,7 @@ const Ask = ({}: Props) => {
           <InputLabel htmlFor="grouped-select">Topic</InputLabel>
 
           <Select
-            value={topic}
+            value={selectedTopic}
             onChange={handleTopicSelect}
             id="topic-select"
             label="Topic"
