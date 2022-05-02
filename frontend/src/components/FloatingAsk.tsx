@@ -1,8 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 
-// Assets
-import styles from '../assets/sass/_variables.scss';
-
 // MUI
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import { SendRounded } from '@mui/icons-material';

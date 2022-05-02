@@ -11,9 +11,10 @@ import API from '../data/FrontendAPI';
 
 type Props = {
   show?: boolean;
+  topAnchor?: number;
 };
 
-export default function Menu({ show = false }: Props) {
+export default function Menu({ show = false, topAnchor = 0 }: Props) {
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Menu({ show = false }: Props) {
 
     const renderTopics = () => {
       return (
-        <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack direction={'column'} justifyContent={'flex-start'} spacing={1}>
           {Object.keys(categories).map((category: any) => {
             return (
               <Stack direction={'column'} spacing={'6px'} key={category}>
@@ -57,8 +58,15 @@ export default function Menu({ show = false }: Props) {
     };
 
     return (
-      <Slide in={show}>
-        <div className={'menu'}>{renderTopics()}</div>
+      <Slide in={show} direction={'right'}>
+        <div
+          className={'menu'}
+          style={{
+            paddingTop: topAnchor,
+          }}
+        >
+          {renderTopics()}
+        </div>
       </Slide>
     );
   } else {

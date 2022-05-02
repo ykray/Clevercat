@@ -2,36 +2,39 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
 
+// Assets
+import KittyImage from '../assets/images/kitty.png';
+
 // MUI
 import { Button, Stack, TextField } from '@mui/material';
 
 // Data
 import API from '../data/FrontendAPI';
 
-export default function Login() {
+export default function Signup() {
   const navigate = useNavigate();
 
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
-  const [errorLogin, setErrorLogin] = useState(false);
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>('');
+  const [errorSignup, setErrorSignup] = useState(false);
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     const passwordHash = SHA256(passwordInput).toString();
-    API.Auth.login(usernameInput, passwordHash)
-      .then((res: any) => {
-        navigate(`/@${res.username}`);
-      })
-      .catch((error) => {
-        setErrorLogin(true);
-      });
   };
 
   return (
     <div className={'login'}>
-      <h1>Welcome back!</h1>
+      <h1>Sign up</h1>
       <Stack spacing={2} maxWidth={500}>
-        <p>Enter your username and password to login.</p>
-
+        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+          <p>Create your account, and join our community of curious cats</p>
+          <img
+            src={KittyImage}
+            alt={'kitty'}
+            style={{ width: 19, height: 19 }}
+          />
+        </Stack>
         <TextField
           value={usernameInput}
           label={'Username'}
@@ -47,19 +50,28 @@ export default function Login() {
             setPasswordInput(e.target.value);
           }}
         />
-        {errorLogin ? (
-          <p style={{ color: 'red' }}>Username or password incorrect.</p>
+        <TextField
+          type="password"
+          value={confirmPasswordInput}
+          label={'Confirm password'}
+          onChange={(e: any) => {
+            setConfirmPasswordInput(e.target.value);
+          }}
+        />
+        {errorSignup ? (
+          <p style={{ color: 'red' }}>Failed to create an account.</p>
         ) : null}
         <Button
           variant={'contained'}
           style={{ width: 'auto', maxWidth: 130 }}
-          onClick={handleLogin}
+          onClick={handleSignup}
         >
-          Login
+          Signup
         </Button>
       </Stack>
+
       <p style={{ marginTop: 50 }}>
-        Don't have an account? <Link to={'/signup'}>Sign Up</Link>
+        Already have an account? <Link to={'/login'}>Login</Link>
       </p>
     </div>
   );

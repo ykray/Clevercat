@@ -101,6 +101,7 @@ export default function Profile() {
               </Stack>
               {currentUser === user.uid ? (
                 <TextField
+                  multiline
                   value={bioInput}
                   label={'Bio'}
                   onChange={(e: any) => {

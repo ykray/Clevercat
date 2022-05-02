@@ -104,7 +104,10 @@ export default class API {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({
+            username: username.trim().replace('@', ''),
+            password: password.trim(),
+          }),
         })
           .then((res) => {
             return res.text();
