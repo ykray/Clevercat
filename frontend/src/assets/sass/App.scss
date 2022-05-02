@@ -136,14 +136,14 @@ a {
 }
 
 .logo {
-  $size: 2rem;
+  $size: 1.9rem;
   cursor: pointer;
-  font-family: 'GilroySemibold';
+  font-family: 'Gilroy-Semibold';
   letter-spacing: -0.7px;
   color: $color-text-header;
 
   img {
-    width: $size;
+    width: $size * 0.85;
   }
   h1 {
     font-size: $size;
@@ -151,7 +151,7 @@ a {
 
   .highlight {
     color: $color-text-header;
-    font-family: 'Gilroy-Bold';
+    font-family: 'Gilroy-Semibold';
   }
 }
 
