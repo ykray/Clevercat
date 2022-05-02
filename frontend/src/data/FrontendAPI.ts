@@ -96,19 +96,6 @@ export default class API {
 
   // Auth API
   static Auth = class {
-    static logout = () => {
-      return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/logout`)
-          .then((res) => {
-            resolve(res);
-          })
-          .catch((error) => {
-            console.log(error);
-            reject(error);
-          });
-      });
-    };
-
     static login = (username: string, password: string) => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/login`, {
@@ -129,6 +116,29 @@ export default class API {
       });
     };
 
+    static logout = () => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/logout`, {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static currentUser = (): Promise<string> => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/current-user`, {
@@ -138,6 +148,7 @@ export default class API {
             return res.text();
           })
           .then((res) => {
+            console.log('currentUser:', res);
             resolve(res);
           })
           .catch((error) => {

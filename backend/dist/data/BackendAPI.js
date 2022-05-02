@@ -3,14 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Pool_1 = __importDefault(require("../src/Pool"));
 const spellchecker_1 = __importDefault(require("spellchecker"));
+// Logging
 const chalk_1 = __importDefault(require("chalk"));
 // Types
 const Types_1 = require("../src/Types");
 // Utils
 const Logger_1 = __importDefault(require("../utils/Logger"));
-const Pool_2 = __importDefault(require("../src/Pool"));
+const pool_1 = __importDefault(require("../src/pool"));
 class API {
     static getTopicFeed = (req, res) => {
         const topicPath = req.params.topicPath;
@@ -26,7 +26,8 @@ class API {
         };
         const feedResults = [];
         Logger_1.default.info(req.params.topicPath);
-        Pool_1.default.query(query)
+        pool_1.default
+            .query(query)
             .then((results) => {
             // 1. Get all questions matching query
             const questions = results.rows;
@@ -55,7 +56,8 @@ class API {
     };
     static getAllTopics = () => {
         return new Promise((resolve, reject) => {
-            Pool_1.default.query(`--sql
+            pool_1.default
+                .query(`--sql
           SELECT t.topic_path
           FROM topics t;
         `)
@@ -87,7 +89,8 @@ class API {
         };
         return new Promise((resolve, reject) => {
             const feedResults = [];
-            Pool_1.default.query(query)
+            pool_1.default
+                .query(query)
                 .then((res) => {
                 // 1. Get all questions matching query
                 const questions = res.rows;
@@ -181,7 +184,8 @@ class API {
                     : query_all;
             return new Promise((resolve, reject) => {
                 const searchResults = [];
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     // 1. Get all questions matching query
                     const questions = res.rows;
@@ -223,24 +227,22 @@ class API {
             res.json(user);
         };
         static logout = (req, res, next) => {
+            req.logout();
             req.session.destroy((error) => {
                 if (error) {
-                    Logger_1.default.fatal(error);
-                    res.status(400).send(error);
+                    return next(error);
                 }
-                console.log(chalk_1.default.bold.blueBright('Logged out:'), chalk_1.default.greenBright(req.user));
-                req.logout();
-                // res.clearCookie('connect.sid');
-                res.sendStatus(200);
+                // The response should indicate that the user is no longer authenticated.
+                return res.send({ authenticated: req.isAuthenticated() });
             });
         };
         static currentUser = (req, res) => {
-            Logger_1.default.debug(req.user);
             if (req.user) {
+                Logger_1.default.debug('Is authenticated:', req.isAuthenticated(), req.user);
                 res.status(200).send(req.user);
             }
             else {
-                res.sendStatus(400);
+                res.status(400).send(null);
             }
         };
         static updateBio = (req, res) => {
@@ -254,7 +256,8 @@ class API {
           `,
                 values: [req.user, newBio.trim()],
             };
-            Pool_1.default.query(query)
+            pool_1.default
+                .query(query)
                 .then((results) => {
                 const test = {
                     uid: req.user,
@@ -278,7 +281,7 @@ class API {
           `,
                 values: [req.user, question.title, question.body, question.topic],
             };
-            Pool_2.default
+            pool_1.default
                 .query(query)
                 .then((results) => {
                 // Question asked!
@@ -300,7 +303,8 @@ class API {
                 values: [req.params.uid],
             };
             const feedResults = [];
-            Pool_1.default.query(query)
+            pool_1.default
+                .query(query)
                 .then((results) => {
                 // 1. Get all questions matching query
                 const questions = results.rows;
@@ -337,7 +341,8 @@ class API {
                 values: [username.trim()],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     const user = res.rows[0];
                     resolve(user);
@@ -358,7 +363,8 @@ class API {
                 values: [uid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     const user = res.rows[0];
                     resolve(user);
@@ -384,7 +390,8 @@ class API {
                 values: [qid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     const question = res.rows[0];
                     // Get answers to question
@@ -423,7 +430,8 @@ class API {
                 values: [qid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     resolve(res.rows[0]);
                 })
@@ -448,7 +456,8 @@ class API {
                 values: [qid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     resolve(res.rows);
                 })
@@ -472,7 +481,7 @@ class API {
                 values: [req.body.qid, req.body.uid],
             };
             return new Promise((resolve, reject) => {
-                Pool_2.default
+                pool_1.default
                     .query(query)
                     .then((results) => {
                     resolve(results);
@@ -496,7 +505,8 @@ class API {
                 values: [_answerID.qid, _answerID.uid, voter_uid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     const vote = res.rowCount > 0 ? res.rows[0].vote : 0;
                     resolve(vote);
@@ -518,7 +528,8 @@ class API {
                 values: [parsed.qid, parsed.uid],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     const sum = Number(res.rows[0].sum) || 0;
                     resolve(sum);
@@ -545,7 +556,8 @@ class API {
                 ],
             };
             return new Promise((resolve, reject) => {
-                Pool_1.default.query(query)
+                pool_1.default
+                    .query(query)
                     .then((res) => {
                     Logger_1.default.info(chalk_1.default.bold('voter_uid:'), chalk_1.default.yellow(karmaVote.voter_uid), `${karmaVote.vote === 1
                         ? chalk_1.default.italic.green('upvoted')

@@ -17,15 +17,15 @@ const app = express();
 const port = process.env.PORT;
 const { requiresLogin } = require('../middleware/authorization');
 
-const PostgresSqlStore = require('connect-pg-simple')(session);
+const PostgresStore = require('connect-pg-simple')(session);
 const sessionOptions = {
-  store: new PostgresSqlStore({
+  store: new PostgresStore({
     pool,
     createTableIfMissing: true, // for "session" table
   }),
   secret: 'secret',
   resave: true,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
     maxAge: 14 * 24 * 60 * 60 * 1000,
     secure: false,
@@ -70,9 +70,15 @@ passport.serializeUser((user: any, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  API.Users.getUser(String(id)).then((user: any) => {
-    done(null, user.uid);
-  });
+  console.log(chalk.bold('Deserializing user:'), chalk.greenBright(id));
+
+  API.Users.getUser(String(id))
+    .then((user: any) => {
+      done(null, user.uid);
+    })
+    .catch((error) => {
+      done(error, null);
+    });
 });
 
 // Middleware
@@ -88,7 +94,7 @@ app.use((req, res, next) => {
 });
 app.use(
   cors({
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
     origin: process.env.ORIGIN,
   })
@@ -104,8 +110,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).send('hi');
 });
-app.get('/logout', requiresLogin, API.Users.logout);
-app.get('/current-user', requiresLogin, API.Users.currentUser);
+app.delete('/logout', API.Users.logout);
+app.get('/current-user', API.Users.currentUser);
 app.post('/login', passport.authenticate('local'), API.Users.login);
 
 // Users Routes

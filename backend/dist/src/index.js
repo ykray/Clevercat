@@ -19,15 +19,15 @@ const Logger_1 = __importDefault(require("../utils/Logger"));
 const app = (0, express_1.default)();
 const port = process.env.PORT;
 const { requiresLogin } = require('../middleware/authorization');
-const PostgresSqlStore = require('connect-pg-simple')(express_session_1.default);
+const PostgresStore = require('connect-pg-simple')(express_session_1.default);
 const sessionOptions = {
-    store: new PostgresSqlStore({
+    store: new PostgresStore({
         pool: Pool_1.default,
         createTableIfMissing: true, // for "session" table
     }),
     secret: 'secret',
     resave: true,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         maxAge: 14 * 24 * 60 * 60 * 1000,
         secure: false,
@@ -67,8 +67,13 @@ passport_1.default.serializeUser((user, done) => {
     done(null, user.uid);
 });
 passport_1.default.deserializeUser((id, done) => {
-    BackendAPI_1.default.Users.getUser(String(id)).then((user) => {
+    console.log(chalk_1.default.bold('Deserializing user:'), chalk_1.default.greenBright(id));
+    BackendAPI_1.default.Users.getUser(String(id))
+        .then((user) => {
         done(null, user.uid);
+    })
+        .catch((error) => {
+        done(error, null);
     });
 });
 // Middleware
@@ -80,7 +85,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use((0, cors_1.default)({
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
     origin: process.env.ORIGIN,
 }));
@@ -94,8 +99,8 @@ app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.status(200).send('hi');
 });
-app.get('/logout', requiresLogin, BackendAPI_1.default.Users.logout);
-app.get('/current-user', requiresLogin, BackendAPI_1.default.Users.currentUser);
+app.delete('/logout', BackendAPI_1.default.Users.logout);
+app.get('/current-user', BackendAPI_1.default.Users.currentUser);
 app.post('/login', passport_1.default.authenticate('local'), BackendAPI_1.default.Users.login);
 // Users Routes
 app.get('/usernames/:username', (req, res) => {

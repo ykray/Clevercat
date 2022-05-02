@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
 
 // MUI
@@ -14,19 +14,19 @@ export default function Login() {
   const [usernameInput, setUsernameInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
 
-  const login = () => {
-    API.Auth.login(usernameInput, SHA256(passwordInput).toString()).then(
-      (res: any) => {
-        console.log('Logged in:', res);
-        navigate(`/@${res.username}`);
-      }
-    );
+  const handleLogin = () => {
+    const passwordHash = SHA256(passwordInput).toString();
+    API.Auth.login(usernameInput, passwordHash).then((res: any) => {
+      console.log('Logged in as:', res);
+      navigate(`/@${res.username}`);
+    });
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Welcome back!</h1>
       <Stack spacing={2}>
+        <p>Enter your username and password to login.</p>
         <TextField
           value={usernameInput}
           label={'Username'}
@@ -42,9 +42,16 @@ export default function Login() {
             setPasswordInput(e.target.value);
           }}
         />
-        <Button variant={'contained'} style={{ width: 'auto' }} onClick={login}>
+        <Button
+          variant={'contained'}
+          style={{ width: 'auto' }}
+          onClick={handleLogin}
+        >
           Login
         </Button>
+        <p>
+          Don't have an account? <Link to={'/signup'}>Sign Up</Link>
+        </p>
       </Stack>
     </div>
   );

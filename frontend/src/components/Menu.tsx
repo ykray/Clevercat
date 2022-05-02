@@ -1,0 +1,67 @@
+import React, { useState, useEffect } from 'react';
+
+// MUI
+import { Stack, Slide } from '@mui/material';
+
+// Types
+import { Topic } from '../utils/Types';
+
+// Data
+import API from '../data/FrontendAPI';
+
+type Props = {
+  show?: boolean;
+};
+
+export default function Menu({ show = false }: Props) {
+  const [topics, setTopics] = useState<Topic[]>([]);
+
+  useEffect(() => {
+    API.getAllTopics().then((topics) => setTopics(topics));
+  }, []);
+
+  if (topics) {
+    const categories = topics.reduce((acc: any, d) => {
+      if (Object.keys(acc).includes(d.category)) return acc;
+
+      acc[d.category] = topics.filter((g) => g.category === d.category);
+      return acc;
+    }, {});
+
+    const renderTopics = () => {
+      return (
+        <Stack direction={'row'} justifyContent={'space-between'}>
+          {Object.keys(categories).map((category: any) => {
+            return (
+              <Stack direction={'column'} spacing={'6px'} key={category}>
+                {categories[category].map((x: Topic) => {
+                  return (
+                    <p
+                      key={x.subtopic}
+                      onClick={() => {
+                        window.location.href = `/topics/${x.category}${
+                          x.subtopic ? `/${x.subtopic.replace(/\s/g, '')}` : ''
+                        }`;
+                      }}
+                      className={`${x.subtopic ? 'subtopic' : 'category'}`}
+                    >
+                      {x.subtopic ?? x.category}
+                    </p>
+                  );
+                })}
+              </Stack>
+            );
+          })}
+        </Stack>
+      );
+    };
+
+    return (
+      <Slide in={show}>
+        <div className={'menu'}>{renderTopics()}</div>
+      </Slide>
+    );
+  } else {
+    return <></>;
+  }
+}

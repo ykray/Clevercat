@@ -21,6 +21,7 @@ import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
 import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
+import PrivateWrapper from './utils/PrivateWrapper';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -30,7 +31,6 @@ function App() {
 
   const getCurrentUser = async () => {
     const curr = await API.Auth.currentUser();
-    console.log(curr);
     setCurrentUser(curr);
   };
 
@@ -50,7 +50,9 @@ function App() {
             <Route path={'/login'} element={<Login />} />
             <Route path={'/q/:qid'} element={<PostComponent />} />
             <Route path={'/search'} element={<SearchComponent />} />
-            <Route path={'/ask'} element={<Ask />} />
+            <Route element={<PrivateWrapper />}>
+              <Route path={'/ask'} element={<Ask />} />
+            </Route>
             <Route path={'/@:username'} element={<Profile />} />
             <Route path={'/topics/*'} element={<TopicFeed />} />
             <Route index element={<HotQuestions />} />

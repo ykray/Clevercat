@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { UserContext } from '../App';
+
+// Data
+import API from '../data/FrontendAPI';
+
+// Assets
 import styles from '../assets/sass/_variables.scss';
 
 // MUI
@@ -10,16 +16,12 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
-import { LogoutSharp, Menu } from '@mui/icons-material';
+import { LogoutSharp, Menu as MenuIcon } from '@mui/icons-material';
 
 // Components
 import SearchBar from './SearchBar';
 import AuthorComponent from './AuthorComponent';
-import { UserContext } from '../App';
-
-// Data
-import API from '../data/FrontendAPI';
-import { Topic } from '../utils/Types';
+import Menu from './Menu';
 
 export default function Header() {
   const location = useLocation();
@@ -27,66 +29,14 @@ export default function Header() {
   const currentUser = useContext(UserContext);
 
   // States
-  const [topics, setTopics] = useState<Topic[]>([]);
-  const [slideIn, setSlideIn] = useState(false);
-
-  useEffect(() => {
-    API.getAllTopics().then((topics) => setTopics(topics));
-  }, []);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleClickAway = () => {
-    if (slideIn === true) {
-      setSlideIn(false);
+    if (showMenu === true) {
+      setShowMenu(false);
     }
   };
 
-  const renderMenu = () => {
-    if (topics) {
-      const categories = topics.reduce((acc: any, d) => {
-        if (Object.keys(acc).includes(d.category)) return acc;
-
-        acc[d.category] = topics.filter((g) => g.category === d.category);
-        return acc;
-      }, {});
-
-      const renderTopics = () => {
-        return (
-          <Stack direction={'row'} justifyContent={'space-between'}>
-            {Object.keys(categories).map((category: any) => {
-              return (
-                <Stack direction={'column'} spacing={'6px'}>
-                  {categories[category].map((x: Topic) => {
-                    return (
-                      <p
-                        onClick={() => {
-                          window.location.href = `/topics/${x.category}${
-                            x.subtopic
-                              ? `/${x.subtopic.replace(/\s/g, '')}`
-                              : ''
-                          }`;
-                        }}
-                        className={`${x.subtopic ? 'subtopic' : 'category'}`}
-                      >
-                        {x.subtopic ?? x.category}
-                      </p>
-                    );
-                  })}
-                </Stack>
-              );
-            })}
-          </Stack>
-        );
-      };
-
-      return (
-        <Slide in={slideIn} direction={'down'}>
-          <div className={'menu'}>{renderTopics()}</div>
-        </Slide>
-      );
-    } else {
-      return <></>;
-    }
-  };
   return (
     <>
       <ClickAwayListener onClickAway={handleClickAway}>
@@ -99,7 +49,7 @@ export default function Header() {
               spacing={2}
             >
               <Stack direction={'row'} alignItems={'center'} spacing={1}>
-                {renderMenu()}
+                <Menu show={showMenu} />
 
                 <div className={'logo'} onClick={() => navigate('/')}>
                   ask
@@ -107,9 +57,9 @@ export default function Header() {
                 </div>
                 <IconButton
                   className={'icon-button'}
-                  onClick={() => setSlideIn(!slideIn)}
+                  onClick={() => setShowMenu(!showMenu)}
                 >
-                  <Menu
+                  <MenuIcon
                     style={{
                       width: 27,
                       height: 27,

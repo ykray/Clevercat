@@ -1,5 +1,6 @@
-import Pool from '../src/Pool';
 import SpellChecker from 'spellchecker';
+
+// Logging
 import chalk from 'chalk';
 
 // Types
@@ -13,7 +14,7 @@ import {
 
 // Utils
 import log from '../utils/Logger';
-import pool from '../src/Pool';
+import pool from '../src/pool';
 
 export default class API {
   static getTopicFeed = (req: any, res: any) => {
@@ -32,7 +33,8 @@ export default class API {
     const feedResults: any[] = [];
 
     log.info(req.params.topicPath);
-    Pool.query(query)
+    pool
+      .query(query)
       .then((results) => {
         // 1. Get all questions matching query
         const questions = results.rows;
@@ -66,12 +68,13 @@ export default class API {
 
   static getAllTopics = () => {
     return new Promise((resolve, reject) => {
-      Pool.query(
-        `--sql
+      pool
+        .query(
+          `--sql
           SELECT t.topic_path
           FROM topics t;
         `
-      )
+        )
         .then((res) => {
           resolve(res.rows);
         })
@@ -107,7 +110,8 @@ export default class API {
     return new Promise((resolve, reject) => {
       const feedResults: any[] = [];
 
-      Pool.query(query)
+      pool
+        .query(query)
         .then((res) => {
           // 1. Get all questions matching query
           const questions = res.rows;
@@ -209,7 +213,8 @@ export default class API {
       return new Promise((resolve, reject) => {
         const searchResults: any[] = [];
 
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             // 1. Get all questions matching query
             const questions = res.rows;
@@ -261,27 +266,22 @@ export default class API {
     };
 
     static logout = (req: any, res: any, next: any) => {
+      req.logout();
       req.session.destroy((error: any) => {
         if (error) {
-          log.fatal(error);
-          res.status(400).send(error);
+          return next(error);
         }
-        console.log(
-          chalk.bold.blueBright('Logged out:'),
-          chalk.greenBright(req.user)
-        );
-        req.logout();
-        // res.clearCookie('connect.sid');
-        res.sendStatus(200);
+        // The response should indicate that the user is no longer authenticated.
+        return res.send({ authenticated: req.isAuthenticated() });
       });
     };
 
     static currentUser = (req: any, res: any) => {
-      log.debug(req.user);
       if (req.user) {
+        log.debug('Is authenticated:', req.isAuthenticated(), req.user);
         res.status(200).send(req.user);
       } else {
-        res.sendStatus(400);
+        res.status(400).send(null);
       }
     };
 
@@ -298,7 +298,8 @@ export default class API {
         values: [req.user, newBio.trim()],
       };
 
-      Pool.query(query)
+      pool
+        .query(query)
         .then((results) => {
           const test = {
             uid: req.user,
@@ -352,7 +353,8 @@ export default class API {
 
       const feedResults: any[] = [];
 
-      Pool.query(query)
+      pool
+        .query(query)
         .then((results) => {
           // 1. Get all questions matching query
           const questions = results.rows;
@@ -395,7 +397,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             const user = res.rows[0];
             resolve(user);
@@ -418,7 +421,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             const user = res.rows[0];
             resolve(user);
@@ -446,7 +450,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             const question = res.rows[0];
             // Get answers to question
@@ -491,7 +496,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res: any) => {
             resolve(res.rows[0]);
           })
@@ -518,7 +524,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res: any) => {
             resolve(res.rows);
           })
@@ -573,7 +580,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             const vote = res.rowCount > 0 ? res.rows[0].vote : 0;
             resolve(vote);
@@ -597,7 +605,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             const sum: number = Number(res.rows[0].sum) || 0;
             resolve(sum);
@@ -626,7 +635,8 @@ export default class API {
       };
 
       return new Promise((resolve, reject) => {
-        Pool.query(query)
+        pool
+          .query(query)
           .then((res) => {
             log.info(
               chalk.bold('voter_uid:'),

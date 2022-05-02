@@ -4,5 +4,5 @@ export const requiresLogin = (req: any, res: any, next: any) => {
   if (req.user) return next();
 
   log.info(req.sessionID);
-  res.sendStatus(401);
+  res.status(401).send(null);
 };
