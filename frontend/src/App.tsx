@@ -48,6 +48,7 @@ function App() {
         <ScrollToTop />
 
         <Stack
+          // className={'collapse-main'}
           paddingRight={'25px'}
           paddingLeft={'25px'}
           paddingTop={'35px'}
