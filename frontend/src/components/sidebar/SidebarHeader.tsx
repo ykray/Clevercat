@@ -33,7 +33,7 @@ export default function SidebarHeader({ onClick }: Props) {
             justifyContent={'space-between'}
             alignItems={'flex-start'}
             spacing={2}
-            zIndex={9999}
+            // zIndex={9999}
           >
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <div className={'logo'} onClick={() => navigate('/')}>

@@ -25,6 +25,7 @@ import PrivateWrapper from './utils/PrivateWrapper';
 import Signup from './components/Signup';
 import MainHeader from './components/header/MainHeader';
 import Menu from './components/Menu';
+import PublicWrapper from './utils/PublicWrapper';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -61,9 +62,12 @@ function App() {
               <MainHeader />
               <Routes>
                 <Route path={'/'} element={<HotQuestions />} />
-                {/* Auth */}
-                <Route path={'/login'} element={<Login />} />
-                <Route path={'/signup'} element={<Signup />} />
+                <Route element={<PublicWrapper />}>
+                  {/*           ^^^^^^^^^^^^^^^^^ */}
+                  {/* TODO: - works, but clean up later */}
+                  <Route path={'/login'} element={<Login />} />
+                  <Route path={'/signup'} element={<Signup />} />
+                </Route>
 
                 <Route path={'/q/:qid'} element={<PostComponent />} />
                 <Route path={'/search'} element={<SearchComponent />} />

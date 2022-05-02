@@ -72,7 +72,7 @@ export default function PostComponent() {
         return null;
       }
     } else {
-      return (
+      return post ? (
         <Button
           variant={'contained'}
           onClick={() => navigate('/login')}
@@ -80,7 +80,7 @@ export default function PostComponent() {
         >
           Login to answer
         </Button>
-      );
+      ) : null;
     }
   };
 

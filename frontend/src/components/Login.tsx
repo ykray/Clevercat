@@ -11,7 +11,9 @@ import API from '../data/FrontendAPI';
 export default function Login() {
   const navigate = useNavigate();
 
-  const [usernameInput, setUsernameInput] = useState<string>('');
+  const [usernameInput, setUsernameInput] = useState<string>(
+    localStorage.getItem('username') || ''
+  );
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [errorLogin, setErrorLogin] = useState(false);
 
@@ -19,6 +21,8 @@ export default function Login() {
     const passwordHash = SHA256(passwordInput).toString();
     API.Auth.login(usernameInput, passwordHash)
       .then((res: any) => {
+        // Save username to populate login field later on (if/when the user logs out)
+        localStorage.setItem('username', res.username);
         navigate(`/@${res.username}`);
       })
       .catch((error) => {

@@ -26,7 +26,7 @@ const Ask = ({}: Props) => {
 
   const [topics, setTopics] = useState<Topic[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>(
-    searchParams.get('topic') ?? undefined
+    searchParams.get('topic')?.split('.').pop() ?? undefined
   );
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
@@ -35,6 +35,7 @@ const Ask = ({}: Props) => {
   const [errorTopic, setErrorTopic] = useState<boolean>(false);
 
   const handleTopicSelect = (e: SelectChangeEvent) => {
+    console.log(e.target.value);
     setSelectedTopic(e.target.value);
   };
 
@@ -64,9 +65,7 @@ const Ask = ({}: Props) => {
             style={{
               paddingLeft: 10,
               color:
-                topic.category === selectedTopic
-                  ? styles.color_primary_500
-                  : styles.color_muted_300,
+                topic.category === selectedTopic ? '' : styles.color_muted_300,
             }}
           >
             {topic.category}
@@ -154,7 +153,10 @@ const Ask = ({}: Props) => {
             onChange={handleTopicSelect}
             id="topic-select"
             label="Topic"
-            style={{ color: styles.color_primary_500, width: 250 }}
+            style={{
+              color: styles.color_primary_500,
+              width: 250,
+            }}
           >
             {renderTopics()}
           </Select>
