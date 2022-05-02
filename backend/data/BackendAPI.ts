@@ -278,10 +278,9 @@ export default class API {
 
     static currentUser = (req: any, res: any) => {
       if (req.user) {
-        log.debug('Is authenticated:', req.isAuthenticated(), req.user);
         res.status(200).send(req.user);
       } else {
-        res.status(400).send(null);
+        res.status(401).send(null);
       }
     };
 
@@ -346,7 +345,7 @@ export default class API {
         text: `--sql
           SELECT *
           FROM questions
-          WHERE uid::text = $1;
+          WHERE uid::TEXT = $1;
           `,
         values: [req.params.uid],
       };
@@ -365,6 +364,54 @@ export default class API {
             q_promises.push(
               new Promise((resolve, reject) => {
                 API.Questions.getAnswers(question.qid).then((answers) => {
+                  feedResults.push({
+                    question,
+                    answers,
+                  });
+                  resolve(true);
+                });
+              })
+            );
+          });
+
+          Promise.all(q_promises).then(() => {
+            // log.info(feedResults);
+            res.status(200).send(feedResults);
+          });
+        })
+        .catch((error) => {
+          log.fatal(error);
+          res.status(400).send(error);
+        });
+    };
+
+    static getUserAnswers = (req: any, res: any) => {
+      const query = {
+        text: `--sql
+          SELECT q.*
+          FROM answers a JOIN questions q ON q.qid = a.qid
+          WHERE a.uid::TEXT = $1 ;
+          `,
+        values: [req.params.uid],
+      };
+
+      const feedResults: any[] = [];
+
+      pool
+        .query(query)
+        .then((results) => {
+          // 1. Get all questions matching query
+          const questions = results.rows;
+          const q_promises: any = [];
+
+          // 2. For each question, get USER's answers
+          questions.map((question) => {
+            q_promises.push(
+              new Promise((resolve, reject) => {
+                API.Questions.getAnswersByUser(
+                  question.qid,
+                  req.params.uid
+                ).then((answers) => {
                   feedResults.push({
                     question,
                     answers,
@@ -518,9 +565,38 @@ export default class API {
             a.a_timestamp
           FROM Answers a
             JOIN Questions q ON a.qid = q.qid
-          WHERE a.qid::TEXT = $1;
-        `,
+          WHERE a.qid::TEXT = $1
+          `,
         values: [qid],
+      };
+
+      return new Promise((resolve, reject) => {
+        pool
+          .query(query)
+          .then((res: any) => {
+            resolve(res.rows);
+          })
+          .catch((error) => {
+            log.fatal(error);
+            reject(error);
+          });
+      });
+    };
+
+    static getAnswersByUser = (qid: string, by: string) => {
+      const query = {
+        text: `--sql
+          SELECT
+            a.qid,
+            a.body,
+            a.uid,
+            a.a_timestamp
+          FROM Answers a
+            JOIN Questions q ON a.qid = q.qid
+          WHERE a.qid::TEXT = $1
+            AND a.uid::TEXT = $2
+          `,
+        values: [qid, by],
       };
 
       return new Promise((resolve, reject) => {
@@ -539,6 +615,30 @@ export default class API {
 
   // Answers API
   static Answers = class {
+    static post = (req: any, res: any) => {
+      if (req.user) {
+        const query = {
+          text: `--sql
+          INSERT INTO answers(qid, uid, body)
+          VALUES ($1, $2, $3)
+        `,
+          values: [req.body.qid, req.user, req.body.body],
+        };
+
+        pool
+          .query(query)
+          .then((results) => {
+            res.sendStatus(200);
+          })
+          .catch((error) => {
+            log.fatal(error);
+            res.status(400).send(error);
+          });
+      } else {
+        res.sendStatus(401);
+      }
+    };
+
     static best = (req: any, res: any) => {
       const query = {
         text: `--sql

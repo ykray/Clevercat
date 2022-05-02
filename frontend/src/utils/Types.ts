@@ -17,12 +17,12 @@ export type Question = {
 
 export type Answer = {
   qid: string;
-  q_uid: string;
+  q_uid?: string;
   uid: string;
-  username: string;
-  color: string;
-  status: string;
-  a_timestamp: Date;
+  username?: string;
+  color?: string;
+  status?: string;
+  a_timestamp?: Date;
   body: string;
   bestAnswer?: boolean;
 };

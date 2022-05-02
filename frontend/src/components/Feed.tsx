@@ -2,20 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
 
-// Assets
-import styles from '../assets/sass/_variables.scss';
-
 // MUI
 import { Fade, Grow, Stack } from '@mui/material';
 
 // Data
-import { QuestionPost } from '../utils/Types';
+import { Answer, QuestionPost } from '../utils/Types';
 import NoResults from './NoResults';
 import TopicHierarchy from './TopicHierarchy';
 
 type Props = {
   searchQuery?: string | null;
-  posts: QuestionPost[];
+  posts?: QuestionPost[];
+  answers?: Answer[];
   hideTopic?: boolean;
 };
 export const Feed = ({
@@ -35,7 +33,7 @@ export const Feed = ({
 
   return (
     <Stack className={'feed'} spacing={3}>
-      {postsNum > 0 ? (
+      {posts && postsNum > 0 ? (
         posts.map((post) => {
           const answers = post.answers ?? [];
 

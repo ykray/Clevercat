@@ -14,10 +14,11 @@ type Props = {
   topAnchor?: number;
 };
 
-export default function Menu({ show = false, topAnchor = 0 }: Props) {
+export default function Menu({ show, topAnchor = 0 }: Props) {
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
+    console.log('menu:', localStorage.getItem('showMenu'));
     API.getAllTopics().then((topics) => setTopics(topics));
   }, []);
 
@@ -65,6 +66,7 @@ export default function Menu({ show = false, topAnchor = 0 }: Props) {
             paddingTop: topAnchor,
           }}
         >
+          <h1>Topics</h1>
           {renderTopics()}
         </div>
       </Slide>

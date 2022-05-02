@@ -238,11 +238,10 @@ class API {
         };
         static currentUser = (req, res) => {
             if (req.user) {
-                Logger_1.default.debug('Is authenticated:', req.isAuthenticated(), req.user);
                 res.status(200).send(req.user);
             }
             else {
-                res.status(400).send(null);
+                res.status(401).send(null);
             }
         };
         static updateBio = (req, res) => {
@@ -313,6 +312,44 @@ class API {
                 questions.map((question) => {
                     q_promises.push(new Promise((resolve, reject) => {
                         API.Questions.getAnswers(question.qid).then((answers) => {
+                            feedResults.push({
+                                question,
+                                answers,
+                            });
+                            resolve(true);
+                        });
+                    }));
+                });
+                Promise.all(q_promises).then(() => {
+                    // log.info(feedResults);
+                    res.status(200).send(feedResults);
+                });
+            })
+                .catch((error) => {
+                Logger_1.default.fatal(error);
+                res.status(400).send(error);
+            });
+        };
+        static getUserAnswers = (req, res) => {
+            const query = {
+                text: `--sql
+          SELECT q.*
+          FROM answers a JOIN questions q ON q.qid = a.qid
+          WHERE a.uid::TEXT = $1 ;
+          `,
+                values: [req.params.uid],
+            };
+            const feedResults = [];
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                // 1. Get all questions matching query
+                const questions = results.rows;
+                const q_promises = [];
+                // 2. For each question, get USER's answers
+                questions.map((question) => {
+                    q_promises.push(new Promise((resolve, reject) => {
+                        API.Questions.getAnswersByUser(question.qid, req.params.uid).then((answers) => {
                             feedResults.push({
                                 question,
                                 answers,
@@ -451,9 +488,36 @@ class API {
             a.a_timestamp
           FROM Answers a
             JOIN Questions q ON a.qid = q.qid
-          WHERE a.qid::TEXT = $1;
-        `,
+          WHERE a.qid::TEXT = $1
+          `,
                 values: [qid],
+            };
+            return new Promise((resolve, reject) => {
+                pool_1.default
+                    .query(query)
+                    .then((res) => {
+                    resolve(res.rows);
+                })
+                    .catch((error) => {
+                    Logger_1.default.fatal(error);
+                    reject(error);
+                });
+            });
+        };
+        static getAnswersByUser = (qid, by) => {
+            const query = {
+                text: `--sql
+          SELECT
+            a.qid,
+            a.body,
+            a.uid,
+            a.a_timestamp
+          FROM Answers a
+            JOIN Questions q ON a.qid = q.qid
+          WHERE a.qid::TEXT = $1
+            AND a.uid::TEXT = $2
+          `,
+                values: [qid, by],
             };
             return new Promise((resolve, reject) => {
                 pool_1.default
@@ -470,6 +534,29 @@ class API {
     };
     // Answers API
     static Answers = class {
+        static post = (req, res) => {
+            if (req.user) {
+                const query = {
+                    text: `--sql
+          INSERT INTO answers(qid, uid, body)
+          VALUES ($1, $2, $3)
+        `,
+                    values: [req.body.qid, req.user, req.body.body],
+                };
+                pool_1.default
+                    .query(query)
+                    .then((results) => {
+                    res.sendStatus(200);
+                })
+                    .catch((error) => {
+                    Logger_1.default.fatal(error);
+                    res.status(400).send(error);
+                });
+            }
+            else {
+                res.sendStatus(401);
+            }
+        };
         static best = (req, res) => {
             const query = {
                 text: `--sql

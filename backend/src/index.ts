@@ -135,6 +135,7 @@ app.get('/u/:uid', (req, res) => {
     });
 });
 app.get('/u/:uid/questions', API.Users.getUserQuestions);
+app.get('/u/:uid/answers', API.Users.getUserAnswers);
 app.post('/updateBio', API.Users.updateBio);
 app.post('/ask', API.Users.askQuestion);
 
@@ -171,6 +172,7 @@ app.get('/votes/:answerID/:voter_uid', (req, res) => {
       res.status(500).send(error);
     });
 });
+app.post('/post-answer', requiresLogin, API.Answers.post);
 
 app.get('/karma/:answerID', (req, res) => {
   API.Answers.getKarmaCount(req.params.answerID)

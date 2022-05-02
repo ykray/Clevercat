@@ -76,6 +76,16 @@ a {
   width: 60%;
 }
 
+.post-answer {
+  h2 {
+    margin: 0;
+  }
+  p {
+    color: $color-muted-500;
+    font-size: 0.9rem;
+  }
+}
+
 .menu {
   width: 100%;
   height: auto;
@@ -104,6 +114,7 @@ a {
   }
 
   .category {
+    margin-left: -10px;
     padding-top: 12px;
     padding-bottom: 10px;
     font-size: 1.2rem;
@@ -113,6 +124,8 @@ a {
   }
 
   .subtopic {
+    margin-left: -10px;
+
     padding-top: 9px;
     padding-bottom: 7px;
     font-family: 'Roboto';

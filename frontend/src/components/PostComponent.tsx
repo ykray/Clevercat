@@ -1,6 +1,7 @@
-import { Stack } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Button, Stack } from '@mui/material';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { UserContext } from '../App';
 
 // Assets
 import styles from '../assets/sass/_variables.scss';
@@ -11,9 +12,12 @@ import { QuestionPost } from '../utils/Types';
 
 // Components
 import AnswerComponent from './AnswerComponent';
+import PostAnswer from './PostAnswer';
 import QuestionComponent from './QuestionComponent';
 
 export default function PostComponent() {
+  const navigate = useNavigate();
+  const currentUser = useContext(UserContext);
   let { qid } = useParams();
 
   // States
@@ -45,14 +49,46 @@ export default function PostComponent() {
         </Stack>
       </>
     ) : (
-      <h2 style={{ color: styles.color_muted_400 }}>No answers yet...</h2>
+      <h2
+        style={{
+          color: styles.color_muted_400,
+          marginTop: 80,
+          marginBottom: 0,
+        }}
+      >
+        No answers yet...
+      </h2>
     );
   };
 
+  const renderPostAnswer = () => {
+    if (currentUser) {
+      if (post && post.answers) {
+        const userAlreadyAnswered: boolean = post.answers.some(
+          (answer) => answer.uid === currentUser
+        );
+        return userAlreadyAnswered ? null : <PostAnswer qid={qid} />;
+      } else {
+        return null;
+      }
+    } else {
+      return (
+        <Button
+          variant={'contained'}
+          onClick={() => navigate('/login')}
+          style={{ width: 200 }}
+        >
+          Login to answer
+        </Button>
+      );
+    }
+  };
+
   return (
-    <>
+    <Stack spacing={4}>
       {renderQuestion()}
       {renderAnswers()}
-    </>
+      {renderPostAnswer()}
+    </Stack>
   );
 }

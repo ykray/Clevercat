@@ -20,7 +20,12 @@ export default function Profile() {
   // States
   const [notFound, setNotFound] = useState(false);
   const [user, setUser] = useState<User>();
-  const [posts, setPosts] = useState<QuestionPost[]>([]);
+
+  const [questionsAsked, setQuestionsAsked] = useState<QuestionPost[]>([]);
+  const [questionsAnswered, setQuestionsAnswered] = useState<QuestionPost[]>(
+    []
+  );
+
   const [bioInput, setBioInput] = useState<string>('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>();
@@ -38,8 +43,13 @@ export default function Profile() {
   useEffect(() => {
     if (user) {
       API.Users.getUserQuestions(user.uid).then((res) => {
-        setPosts(res);
+        setQuestionsAsked(res);
       });
+      API.Users.getUserAnswers(user.uid).then((res) => {
+        console.log(res);
+        setQuestionsAnswered(res);
+      });
+
       setBioInput(user.bio ?? '');
     }
   }, [user]);
@@ -68,14 +78,26 @@ export default function Profile() {
     ) : null;
   };
 
-  const renderMyPosts = () => {
-    return posts ? (
+  const renderMyQuestions = () => {
+    return questionsAsked ? (
       <>
-        <h2 style={{ marginBottom: 15 }}>
-          {posts.length}
-          {posts.length === 1 ? ' question' : ' questions'} asked
+        <h2>
+          {questionsAsked.length}
+          {questionsAsked.length === 1 ? ' question' : ' questions'} asked
         </h2>
-        <Feed posts={posts} />
+        <Feed posts={questionsAsked} />
+      </>
+    ) : null;
+  };
+
+  const renderMyAnswers = () => {
+    return questionsAnswered ? (
+      <>
+        <h2>
+          {questionsAnswered.length}
+          {questionsAnswered.length === 1 ? ' question' : ' questions'} answered
+        </h2>
+        <Feed posts={questionsAnswered} />
       </>
     ) : null;
   };
@@ -120,7 +142,10 @@ export default function Profile() {
             </Stack>
           </Stack>
         </Stack>
-        <Stack>{renderMyPosts()}</Stack>
+        <Stack spacing={5}>
+          {renderMyQuestions()}
+          {renderMyAnswers()}
+        </Stack>
       </Stack>
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

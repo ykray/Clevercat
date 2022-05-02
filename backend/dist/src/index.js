@@ -122,6 +122,7 @@ app.get('/u/:uid', (req, res) => {
     });
 });
 app.get('/u/:uid/questions', BackendAPI_1.default.Users.getUserQuestions);
+app.get('/u/:uid/answers', BackendAPI_1.default.Users.getUserAnswers);
 app.post('/updateBio', BackendAPI_1.default.Users.updateBio);
 app.post('/ask', BackendAPI_1.default.Users.askQuestion);
 // Search Routes
@@ -155,6 +156,7 @@ app.get('/votes/:answerID/:voter_uid', (req, res) => {
         res.status(500).send(error);
     });
 });
+app.post('/post-answer', requiresLogin, BackendAPI_1.default.Answers.post);
 app.get('/karma/:answerID', (req, res) => {
     BackendAPI_1.default.Answers.getKarmaCount(req.params.answerID)
         .then((count) => {

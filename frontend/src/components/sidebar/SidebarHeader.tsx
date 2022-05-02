@@ -10,7 +10,7 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 
 // Components
 import SearchBar from '../SearchBar';
-import UserHeader from './UserHeader';
+import UserHeader from '../header/UserHeader';
 
 type Props = {
   onClick?: any;

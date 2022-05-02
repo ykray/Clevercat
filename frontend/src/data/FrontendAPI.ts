@@ -2,6 +2,7 @@ import { ENDPOINT } from '../utils/Constants';
 
 // Utils
 import {
+  Answer,
   KarmaVote,
   Question,
   QuestionPost,
@@ -150,9 +151,9 @@ export default class API {
           .then((res) => {
             return res.text();
           })
-          .then((res) => {
-            console.log('currentUser:', res);
-            resolve(res);
+          .then((user) => {
+            console.log('current user:', user);
+            resolve(user);
           })
           .catch((error) => {
             console.log(error);
@@ -190,6 +191,26 @@ export default class API {
 
   // Answers API
   static Answers = class {
+    static post = (answer: any) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/post-answer`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(answer),
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static checkIfVoted = (
       answerID: any,
       voter_uid: string
@@ -289,6 +310,20 @@ export default class API {
     static getUserQuestions = (uid: string): Promise<QuestionPost[]> => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/u/${uid}/questions`)
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            const results: QuestionPost[] = JSON.parse(res);
+            resolve(results);
+          })
+          .catch((error) => reject(error));
+      });
+    };
+
+    static getUserAnswers = (uid: string): Promise<QuestionPost[]> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/u/${uid}/answers`)
           .then((res) => {
             return res.text();
           })

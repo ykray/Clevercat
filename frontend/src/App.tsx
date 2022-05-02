@@ -11,7 +11,7 @@ import Theme from './assets/Theme';
 // Components
 import Login from './components/Login';
 import Profile from './components/Profile';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/sidebar/Sidebar';
 import SearchComponent from './components/SearchComponent';
 import PostComponent from './components/PostComponent';
 import HotQuestions from './components/HotQuestions';

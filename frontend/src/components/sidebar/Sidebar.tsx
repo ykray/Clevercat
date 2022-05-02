@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { ClickAwayListener, Stack } from '@mui/material';
 
 // Components
-import SidebarHeader from './header/SidebarHeader';
-import Menu from './Menu';
+import SidebarHeader from './SidebarHeader';
+import Menu from '../Menu';
 
 export default function Sidebar() {
   // States
@@ -18,28 +18,25 @@ export default function Sidebar() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('showMenu', JSON.stringify(showMenu));
-  }, [showMenu]);
-
-  useEffect(() => {
     const offset = document.getElementById('header')?.offsetHeight;
     setBottomAnchor(offset);
   }, []);
 
   const handleClickAway = () => {
-    if (showMenu === true) {
-      setShowMenu(false);
-    }
+    // if (showMenu === true) {
+    //   setShowMenu(false);
+    // }
   };
 
   const menuButtonOnClick = () => {
+    localStorage.setItem('showMenu', JSON.stringify(!showMenu));
     setShowMenu(!showMenu);
   };
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={'sidebar'}>
-        <Stack alignItems={'center'} spacing={9}>
+        <Stack alignItems={'center'} spacing={'13px'}>
           <SidebarHeader onClick={menuButtonOnClick} />
           <Menu show={showMenu} />
         </Stack>
