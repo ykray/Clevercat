@@ -49,38 +49,42 @@ function App() {
 
         <Stack
           // className={'collapse-main'}
-          paddingRight={'25px'}
-          paddingLeft={'25px'}
-          paddingTop={'35px'}
-          paddingBottom={'35px'}
+          paddingRight={'40px'}
+          paddingLeft={'40px'}
+          paddingTop={'25px'}
+          paddingBottom={'25px'}
           direction={'row'}
           alignItems={'flex-start'}
           spacing={2}
         >
           <Sidebar />
           <div className={'main'}>
-            <Stack direction={'column'} spacing={2}>
-              <MainHeader />
-              <Routes>
-                <Route path={'/'} element={<HotQuestions />} />
-                <Route element={<PublicWrapper />}>
-                  {/*           ^^^^^^^^^^^^^^^^^ */}
-                  {/* TODO: - works, but clean up later */}
-                  <Route path={'/login'} element={<Login />} />
-                  <Route path={'/signup'} element={<Signup />} />
-                </Route>
+            <MainHeader />
 
-                <Route path={'/q/:qid'} element={<PostComponent />} />
-                <Route path={'/search'} element={<SearchComponent />} />
-                <Route element={<PrivateWrapper />}>
-                  <Route path={'/ask'} element={<Ask />} />
-                </Route>
-                <Route path={'/@:username'} element={<Profile />} />
-                <Route path={'/topics/*'} element={<TopicFeed />} />
-                <Route index element={<HotQuestions />} />
-              </Routes>
+            <Stack direction={'row'}>
+              <Stack direction={'column'} spacing={2}>
+                <Routes>
+                  <Route path={'/'} element={<HotQuestions />} />
+                  <Route element={<PublicWrapper />}>
+                    {/*           ^^^^^^^^^^^^^^^^^ */}
+                    {/* TODO: - works, but clean up later */}
+                    <Route path={'/login'} element={<Login />} />
+                    <Route path={'/signup'} element={<Signup />} />
+                  </Route>
 
-              <Footer />
+                  <Route path={'/q/:qid'} element={<PostComponent />} />
+                  <Route path={'/search'} element={<SearchComponent />} />
+                  <Route element={<PrivateWrapper />}>
+                    <Route path={'/ask'} element={<Ask />} />
+                  </Route>
+                  <Route path={'/@:username'} element={<Profile />} />
+                  <Route path={'/topics/*'} element={<TopicFeed />} />
+                  <Route index element={<HotQuestions />} />
+                </Routes>
+
+                <Footer />
+              </Stack>
+              <div style={{ width: '100%' }}></div>
             </Stack>
             {location.pathname === '/ask' ||
             location.pathname === '/login' ||
