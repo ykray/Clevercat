@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styles from '../assets/sass/_variables.scss';
 
 // MUI
 import { Stack, Slide } from '@mui/material';
@@ -8,13 +9,15 @@ import { Topic } from '../utils/Types';
 
 // Data
 import API from '../data/FrontendAPI';
+import { useLocation } from 'react-router-dom';
 
 type Props = {
   show?: boolean;
   topAnchor?: number;
 };
 
-export default function Menu({ show, topAnchor = 0 }: Props) {
+export default function Menu({ show = true, topAnchor = 0 }: Props) {
+  const location = useLocation();
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
@@ -37,6 +40,16 @@ export default function Menu({ show, topAnchor = 0 }: Props) {
             return (
               <Stack direction={'column'} spacing={'6px'} key={category}>
                 {categories[category].map((x: Topic) => {
+                  const pathname = (
+                    location.pathname
+                      .trim()
+                      .replace(/([A-Z])/g, ' $1')
+                      .split('/')
+                      .pop() ?? ''
+                  ).trim();
+                  const activeTopic: boolean =
+                    pathname.localeCompare(x.subtopic ?? x.category) === 0;
+
                   return (
                     <p
                       key={x.subtopic}
@@ -46,6 +59,12 @@ export default function Menu({ show, topAnchor = 0 }: Props) {
                         }`;
                       }}
                       className={`${x.subtopic ? 'subtopic' : 'category'}`}
+                      style={{
+                        color: activeTopic ? 'white' : '',
+                        backgroundColor: activeTopic
+                          ? styles.color_primary_500
+                          : '',
+                      }}
                     >
                       {x.subtopic ?? x.category}
                     </p>

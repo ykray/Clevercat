@@ -123,11 +123,11 @@ a {
     font-size: 2rem;
   }
   p {
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 0;
+    padding-left: 9px;
+    padding-right: 9px;
+    border-radius: $radius * 0.8;
+
     &:hover {
-      border-radius: $radius * 0.8;
       background-color: $color-primary-300;
       // box-shadow: 0px 3px 6px $color-muted-100;
       color: $color-primary-500;
@@ -140,8 +140,8 @@ a {
   }
 
   .category {
-    padding-top: 12px;
-    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 8px;
     font-size: 1.2rem;
     font-family: 'GilroySemibold';
     color: $color-text-header;
@@ -149,7 +149,7 @@ a {
   }
 
   .subtopic {
-    padding-top: 5px;
+    padding-top: 6px;
     padding-bottom: 5px;
     margin-top: 3px;
     margin-bottom: 3px;
