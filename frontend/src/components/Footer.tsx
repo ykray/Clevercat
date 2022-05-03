@@ -3,7 +3,10 @@ import React from 'react';
 export default function Footer() {
   return (
     <div className={'footer'}>
-      <p>Copyright &copy; {new Date().getFullYear()} | Yulian Kraynyak</p>
+      <p>
+        &copy; {new Date().getFullYear()} |{' '}
+        <a href="https://yulian.codes">Yulian Kraynyak</a>
+      </p>
     </div>
   );
 }

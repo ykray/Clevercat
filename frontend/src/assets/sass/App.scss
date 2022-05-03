@@ -162,13 +162,25 @@ a {
 }
 
 .footer {
-  padding-top: 100px;
-
-  p {
-    text-align: left;
-    font-family: 'GilroySemibold';
-    font-size: 0.9rem;
+  a {
+    &:hover {
+      background-color: transparent;
+    }
+    font-weight: 500;
     color: $color-muted-400;
+  }
+  padding-top: 30px;
+  p {
+    &:hover {
+      color: $color-muted-400;
+      background-color: transparent;
+    }
+    text-align: left;
+    font-family: 'Roboto';
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: $color-muted-400;
+    cursor: default;
   }
 }
 

@@ -59,7 +59,7 @@ export default function Signup() {
 
     if (usernameInput && usernameAvailable) {
       if (emailInput && emailRegex.test(emailInput)) {
-        if (passwordInput) {
+        if (passwordInput && passwordInput.length > 5) {
           if (confirmPasswordInput) {
             if (passwordInput === confirmPasswordInput) {
               // Attempt signup

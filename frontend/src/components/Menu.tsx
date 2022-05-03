@@ -10,6 +10,7 @@ import { Topic } from '../utils/Types';
 // Data
 import API from '../data/FrontendAPI';
 import { useLocation } from 'react-router-dom';
+import Footer from './Footer';
 
 type Props = {
   show?: boolean;
@@ -88,6 +89,7 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
         >
           <h2>Topics</h2>
           {renderTopics()}
+          <Footer />
         </div>
       </Slide>
     );

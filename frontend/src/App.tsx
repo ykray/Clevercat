@@ -2,7 +2,7 @@ import { useState, useEffect, createContext } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 // MUI
-import { Grid, Stack, ThemeProvider, useMediaQuery } from '@mui/material';
+import { Grid, Stack, ThemeProvider } from '@mui/material';
 
 // Assets
 import './assets/sass/App.scss';
@@ -20,11 +20,9 @@ import API from './data/FrontendAPI';
 import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
 import ScrollToTop from './components/ScrollToTop';
-import Footer from './components/Footer';
 import PrivateWrapper from './utils/PrivateWrapper';
 import Signup from './components/Signup';
 import MainHeader from './components/header/MainHeader';
-import Menu from './components/Menu';
 import PublicWrapper from './utils/PublicWrapper';
 
 export const UserContext = createContext<string | undefined>(undefined);
@@ -73,6 +71,7 @@ function App() {
                   alignItems={'flex-start'}
                   spacing={2}
                   maxWidth={'70%'}
+                  pb={'50px'}
                 >
                   <Routes>
                     <Route path={'/'} element={<HotQuestions />} />
@@ -92,7 +91,6 @@ function App() {
                     <Route path={'/topics/*'} element={<TopicFeed />} />
                     <Route index element={<HotQuestions />} />
                   </Routes>
-                  <Footer />
                 </Stack>
 
                 <div
