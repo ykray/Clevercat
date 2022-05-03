@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 import KittyImage from '../../assets/images/kitty.png';
+import KittyFilledImage from '../../assets/images/kitty-filled.png';
 
 // MUI
 import { IconButton, Stack } from '@mui/material';

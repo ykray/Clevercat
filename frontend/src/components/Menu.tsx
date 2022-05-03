@@ -66,7 +66,7 @@ export default function Menu({ show, topAnchor = 0 }: Props) {
             paddingTop: topAnchor,
           }}
         >
-          <h1>Topics</h1>
+          <h2>Topics</h2>
           {renderTopics()}
         </div>
       </Slide>
