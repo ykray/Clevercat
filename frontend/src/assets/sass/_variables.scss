@@ -15,7 +15,7 @@ $color-text-body: #2c3641;
 $color-muted-100: #d9e1ec;
 $color-muted-200: #96adce;
 $color-muted-300: #859bb9;
-$color-muted-400: #71849f;
+$color-muted-400: #5b6d87;
 $color-muted-500: #425368;
 
 $color-surface-300: #f5f8fc;
@@ -63,8 +63,8 @@ $transition-exit: all 0.08s;
   color_surface_500: $color-surface-500;
   color_surface_600: $color-surface-600;
 
-  color_text-header: $color-text-header;
-  color_text-body: $color-text-body;
+  color_text_header: $color-text-header;
+  color_text_body: $color-text-body;
 
   color_muted_100: $color-muted-100;
   color_muted_200: $color-muted-200;
@@ -72,8 +72,9 @@ $transition-exit: all 0.08s;
   color_muted_400: $color-muted-400;
   color_muted_500: $color-muted-500;
 
+  radius: $radius;
+  radius_sm: $radius-sm;
+
   transition_enter: $transition-enter;
   transition_exit: $transition-exit;
-
-  radius: $radius;
 }

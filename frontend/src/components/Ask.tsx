@@ -63,9 +63,15 @@ const Ask = ({}: Props) => {
             key={topic.category}
             value={topic.category}
             style={{
+              marginTop: 10,
+              marginBottom: 10,
+              fontFamily: 'GilroySemibold',
+              textTransform: 'uppercase',
+              letterSpacing: '2px',
+              fontSize: '0.9rem',
               paddingLeft: 10,
               color:
-                topic.category === selectedTopic ? '' : styles.color_muted_300,
+                topic.category === selectedTopic ? '' : styles.color_text_body,
             }}
           >
             {topic.category}

@@ -135,6 +135,7 @@ a {
     }
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 400;
     line-height: 1.3rem;
     @include transition-exit;
   }
@@ -142,9 +143,11 @@ a {
   .category {
     padding-top: 10px;
     padding-bottom: 8px;
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-family: 'GilroySemibold';
-    color: $color-text-header;
+    color: $color-text-body;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     margin-bottom: 4px;
   }
 
@@ -154,7 +157,7 @@ a {
     margin-top: 3px;
     margin-bottom: 3px;
     font-family: 'Roboto';
-    color: $color-text-body;
+    color: $color-muted-400;
   }
 }
 
@@ -296,15 +299,21 @@ a {
     padding-bottom: 5px;
     border-radius: $radius;
     line-height: 1rem;
-    font-family: 'Gilroy-Semibold';
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-family: 'GilroySemibold';
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    filter: saturate(100%);
     @include transition-exit;
 
     span {
-      color: $color-muted-300;
+      color: $color-text-body;
     }
 
     &:hover {
+      filter: saturate(0%);
+      opacity: 0.6;
+
       &::after {
         background-color: none;
       }
@@ -313,8 +322,6 @@ a {
       a {
         color: $color-muted-500;
       }
-      background-color: white;
-      box-shadow: 0px 4px 7px $color-surface-500;
     }
 
     &:last-child {
@@ -330,10 +337,10 @@ a {
     }
 
     &::after {
-      content: '>';
-      color: $color-muted-200;
-      margin-right: 5px;
-      margin-left: 12px;
+      content: '/';
+      color: $color-text-body;
+      margin-right: -6px;
+      margin-left: 2px;
     }
   }
 }
@@ -618,7 +625,9 @@ a {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.625;
+    line-height: 1.55rem;
+    font-size: 1.1rem;
+    font-weight: 400;
     color: $color-muted-500;
   }
 

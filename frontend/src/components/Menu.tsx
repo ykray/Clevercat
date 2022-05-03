@@ -60,6 +60,7 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
                       }}
                       className={`${x.subtopic ? 'subtopic' : 'category'}`}
                       style={{
+                        fontWeight: activeTopic ? 500 : '',
                         color: activeTopic ? 'white' : '',
                         backgroundColor: activeTopic
                           ? styles.color_primary_500
