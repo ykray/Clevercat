@@ -1,3 +1,4 @@
+import { SHA256 } from 'crypto-js';
 import { ENDPOINT } from '../utils/Constants';
 
 // Utils
@@ -7,6 +8,7 @@ import {
   Question,
   QuestionPost,
   SearchScope,
+  AccountData,
   Topic,
   User,
 } from '../utils/Types';
@@ -97,17 +99,41 @@ export default class API {
 
   // Auth API
   static Auth = class {
-    static login = (username: string, password: string) => {
+    static signup = (data: AccountData) => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/login`, {
+        fetch(`${ENDPOINT}/auth/signup`, {
           credentials: 'include',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username: username.trim().replace('@', ''),
-            password: password.trim(),
+            username: data.username.trim(),
+            email: data.email,
+            password: SHA256(data.password).toString(),
+          }),
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
+    static login = (data: AccountData) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/auth/login`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: data.username.trim().replace('@', ''),
+            password: SHA256(data.password).toString(),
           }),
         })
           .then((res) => {
@@ -122,7 +148,7 @@ export default class API {
 
     static logout = () => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/logout`, {
+        fetch(`${ENDPOINT}/auth/logout`, {
           method: 'DELETE',
           credentials: 'include',
           headers: {
@@ -145,7 +171,7 @@ export default class API {
 
     static currentUser = (): Promise<string> => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/current-user`, {
+        fetch(`${ENDPOINT}/auth/current-user`, {
           credentials: 'include',
         })
           .then((res) => {

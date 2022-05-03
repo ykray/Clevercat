@@ -258,8 +258,31 @@ export default class API {
     };
   };
 
-  // Users API
-  static Users = class {
+  // Auth API
+  static Auth = class {
+    static signup = (req: any, res: any) => {
+      console.log(req.body);
+      const query = {
+        text: `--sql
+          INSERT INTO users(username, email, password)
+          VALUES ($1, $2, $3)
+          RETURNING *
+        `,
+        values: [req.body.username, req.body.email, req.body.password],
+      };
+
+      pool
+        .query(query)
+        .then((results) => {
+          const user = JSON.parse(results.rows[0]);
+          req.sendStatus(200);
+        })
+        .catch((error) => {
+          // log.fatal(error);
+          res.sendStatus(400);
+        });
+    };
+
     static login = (req: any, res: any) => {
       const { user } = req;
       res.json(user);
@@ -283,7 +306,10 @@ export default class API {
         res.status(401).send(null);
       }
     };
+  };
 
+  // Users API
+  static Users = class {
     static updateBio = (req: any, res: any) => {
       const newBio: string = req.body.newBio;
       log.debug(req.user);

@@ -1,3 +1,9 @@
+export type AccountData = {
+  username: string;
+  email?: string;
+  password: string;
+};
+
 export type Topic = {
   category: string;
   subtopic: string | null;

@@ -99,9 +99,10 @@ app.use(express_1.default.json());
 app.get('/', (req, res) => {
     res.status(200).send('hi');
 });
-app.delete('/logout', BackendAPI_1.default.Users.logout);
-app.get('/current-user', BackendAPI_1.default.Users.currentUser);
-app.post('/login', passport_1.default.authenticate('local'), BackendAPI_1.default.Users.login);
+app.post('/auth/signup', BackendAPI_1.default.Auth.signup);
+app.post('/auth/login', passport_1.default.authenticate('local'), BackendAPI_1.default.Auth.login);
+app.delete('/auth/logout', BackendAPI_1.default.Auth.logout);
+app.get('/auth/current-user', BackendAPI_1.default.Auth.currentUser);
 // Users Routes
 app.get('/usernames/:username', (req, res) => {
     BackendAPI_1.default.Users.getUserFromUsername(req.params.username)

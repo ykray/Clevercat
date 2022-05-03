@@ -7,6 +7,7 @@ import { Button, Stack, TextField } from '@mui/material';
 
 // Data
 import API from '../data/FrontendAPI';
+import { AccountData } from '../utils/Types';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,10 +19,12 @@ export default function Login() {
   const [errorLogin, setErrorLogin] = useState(false);
 
   const handleLogin = () => {
-    const passwordHash = SHA256(passwordInput).toString();
-    API.Auth.login(usernameInput, passwordHash)
+    const accountData: AccountData = {
+      username: usernameInput,
+      password: passwordInput,
+    };
+    API.Auth.login(accountData)
       .then((res: any) => {
-        // Save username to populate login field later on (if/when the user logs out)
         localStorage.setItem('username', res.username);
         navigate(`/@${res.username}`);
       })
@@ -34,7 +37,9 @@ export default function Login() {
     <div className={'login'}>
       <h1>Welcome back!</h1>
       <Stack spacing={2} maxWidth={500}>
-        <p>Enter your username and password to login.</p>
+        <p style={{ marginBottom: 30 }}>
+          Enter your username and password to login.
+        </p>
 
         <TextField
           value={usernameInput}
@@ -56,7 +61,7 @@ export default function Login() {
         ) : null}
         <Button
           variant={'contained'}
-          style={{ width: 'auto', maxWidth: 130 }}
+          style={{ width: 'auto', maxWidth: 130, marginTop: 30 }}
           onClick={handleLogin}
         >
           Login

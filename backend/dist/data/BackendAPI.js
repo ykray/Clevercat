@@ -220,8 +220,29 @@ class API {
             });
         };
     };
-    // Users API
-    static Users = class {
+    // Auth API
+    static Auth = class {
+        static signup = (req, res) => {
+            console.log(req.body);
+            const query = {
+                text: `--sql
+          INSERT INTO users(username, email, password)
+          VALUES ($1, $2, $3)
+          RETURNING *
+        `,
+                values: [req.body.username, req.body.email, req.body.password],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const user = JSON.parse(results.rows[0]);
+                req.sendStatus(200);
+            })
+                .catch((error) => {
+                // log.fatal(error);
+                res.sendStatus(400);
+            });
+        };
         static login = (req, res) => {
             const { user } = req;
             res.json(user);
@@ -244,6 +265,9 @@ class API {
                 res.status(401).send(null);
             }
         };
+    };
+    // Users API
+    static Users = class {
         static updateBio = (req, res) => {
             const newBio = req.body.newBio;
             Logger_1.default.debug(req.user);
@@ -297,7 +321,7 @@ class API {
                 text: `--sql
           SELECT *
           FROM questions
-          WHERE uid::text = $1;
+          WHERE uid::TEXT = $1;
           `,
                 values: [req.params.uid],
             };

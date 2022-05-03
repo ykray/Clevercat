@@ -157,7 +157,7 @@ export default function SearchBar({ mobile = false }: Props) {
             }
           }}
           InputProps={{
-            startAdornment: <SearchIcon className={'search-icon'} />,
+            startAdornment: <SearchIcon className={'textfield-icon'} />,
             endAdornment: (
               <InputAdornment position="start">
                 {searchQuery.query ? (

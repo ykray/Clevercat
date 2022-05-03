@@ -110,9 +110,10 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).send('hi');
 });
-app.delete('/logout', API.Users.logout);
-app.get('/current-user', API.Users.currentUser);
-app.post('/login', passport.authenticate('local'), API.Users.login);
+app.post('/auth/signup', API.Auth.signup);
+app.post('/auth/login', passport.authenticate('local'), API.Auth.login);
+app.delete('/auth/logout', API.Auth.logout);
+app.get('/auth/current-user', API.Auth.currentUser);
 
 // Users Routes
 app.get('/usernames/:username', (req, res) => {

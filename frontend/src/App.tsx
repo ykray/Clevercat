@@ -63,11 +63,16 @@ function App() {
             <MainHeader />
 
             <div className={'main'}>
-              <Stack direction={'row'}>
+              <Stack
+                direction={'row'}
+                justifyContent={'space-between'}
+                spacing={2}
+              >
                 <Stack
                   direction={'column'}
                   alignItems={'flex-start'}
                   spacing={2}
+                  maxWidth={'70%'}
                 >
                   <Routes>
                     <Route path={'/'} element={<HotQuestions />} />
@@ -90,7 +95,13 @@ function App() {
                   <Footer />
                 </Stack>
 
-                <div style={{ width: '50%' }}></div>
+                <div
+                  className={'hide-on-mobile'}
+                  style={{
+                    width: '30%',
+                    // backgroundColor: 'green',
+                  }}
+                ></div>
               </Stack>
               {location.pathname === '/ask' ||
               location.pathname === '/login' ||
