@@ -107,13 +107,14 @@ export default function SearchBar({ mobile = false }: Props) {
 
   const handleSearch = () => {
     if (searchQuery) {
-      navigate({
-        pathname: 'search',
-        search: createSearchParams({
-          q: searchQuery.query,
-          scope: searchQuery.scope,
-        }).toString(),
-      });
+      window.location.href = `/search?q=${searchQuery.query}&?scope=${searchQuery.scope}`;
+      // navigate({
+      //   pathname: 'search',
+      //   search: createSearchParams({
+      //     q: searchQuery.query,
+      //     scope: searchQuery.scope,
+      //   }).toString(),
+      // });
     }
   };
 

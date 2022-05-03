@@ -26,7 +26,7 @@ const Ask = ({}: Props) => {
 
   const [topics, setTopics] = useState<Topic[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>(
-    searchParams.get('topic')?.split('.').pop() ?? undefined
+    searchParams.get('topic') ?? undefined
   );
   const [title, setTitle] = useState<string>('');
   const [body, setBody] = useState<string>('');
@@ -47,12 +47,24 @@ const Ask = ({}: Props) => {
     setErrorTopic(false);
   }, [selectedTopic]);
 
+  const toTopicPath = (topic: Topic) => {
+    return (
+      topic.category +
+      '.' +
+      (topic.subtopic ?? '')
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+          return word.toUpperCase();
+        })
+        .replace(/\s+/g, '')
+    );
+  };
+
   const renderTopics = () => {
     return topics.map((topic) => {
       // is a subtopic
       if (topic.subtopic) {
         return (
-          <MenuItem key={topic.subtopic} value={topic.subtopic}>
+          <MenuItem key={topic.subtopic} value={toTopicPath(topic)}>
             {topic.subtopic}
           </MenuItem>
         );
@@ -155,7 +167,7 @@ const Ask = ({}: Props) => {
           <InputLabel htmlFor="grouped-select">Topic</InputLabel>
 
           <Select
-            value={selectedTopic}
+            value={selectedTopic?.split('.').pop()}
             onChange={handleTopicSelect}
             id="topic-select"
             label="Topic"

@@ -205,6 +205,8 @@ export default class API {
           .then((res) => {
             const results: QuestionPost[] = JSON.parse(res);
 
+            console.log(results);
+
             // console.log('FrontendAPI:', results);
             resolve(results);
           })

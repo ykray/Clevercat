@@ -197,18 +197,19 @@ export default class API {
             questions q
               JOIN answers a ON q.qid = a.qid
           WHERE
-            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term) AND
-            q.topic = 'Science.Biology'
+            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
           ORDER BY q.qid, rank DESC;
         `,
         values: [searchQuery],
       };
-      const query =
-        searchScope === SearchScope.Questions
-          ? query_questions
-          : SearchScope.Answers
-          ? query_answers
-          : query_all;
+      // TODO: - Fix scope handling
+      // const query =
+      //   searchScope === SearchScope.Questions
+      //     ? query_questions
+      //     : SearchScope.Answers
+      //     ? query_answers
+      //     : query_all;
+      const query = query_all;
 
       return new Promise((resolve, reject) => {
         const searchResults: any[] = [];

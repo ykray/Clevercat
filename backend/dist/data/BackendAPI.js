@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const spellchecker_1 = __importDefault(require("spellchecker"));
 // Logging
 const chalk_1 = __importDefault(require("chalk"));
-// Types
-const Types_1 = require("../src/Types");
 // Utils
 const Logger_1 = __importDefault(require("../utils/Logger"));
 const pool_1 = __importDefault(require("../src/pool"));
@@ -171,17 +169,18 @@ class API {
             questions q
               JOIN answers a ON q.qid = a.qid
           WHERE
-            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term) AND
-            q.topic = 'Science.Biology'
+            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
           ORDER BY q.qid, rank DESC;
         `,
                 values: [searchQuery],
             };
-            const query = searchScope === Types_1.SearchScope.Questions
-                ? query_questions
-                : Types_1.SearchScope.Answers
-                    ? query_answers
-                    : query_all;
+            // const query =
+            //   searchScope === SearchScope.Questions
+            //     ? query_questions
+            //     : SearchScope.Answers
+            //     ? query_answers
+            //     : query_all;
+            const query = query_all;
             return new Promise((resolve, reject) => {
                 const searchResults = [];
                 pool_1.default

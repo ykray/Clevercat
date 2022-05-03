@@ -480,7 +480,7 @@ a {
 .profile-container {
   h1 {
     font-family: 'Roboto';
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 0;
   }
   h2 {
@@ -493,7 +493,7 @@ a {
 }
 
 .profile-avatar {
-  $size: 160px;
+  $size: 130px;
 
   border-radius: $radius * 2000.5;
   width: $size;
