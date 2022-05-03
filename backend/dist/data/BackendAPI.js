@@ -458,16 +458,17 @@ class API {
                     // Get answers to question
                     this.getAnswers(qid).then((answers) => {
                         // Get best answer (if exists)
-                        this.getBestAnswer(qid).then((bestAnswer) => {
+                        this.getBestAnswer(question.qid).then((bestAnswer) => {
                             if (bestAnswer) {
-                                const bestAnswer_index = answers.findIndex((x) => x.qid === bestAnswer.qid);
+                                const bestAnswer_index = answers.findIndex((x) => x.uid === bestAnswer.uid);
                                 answers[bestAnswer_index].bestAnswer = true;
                             }
                             answers = answers.map((answer) => ({
                                 ...answer,
-                                q_uid: 's',
+                                q_uid: question.uid,
                             }));
-                            Logger_1.default.debug(answers);
+                            // log.debug(answers);
+                            answers.sort((a, b) => a.bestAnswer - b.bestAnswer);
                             resolve({
                                 question,
                                 answers,
@@ -485,8 +486,8 @@ class API {
             const query = {
                 text: `--sql
           SELECT *
-          FROM BestAnswers b
-          WHERE b.qid = $1;
+          FROM bestanswers
+          WHERE qid = $1
         `,
                 values: [qid],
             };
@@ -581,25 +582,24 @@ class API {
                 res.sendStatus(401);
             }
         };
-        static best = (req, res) => {
+        static selectBestAnswer = (req, res) => {
             const query = {
                 text: `--sql
-          INSERT INTO bestAnswer(qid, uid)
+          INSERT INTO bestanswers(qid, uid)
           VALUES ($1, $2)
-          ON CONFLICT (qid, uid)
+          ON CONFLICT (qid)
             DO UPDATE SET uid = $2;
         `,
                 values: [req.body.qid, req.body.uid],
             };
-            return new Promise((resolve, reject) => {
-                pool_1.default
-                    .query(query)
-                    .then((results) => {
-                    resolve(results);
-                })
-                    .catch((error) => {
-                    reject(error);
-                });
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                res.sendStatus(200);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal(error);
+                res.sendStatus(400);
             });
         };
         static checkIfVoted = (answerID, voter_uid) => {

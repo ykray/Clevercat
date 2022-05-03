@@ -39,7 +39,7 @@ export default function PostAnswer({ qid }: Props) {
         qid,
         body: answerInput,
       };
-      API.Answers.post(answer).then((res) => {});
+      API.Answers.postAnswer(answer).then((res) => {});
     }
   };
 

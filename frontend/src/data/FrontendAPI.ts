@@ -217,7 +217,27 @@ export default class API {
 
   // Answers API
   static Answers = class {
-    static post = (answer: any) => {
+    static selectBestAnswer = (answer: Answer) => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/select-best-answer`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(answer),
+        })
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
+    static postAnswer = (answer: any) => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/post-answer`, {
           credentials: 'include',
@@ -403,10 +423,20 @@ export default class API {
             return res.text();
           })
           .then((res) => {
-            const item = JSON.parse(res);
+            const item: QuestionPost = JSON.parse(res);
+            var answers = item.answers;
+
+            answers = answers?.sort(
+              (a: Answer, b: Answer) =>
+                ((b.bestAnswer as any) || false) -
+                ((a.bestAnswer as any) || false)
+            );
+
+            console.log(answers);
+
             resolve({
               question: item.question,
-              answers: item.answers,
+              answers: answers,
             });
           })
           .catch((error) => {

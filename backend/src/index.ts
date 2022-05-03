@@ -174,6 +174,7 @@ app.get('/votes/:answerID/:voter_uid', (req, res) => {
     });
 });
 app.post('/post-answer', requiresLogin, API.Answers.post);
+app.post('/select-best-answer', requiresLogin, API.Answers.selectBestAnswer);
 
 app.get('/karma/:answerID', (req, res) => {
   API.Answers.getKarmaCount(req.params.answerID)

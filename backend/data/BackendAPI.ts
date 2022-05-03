@@ -530,25 +530,25 @@ export default class API {
             // Get answers to question
             this.getAnswers(qid).then((answers: Answer[]) => {
               // Get best answer (if exists)
-              this.getBestAnswer(qid).then((bestAnswer: BestAnswer) => {
-                if (bestAnswer) {
-                  const bestAnswer_index = answers.findIndex(
-                    (x: Answer) => x.qid === bestAnswer.qid
-                  );
-                  answers[bestAnswer_index].bestAnswer = true;
+              this.getBestAnswer(question.qid).then(
+                (bestAnswer: BestAnswer) => {
+                  if (bestAnswer) {
+                    const bestAnswer_index = answers.findIndex(
+                      (x: Answer) => x.uid === bestAnswer.uid
+                    );
+                    answers[bestAnswer_index].bestAnswer = true;
+                  }
+                  answers = answers.map((answer) => ({
+                    ...answer,
+                    q_uid: question.uid,
+                  }));
+
+                  resolve({
+                    question,
+                    answers,
+                  });
                 }
-                answers = answers.map((answer) => ({
-                  ...answer,
-                  q_uid: 's',
-                }));
-
-                log.debug(answers);
-
-                resolve({
-                  question,
-                  answers,
-                });
-              });
+              );
             });
           })
           .catch((error) => {
@@ -562,8 +562,8 @@ export default class API {
       const query = {
         text: `--sql
           SELECT *
-          FROM BestAnswers b
-          WHERE b.qid = $1;
+          FROM bestanswers
+          WHERE qid = $1
         `,
         values: [qid],
       };
@@ -665,27 +665,26 @@ export default class API {
       }
     };
 
-    static best = (req: any, res: any) => {
+    static selectBestAnswer = (req: any, res: any) => {
       const query = {
         text: `--sql
-          INSERT INTO bestAnswer(qid, uid)
+          INSERT INTO bestanswers(qid, uid)
           VALUES ($1, $2)
-          ON CONFLICT (qid, uid)
+          ON CONFLICT (qid)
             DO UPDATE SET uid = $2;
         `,
         values: [req.body.qid, req.body.uid],
       };
 
-      return new Promise((resolve, reject) => {
-        pool
-          .query(query)
-          .then((results) => {
-            resolve(results);
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
+      pool
+        .query(query)
+        .then((results) => {
+          res.sendStatus(200);
+        })
+        .catch((error) => {
+          log.fatal(error);
+          res.sendStatus(400);
+        });
     };
 
     static checkIfVoted = (

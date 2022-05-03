@@ -9,9 +9,9 @@ import KarmaVoter from './KarmaVoter';
 import AuthorComponent from './AuthorComponent';
 
 // MUI
-import { IconButton, Stack, Tooltip } from '@mui/material';
-import { Stars as BestAnswerIcon } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 import { UserContext } from '../App';
+import API from '../data/FrontendAPI';
 
 type Props = {
   answer: Answer;
@@ -20,16 +20,12 @@ type Props = {
 const AnswerComponent = ({ answer }: Props) => {
   const currentUser = useContext(UserContext);
 
-  const handleBest = () => {
-    // TODO:
-  };
-
   return (
     <div
       className="answer-container"
       style={{
         backgroundColor: answer.bestAnswer ? styles.color_primary_300 : '',
-        borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
+        // borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
       }}
     >
       {currentUser === answer.uid}

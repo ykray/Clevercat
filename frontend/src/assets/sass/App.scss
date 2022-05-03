@@ -529,6 +529,22 @@ a {
     height: 50px;
     transition: $transition-exit;
   }
+
+  .best-answer-icon {
+    &:hover {
+      background-color: transparent;
+      img {
+        filter: saturate(100%) brightness(100%);
+        @include transition-enter;
+      }
+    }
+    img {
+      width: 28px;
+      height: 28px;
+      filter: saturate(4%) brightness(175%);
+      @include transition-exit;
+    }
+  }
 }
 
 .search-bar {

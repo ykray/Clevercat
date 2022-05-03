@@ -158,6 +158,7 @@ app.get('/votes/:answerID/:voter_uid', (req, res) => {
     });
 });
 app.post('/post-answer', requiresLogin, BackendAPI_1.default.Answers.post);
+app.post('/select-best-answer', requiresLogin, BackendAPI_1.default.Answers.selectBestAnswer);
 app.get('/karma/:answerID', (req, res) => {
     BackendAPI_1.default.Answers.getKarmaCount(req.params.answerID)
         .then((count) => {
