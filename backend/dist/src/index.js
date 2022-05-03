@@ -104,6 +104,7 @@ app.post('/auth/login', passport_1.default.authenticate('local'), BackendAPI_1.d
 app.delete('/auth/logout', BackendAPI_1.default.Auth.logout);
 app.get('/auth/current-user', BackendAPI_1.default.Auth.currentUser);
 // Users Routes
+app.get('/available/:username', BackendAPI_1.default.Users.isUsernameAvailable);
 app.get('/usernames/:username', (req, res) => {
     BackendAPI_1.default.Users.getUserFromUsername(req.params.username)
         .then((user) => {

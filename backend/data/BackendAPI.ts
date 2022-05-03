@@ -310,6 +310,29 @@ export default class API {
 
   // Users API
   static Users = class {
+    static isUsernameAvailable = (req: any, res: any) => {
+      const query = {
+        text: `--sql
+          SELECT username
+          FROM users
+          WHERE username = $1
+          `,
+        values: [req.params.username],
+      };
+
+      pool
+        .query(query)
+        .then((results) => {
+          const available = results.rowCount === 0;
+          log.debug(available);
+          res.status(200).send(available);
+        })
+        .catch((error) => {
+          log.fatal(error);
+          res.sendStatus(400);
+        });
+    };
+
     static updateBio = (req: any, res: any) => {
       const newBio: string = req.body.newBio;
       log.debug(req.user);

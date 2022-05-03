@@ -309,6 +309,24 @@ export default class API {
 
   // Users API
   static Users = class {
+    static isUsernameAvailable = (username: string): Promise<boolean> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/available/${username}`, {
+          credentials: 'include',
+        })
+          .then((res) => {
+            return res.text();
+          })
+          .then((res) => {
+            const available = JSON.parse(res);
+            resolve(available);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    };
+
     static askQuestion = (question: Question) => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/ask`, {

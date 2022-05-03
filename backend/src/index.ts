@@ -116,6 +116,7 @@ app.delete('/auth/logout', API.Auth.logout);
 app.get('/auth/current-user', API.Auth.currentUser);
 
 // Users Routes
+app.get('/available/:username', API.Users.isUsernameAvailable);
 app.get('/usernames/:username', (req, res) => {
   API.Users.getUserFromUsername(req.params.username)
     .then((user) => {

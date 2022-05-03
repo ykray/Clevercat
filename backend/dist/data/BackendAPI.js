@@ -268,6 +268,27 @@ class API {
     };
     // Users API
     static Users = class {
+        static isUsernameAvailable = (req, res) => {
+            const query = {
+                text: `--sql
+          SELECT username
+          FROM users
+          WHERE username = $1
+          `,
+                values: [req.params.username],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const available = results.rowCount === 0;
+                Logger_1.default.debug(available);
+                res.status(200).send(available);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal(error);
+                res.sendStatus(400);
+            });
+        };
         static updateBio = (req, res) => {
             const newBio = req.body.newBio;
             Logger_1.default.debug(req.user);

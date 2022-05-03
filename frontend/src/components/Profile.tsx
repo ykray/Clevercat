@@ -162,7 +162,7 @@ export default function Profile() {
       <p>
         User <span className={'highlight-2'}>@{username}</span> doesn't exist (
         <span style={{ fontStyle: 'italic' }}>yet,</span>{' '}
-        {<Link to={'/signup'}>claim this username!</Link>}).
+        {<Link to={`/signup?u=${username}`}>claim this username!</Link>}).
       </p>
     </>
   ) : null;

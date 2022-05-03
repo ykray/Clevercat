@@ -610,6 +610,20 @@ a {
   color: $color-muted-400;
 }
 
+.username-availability {
+  .MuiSvgIcon-root {
+    width: 16px;
+    height: 16px;
+    color: $color-primary-500;
+  }
+
+  p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $color-primary-500;
+  }
+}
+
 .search-scope-container {
   position: absolute;
   overflow: hidden;

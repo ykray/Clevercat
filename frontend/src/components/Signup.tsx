@@ -1,35 +1,51 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { SHA256 } from 'crypto-js';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 // Assets
 import KittyImage from '../assets/images/kitty.png';
+import styles from '../assets/sass/_variables.scss';
 
 // MUI
-import { Button, Grid, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import {
   Lock as PasswordIcon,
   EmailRounded as EmailIcon,
+  Check as AvailableIcon,
+  Close as TakenIcon,
 } from '@mui/icons-material';
 
 // Data
 import API from '../data/FrontendAPI';
 import { AccountData } from '../utils/Types';
-import { clear } from 'console';
 
 export default function Signup() {
   const navigate = useNavigate();
 
-  const [usernameInput, setUsernameInput] = useState<string>('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // States inputs
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean>();
+  const [usernameInput, setUsernameInput] = useState<string>(
+    searchParams.get('u') || ''
+  );
   const [emailInput, setEmailInput] = useState<string>('');
   const [passwordInput, setPasswordInput] = useState<string>('');
   const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>('');
-  const [errorSignup, setErrorSignup] = useState(false);
 
+  // States errors
+  const [errorSignup, setErrorSignup] = useState(false);
   const [errorUsername, setErrorUsername] = useState(false);
   const [errorEmail, setErrorEmail] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    if (usernameInput) {
+      API.Users.isUsernameAvailable(usernameInput).then((available) => {
+        setUsernameAvailable(available);
+      });
+    }
+  }, [usernameInput]);
 
   const clearErrors = () => {
     setErrorUsername(false);
@@ -104,6 +120,36 @@ export default function Signup() {
           }}
           InputProps={{
             startAdornment: <p className={'textfield-icon'}>@</p>,
+            endAdornment:
+              usernameInput.length > 0 ? (
+                <Stack
+                  direction={'row'}
+                  spacing={'5px'}
+                  alignItems={'center'}
+                  className={'username-availability'}
+                >
+                  {usernameAvailable ? (
+                    <AvailableIcon
+                      style={{
+                        color: !usernameAvailable ? styles.color_muted_300 : '',
+                      }}
+                    />
+                  ) : (
+                    <TakenIcon
+                      style={{
+                        color: !usernameAvailable ? styles.color_muted_300 : '',
+                      }}
+                    />
+                  )}
+                  <p
+                    style={{
+                      color: !usernameAvailable ? styles.color_muted_300 : '',
+                    }}
+                  >
+                    {usernameAvailable ? 'Available' : 'Taken'}
+                  </p>
+                </Stack>
+              ) : null,
           }}
         />
         <TextField
