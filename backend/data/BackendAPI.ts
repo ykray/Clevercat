@@ -543,6 +543,12 @@ export default class API {
                     q_uid: question.uid,
                   }));
 
+                  answers = answers?.sort(
+                    (a: Answer, b: Answer) =>
+                      ((b.bestAnswer as any) || false) -
+                      ((a.bestAnswer as any) || false)
+                  );
+
                   resolve({
                     question,
                     answers,

@@ -436,7 +436,7 @@ export default class API {
 
             resolve({
               question: item.question,
-              answers: answers,
+              answers: item.answers,
             });
           })
           .catch((error) => {

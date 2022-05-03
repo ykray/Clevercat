@@ -467,8 +467,8 @@ class API {
                                 ...answer,
                                 q_uid: question.uid,
                             }));
-                            // log.debug(answers);
-                            answers.sort((a, b) => a.bestAnswer - b.bestAnswer);
+                            answers = answers?.sort((a, b) => (b.bestAnswer || false) -
+                                (a.bestAnswer || false));
                             resolve({
                                 question,
                                 answers,
