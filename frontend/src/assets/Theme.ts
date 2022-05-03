@@ -38,7 +38,7 @@ const Theme = createTheme({
           fontFamily: 'Roboto',
           fontWeight: 500,
           color: styles.color_text,
-          backgroundColor: 'transparent',
+          backgroundColor: 'white',
           borderColor: styles.color_surface_500,
           borderWidth: '1.4px',
           borderRadius: 50,

@@ -12,6 +12,9 @@ export default function MainHeader() {
       alignItems={'flex-start'}
       justifyContent={'space-between'}
       spacing={2}
+      style={{
+        paddingBottom: 5,
+      }}
     >
       <SearchBar />
       <div className={'hide-on-mobile'}>

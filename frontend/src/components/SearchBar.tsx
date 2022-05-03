@@ -130,9 +130,11 @@ export default function SearchBar({ mobile = false }: Props) {
       className={
         mobile ? 'search-bar hide-on-desktop' : 'search-bar hide-on-mobile'
       }
-      style={{ width: searchBarFocus ? '55%' : '' }}
+      style={{
+        width: searchBarFocus ? '55%' : '',
+      }}
     >
-      <Stack spacing={0}>
+      <Stack spacing={0} position={'relative'}>
         <TextField
           focused={searchBarFocus}
           inputRef={inputRef}

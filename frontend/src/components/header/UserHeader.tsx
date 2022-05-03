@@ -49,8 +49,17 @@ export default function UserHeader() {
       </Tooltip>
     </Stack>
   ) : location.pathname === '/ask' ? null : (
-    <Button variant={'contained'} onClick={() => navigate('/signup')}>
-      Signup
-    </Button>
+    <Stack direction={'row'} spacing={1}>
+      <Button
+        className={'login-button'}
+        variant={'contained'}
+        onClick={() => navigate('/login')}
+      >
+        Login
+      </Button>
+      <Button variant={'contained'} onClick={() => navigate('/signup')}>
+        Signup
+      </Button>
+    </Stack>
   );
 }

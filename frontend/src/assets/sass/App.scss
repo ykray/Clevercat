@@ -57,33 +57,43 @@ a {
   // z-index: 99999;
 }
 
+.container {
+  padding-top: 25px;
+  padding-bottom: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
 .sidebar {
   height: auto;
+  overflow: scroll;
 }
 
 .main {
   width: 100%;
-  min-height: 120vh;
-}
-
-// TODO: - Handle stack collapses on mobile
-.collapse-main {
-  flex-direction: row;
-  align-items: flex-start;
-}
-
-.collapse-sidebar {
-  flex-direction: column;
-  align-items: center;
+  overflow-y: scroll;
+  padding-top: 48px;
+  padding-bottom: 25px;
+  max-height: 82vh;
 }
 
 .main-header {
   position: relative;
-  width: 90%;
+  width: 100%; // was 90%, but forgot why, so keeping commented just in case something breaks
   margin: 0 auto;
   z-index: 99999;
 }
 
+.login-button {
+  &.MuiButton-root {
+    &:hover {
+      background-color: $color-surface-300;
+    }
+    color: $color-muted-500;
+    background-color: transparent;
+    // border: 1.7px solid $color-surface-400;
+  }
+}
 .menu-container {
   width: 60%;
 }
@@ -136,17 +146,18 @@ a {
   }
 
   .subtopic {
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-left: -10px;
-
-    padding-top: 9px;
-    padding-bottom: 7px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     font-family: 'Roboto';
     color: $color-text-body;
   }
 }
 
 .footer {
-  margin-top: 50px;
+  padding-top: 100px;
 
   p {
     text-align: left;
@@ -513,7 +524,7 @@ a {
 
 .search-bar {
   width: 40%;
-  background-color: white;
+  background-color: transparent;
   @include transition-enter();
 
   .MuiOutlinedInput-root {
@@ -570,7 +581,10 @@ a {
 }
 
 .search-scope-container {
+  position: absolute;
   overflow: hidden;
+  top: 40px;
+  right: 0;
   padding-right: 6px;
   padding-top: 7px;
 }
@@ -631,8 +645,13 @@ a {
 }
 
 .login {
+  h1 {
+    margin: 0;
+    margin-bottom: 20px;
+  }
   p {
     margin-left: 0;
+    margin-bottom: 10px;
   }
 }
 
@@ -805,7 +824,7 @@ a {
   }
 
   .main {
-    width: auto;
+    // width: auto;
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -869,13 +888,10 @@ a {
     }
   }
 
-  // TODO: - Handle stack collapses on mobile
-  .collapse-sidebar {
-    align-items: stretch;
-    flex-direction: row;
-  }
-  .collapse-main {
-    align-items: flex-start;
-    flex-direction: column;
+  .container {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }

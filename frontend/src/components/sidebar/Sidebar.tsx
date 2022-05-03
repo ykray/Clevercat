@@ -36,9 +36,11 @@ export default function Sidebar() {
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div className={'sidebar'}>
-        <Stack direction={'column'} alignItems={'center'} spacing={'13px'}>
+        <Stack direction={'column'} alignItems={'stretch'} spacing={'13px'}>
           <SidebarHeader onClick={menuButtonOnClick} />
-          <Menu show={showMenu} />
+          <div className={'hide-on-mobile'}>
+            <Menu show={showMenu} />
+          </div>
         </Stack>
       </div>
     </ClickAwayListener>

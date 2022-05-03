@@ -2,7 +2,7 @@ import { useState, useEffect, createContext } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 
 // MUI
-import { Stack, ThemeProvider } from '@mui/material';
+import { Grid, Stack, ThemeProvider, useMediaQuery } from '@mui/material';
 
 // Assets
 import './assets/sass/App.scss';
@@ -31,6 +31,8 @@ export const UserContext = createContext<string | undefined>(undefined);
 
 function App() {
   const location = useLocation();
+  // const largeScreen = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
+
   const [currentUser, setCurrentUser] = useState<string>();
 
   const getCurrentUser = async () => {
@@ -47,52 +49,57 @@ function App() {
       <ThemeProvider theme={Theme}>
         <ScrollToTop />
 
-        <Stack
-          // className={'collapse-main'}
-          paddingRight={'40px'}
-          paddingLeft={'40px'}
-          paddingTop={'25px'}
-          paddingBottom={'25px'}
+        <Grid
+          container
+          className={'container'}
           direction={'row'}
           alignItems={'flex-start'}
           spacing={2}
         >
-          <Sidebar />
-          <div className={'main'}>
+          <Grid item>
+            <Sidebar />
+          </Grid>
+          <Grid item xs>
             <MainHeader />
 
-            <Stack direction={'row'}>
-              <Stack direction={'column'} spacing={2}>
-                <Routes>
-                  <Route path={'/'} element={<HotQuestions />} />
-                  <Route element={<PublicWrapper />}>
-                    {/*           ^^^^^^^^^^^^^^^^^ */}
-                    {/* TODO: - works, but clean up later */}
-                    <Route path={'/login'} element={<Login />} />
-                    <Route path={'/signup'} element={<Signup />} />
-                  </Route>
+            <div className={'main'}>
+              <Stack direction={'row'}>
+                <Stack
+                  direction={'column'}
+                  alignItems={'flex-start'}
+                  spacing={2}
+                >
+                  <Routes>
+                    <Route path={'/'} element={<HotQuestions />} />
+                    <Route element={<PublicWrapper />}>
+                      {/*           ^^^^^^^^^^^^^^^^^ */}
+                      {/* TODO: - works, but clean up later */}
+                      <Route path={'/login'} element={<Login />} />
+                      <Route path={'/signup'} element={<Signup />} />
+                    </Route>
 
-                  <Route path={'/q/:qid'} element={<PostComponent />} />
-                  <Route path={'/search'} element={<SearchComponent />} />
-                  <Route element={<PrivateWrapper />}>
-                    <Route path={'/ask'} element={<Ask />} />
-                  </Route>
-                  <Route path={'/@:username'} element={<Profile />} />
-                  <Route path={'/topics/*'} element={<TopicFeed />} />
-                  <Route index element={<HotQuestions />} />
-                </Routes>
+                    <Route path={'/q/:qid'} element={<PostComponent />} />
+                    <Route path={'/search'} element={<SearchComponent />} />
+                    <Route element={<PrivateWrapper />}>
+                      <Route path={'/ask'} element={<Ask />} />
+                    </Route>
+                    <Route path={'/@:username'} element={<Profile />} />
+                    <Route path={'/topics/*'} element={<TopicFeed />} />
+                    <Route index element={<HotQuestions />} />
+                  </Routes>
+                  <Footer />
+                </Stack>
 
-                <Footer />
+                <div style={{ width: '50%' }}></div>
               </Stack>
-              <div style={{ width: '100%' }}></div>
-            </Stack>
-            {location.pathname === '/ask' ||
-            location.pathname === '/login' ||
-            location.pathname === '/signup' ? null : (
-              <FloatingAsk />
-            )}
-          </div>
-        </Stack>
+              {location.pathname === '/ask' ||
+              location.pathname === '/login' ||
+              location.pathname === '/signup' ? null : (
+                <FloatingAsk />
+              )}
+            </div>
+          </Grid>
+        </Grid>
       </ThemeProvider>
     </UserContext.Provider>
   );
