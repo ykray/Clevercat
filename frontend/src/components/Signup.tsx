@@ -15,6 +15,7 @@ import {
 // Data
 import API from '../data/FrontendAPI';
 import { AccountData } from '../utils/Types';
+import { clear } from 'console';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,19 +26,54 @@ export default function Signup() {
   const [confirmPasswordInput, setConfirmPasswordInput] = useState<string>('');
   const [errorSignup, setErrorSignup] = useState(false);
 
-  const handleSignup = () => {
-    const accountData: AccountData = {
-      username: usernameInput,
-      email: emailInput,
-      password: passwordInput,
-    };
+  const [errorUsername, setErrorUsername] = useState(false);
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPassword, setErrorPassword] = useState(false);
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState(false);
 
-    API.Auth.signup(accountData).then((res) => {
-      API.Auth.login(accountData).then((res: any) => {
-        localStorage.setItem('username', res.username);
-        navigate(`/@${res.username}`);
-      });
-    });
+  const clearErrors = () => {
+    setErrorUsername(false);
+    setErrorEmail(false);
+    setErrorPassword(false);
+    setErrorConfirmPassword(false);
+  };
+
+  const handleSignup = () => {
+    if (usernameInput) {
+      if (emailInput && emailInput.includes('@')) {
+        if (passwordInput) {
+          if (confirmPasswordInput) {
+            if (passwordInput === confirmPasswordInput) {
+              // Attempt signup
+              const accountData: AccountData = {
+                username: usernameInput,
+                email: emailInput,
+                password: passwordInput,
+              };
+
+              API.Auth.signup(accountData).then((res) => {
+                API.Auth.login(accountData).then((res: any) => {
+                  localStorage.setItem('username', res.username);
+                  navigate(`/@${res.username}`);
+                });
+              });
+            } else {
+              // Passwords don't match
+              setErrorPassword(true);
+              setErrorConfirmPassword(true);
+            }
+          } else {
+            setErrorConfirmPassword(true);
+          }
+        } else {
+          setErrorPassword(true);
+        }
+      } else {
+        setErrorEmail(true);
+      }
+    } else {
+      setErrorUsername(true);
+    }
   };
 
   return (
@@ -59,9 +95,11 @@ export default function Signup() {
         </Stack>
         <TextField
           value={usernameInput}
+          error={errorUsername}
           placeholder={'username'}
           label={'Username'}
           onChange={(e: any) => {
+            clearErrors();
             setUsernameInput(e.target.value);
           }}
           InputProps={{
@@ -70,11 +108,18 @@ export default function Signup() {
         />
         <TextField
           value={emailInput}
+          error={errorEmail}
           type={'email'}
           placeholder={'email@address.com'}
           label={'Email'}
           onChange={(e: any) => {
+            clearErrors();
             setEmailInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSignup();
+            }
           }}
           InputProps={{
             startAdornment: (
@@ -91,11 +136,18 @@ export default function Signup() {
         <Stack direction={'row'} spacing={1}>
           <TextField
             type={'password'}
+            error={errorPassword}
             placeholder={'Password'}
             value={passwordInput}
             label={'Password'}
             onChange={(e: any) => {
+              clearErrors();
               setPasswordInput(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSignup();
+              }
             }}
             style={{ width: '100%' }}
             InputProps={{
@@ -112,11 +164,18 @@ export default function Signup() {
           />
           <TextField
             type="password"
+            error={errorConfirmPassword}
             placeholder={'Confirm password'}
             value={confirmPasswordInput}
             label={'Confirm password'}
             onChange={(e: any) => {
+              clearErrors();
               setConfirmPasswordInput(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSignup();
+              }
             }}
             style={{ width: '100%' }}
             InputProps={{

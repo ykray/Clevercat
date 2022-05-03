@@ -47,6 +47,11 @@ export default function Login() {
           onChange={(e: any) => {
             setUsernameInput(e.target.value);
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin();
+            }
+          }}
         />
         <TextField
           type="password"
@@ -54,6 +59,11 @@ export default function Login() {
           label={'Password'}
           onChange={(e: any) => {
             setPasswordInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin();
+            }
           }}
         />
         {errorLogin ? (
