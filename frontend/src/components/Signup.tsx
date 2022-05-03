@@ -55,8 +55,10 @@ export default function Signup() {
   };
 
   const handleSignup = () => {
+    var emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
     if (usernameInput && usernameAvailable) {
-      if (emailInput && emailInput.includes('@')) {
+      if (emailInput && emailRegex.test(emailInput)) {
         if (passwordInput) {
           if (confirmPasswordInput) {
             if (passwordInput === confirmPasswordInput) {
