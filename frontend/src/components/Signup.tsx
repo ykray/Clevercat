@@ -55,7 +55,7 @@ export default function Signup() {
   };
 
   const handleSignup = () => {
-    if (usernameInput) {
+    if (usernameInput && usernameAvailable) {
       if (emailInput && emailInput.includes('@')) {
         if (passwordInput) {
           if (confirmPasswordInput) {
@@ -137,13 +137,21 @@ export default function Signup() {
                   ) : (
                     <TakenIcon
                       style={{
-                        color: !usernameAvailable ? styles.color_muted_300 : '',
+                        color: errorUsername
+                          ? 'red'
+                          : !usernameAvailable
+                          ? styles.color_muted_300
+                          : '',
                       }}
                     />
                   )}
                   <p
                     style={{
-                      color: !usernameAvailable ? styles.color_muted_300 : '',
+                      color: errorUsername
+                        ? 'red'
+                        : !usernameAvailable
+                        ? styles.color_muted_300
+                        : '',
                     }}
                   >
                     {usernameAvailable ? 'Available' : 'Taken'}
