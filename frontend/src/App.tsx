@@ -8,6 +8,11 @@ import { Grid, Stack, ThemeProvider } from '@mui/material';
 import './assets/sass/App.scss';
 import Theme from './assets/Theme';
 
+// Data
+import API from './data/FrontendAPI';
+import PublicWrapper from './utils/PublicWrapper';
+import PrivateWrapper from './utils/PrivateWrapper';
+
 // Components
 import Login from './components/Login';
 import Profile from './components/Profile';
@@ -16,14 +21,11 @@ import SearchComponent from './components/SearchComponent';
 import PostComponent from './components/PostComponent';
 import HotQuestions from './components/HotQuestions';
 import Ask from './components/Ask';
-import API from './data/FrontendAPI';
 import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
 import ScrollToTop from './components/ScrollToTop';
-import PrivateWrapper from './utils/PrivateWrapper';
 import Signup from './components/Signup';
 import MainHeader from './components/header/MainHeader';
-import PublicWrapper from './utils/PublicWrapper';
 
 export const UserContext = createContext<string | undefined>(undefined);
 

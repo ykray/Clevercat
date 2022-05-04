@@ -174,6 +174,7 @@ class API {
         `,
                 values: [searchQuery],
             };
+            // TODO: - Fix scope handling
             // const query =
             //   searchScope === SearchScope.Questions
             //     ? query_questions

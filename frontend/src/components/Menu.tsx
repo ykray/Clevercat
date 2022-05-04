@@ -3,6 +3,12 @@ import styles from '../assets/sass/_variables.scss';
 
 // MUI
 import { Stack, Slide } from '@mui/material';
+import {
+  Science as ScienceIcon,
+  AttachMoney as BusinessIcon,
+  Memory as TechnologyIcon,
+  Tag as GeneralIcon,
+} from '@mui/icons-material';
 
 // Types
 import { Topic } from '../utils/Types';
@@ -68,7 +74,10 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
                           : '',
                       }}
                     >
-                      {x.subtopic ?? x.category}
+                      <Stack direction={'row'} alignItems={'center'}>
+                        {!x.subtopic ? renderCategoryIcon(x.category) : null}
+                        {x.subtopic ?? x.category}
+                      </Stack>
                     </p>
                   );
                 })}
@@ -77,6 +86,27 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
           })}
         </Stack>
       );
+    };
+
+    const renderCategoryIcon = (category: string) => {
+      const style = {
+        width: 15,
+        height: 15,
+        marginTop: -3,
+        marginRight: 4,
+        marginLeft: -2,
+      };
+
+      switch (category) {
+        case 'Science':
+          return <ScienceIcon style={style} />;
+        case 'Technology':
+          return <TechnologyIcon style={style} />;
+        case 'Business':
+          return <BusinessIcon style={style} />;
+        default:
+          return <GeneralIcon style={style} />;
+      }
     };
 
     return (

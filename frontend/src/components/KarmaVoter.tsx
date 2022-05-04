@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Assets
 import styles from '../assets/sass/_variables.scss';
@@ -22,7 +21,6 @@ type Props = {
 };
 
 export const KarmaVoter = ({ answer }: Props) => {
-  const navigate = useNavigate;
   const currentUser = useContext(UserContext);
   const [karmaCount, setKarmaCount] = useState<number>(0);
   const [vote, setVote] = useState<number>(0);
@@ -159,8 +157,8 @@ export const KarmaVoter = ({ answer }: Props) => {
           >
             <UpvoteIcon
               style={{
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
               }}
             />
           </IconButton>
@@ -177,8 +175,8 @@ export const KarmaVoter = ({ answer }: Props) => {
           >
             <DownvoteIcon
               style={{
-                width: 40,
-                height: 40,
+                width: 35,
+                height: 35,
               }}
             />
           </IconButton>

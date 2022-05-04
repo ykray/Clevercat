@@ -29,7 +29,7 @@ export default function HotQuestions() {
   };
 
   return (
-    <>
+    <div className={'hot-questions'}>
       <Stack
         direction={'row'}
         justifyContent={'flex-start'}
@@ -47,6 +47,6 @@ export default function HotQuestions() {
         <h1>Hot Questions</h1>
       </Stack>
       {renderFeed()}
-    </>
+    </div>
   );
 }

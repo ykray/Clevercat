@@ -50,6 +50,15 @@ $transition-exit: all 0.08s;
   src: url(../../assets/fonts/Gilroy/Gilroy-Bold.ttf);
 }
 
+@mixin disableSelect() {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 :export {
   color_primary_300: $color-primary-300;
   color_primary_400: $color-primary-400;
