@@ -6,6 +6,11 @@ const Theme = createTheme({
     primary: {
       500: styles.color_primary_500,
     },
+    error: {
+      main: styles.color_error,
+      light: styles.color_error,
+      dark: styles.color_error,
+    },
   },
   typography: {
     fontFamily: [

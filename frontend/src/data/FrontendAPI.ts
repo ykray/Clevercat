@@ -1,5 +1,4 @@
 import { SHA256 } from 'crypto-js';
-import { ENDPOINT } from '../utils/Constants';
 
 // Utils
 import {
@@ -12,6 +11,7 @@ import {
   Topic,
   User,
 } from '../utils/Types';
+import { ENDPOINT } from '../utils/Constants';
 
 export default class API {
   static getTopicFeed = (topicPath: string): Promise<QuestionPost[]> => {

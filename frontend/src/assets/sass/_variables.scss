@@ -9,6 +9,9 @@ $color-green-300: #bffbd2;
 $color-green-400: #8af1a4;
 $color-green-500: #0aba76;
 
+$color-error: #f71a48;
+$color-success: $color-green-500;
+
 $color-text-header: #162231;
 $color-text-body: #2c3641;
 
@@ -63,6 +66,8 @@ $transition-exit: all 0.08s;
   color_surface_500: $color-surface-500;
   color_surface_600: $color-surface-600;
 
+  color_error: $color-error;
+  color_success: $color-success;
   color_text_header: $color-text-header;
   color_text_body: $color-text-body;
 

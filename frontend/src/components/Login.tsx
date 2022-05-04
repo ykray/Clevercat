@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { SHA256 } from 'crypto-js';
+
+// Assets
+import styles from '../assets/sass/_variables.scss';
 
 // MUI
 import { Button, Stack, TextField } from '@mui/material';
+import { Lock as PasswordIcon } from '@mui/icons-material';
 
 // Data
 import API from '../data/FrontendAPI';
@@ -33,6 +36,12 @@ export default function Login() {
       });
   };
 
+  useEffect(() => {
+    if (errorLogin) {
+      setPasswordInput('');
+    }
+  }, [errorLogin]);
+
   return (
     <div className={'login'}>
       <h1>Welcome back!</h1>
@@ -44,6 +53,7 @@ export default function Login() {
         <TextField
           value={usernameInput}
           label={'Username'}
+          placeholder={'username'}
           onChange={(e: any) => {
             setUsernameInput(e.target.value);
           }}
@@ -52,11 +62,15 @@ export default function Login() {
               handleLogin();
             }
           }}
+          InputProps={{
+            startAdornment: <p className={'textfield-icon'}>@</p>,
+          }}
         />
         <TextField
           type="password"
           value={passwordInput}
           label={'Password'}
+          placeholder={'Password'}
           onChange={(e: any) => {
             setPasswordInput(e.target.value);
           }}
@@ -65,9 +79,26 @@ export default function Login() {
               handleLogin();
             }
           }}
+          InputProps={{
+            startAdornment: (
+              <PasswordIcon
+                className={'textfield-icon'}
+                style={{
+                  width: 17,
+                  height: 17,
+                }}
+              />
+            ),
+          }}
         />
         {errorLogin ? (
-          <p style={{ color: 'red' }}>Username or password incorrect.</p>
+          <p
+            style={{
+              color: styles.color_error,
+            }}
+          >
+            Username or password incorrect, try again.
+          </p>
         ) : null}
         <Button
           variant={'contained'}

@@ -121,7 +121,16 @@ export default function Signup() {
             setUsernameInput(e.target.value);
           }}
           InputProps={{
-            startAdornment: <p className={'textfield-icon'}>@</p>,
+            startAdornment: (
+              <p
+                className={'textfield-icon'}
+                style={{
+                  color: usernameAvailable ? styles.color_primary_500 : '',
+                }}
+              >
+                @
+              </p>
+            ),
             endAdornment:
               usernameInput.length > 0 ? (
                 <Stack
@@ -140,7 +149,7 @@ export default function Signup() {
                     <TakenIcon
                       style={{
                         color: errorUsername
-                          ? 'red'
+                          ? styles.color_error
                           : !usernameAvailable
                           ? styles.color_muted_300
                           : '',
@@ -150,7 +159,7 @@ export default function Signup() {
                   <p
                     style={{
                       color: errorUsername
-                        ? 'red'
+                        ? styles.color_error
                         : !usernameAvailable
                         ? styles.color_muted_300
                         : '',
@@ -160,6 +169,11 @@ export default function Signup() {
                   </p>
                 </Stack>
               ) : null,
+          }}
+          sx={{
+            input: {
+              color: usernameAvailable ? styles.color_primary_500 : '',
+            },
           }}
         />
         <TextField
