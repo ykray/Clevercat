@@ -1,15 +1,8 @@
 import React, { useContext } from 'react';
 
 // MUI
-import {
-  Stack,
-  Button,
-  ClickAwayListener,
-  IconButton,
-  Slide,
-  Tooltip,
-} from '@mui/material';
-import { LogoutSharp, Menu as MenuIcon } from '@mui/icons-material';
+import { Stack, Button, IconButton, Tooltip } from '@mui/material';
+import { LogoutOutlined as LogoutIcon } from '@mui/icons-material';
 
 // Assets
 import styles from '../../assets/sass/_variables.scss';
@@ -28,7 +21,7 @@ export default function UserHeader() {
   const currentUser = useContext(UserContext);
 
   return currentUser ? (
-    <Stack alignItems={'flex-end'} direction={'row'} spacing={0}>
+    <Stack alignItems={'center'} direction={'row'} spacing={0}>
       <AuthorComponent uid={currentUser} />
       <Tooltip title={'Logout'} placement={'top'} arrow>
         <IconButton
@@ -38,11 +31,11 @@ export default function UserHeader() {
             });
           }}
         >
-          <LogoutSharp
+          <LogoutIcon
             style={{
               color: styles.color_muted_400,
-              width: 26,
-              height: 26,
+              width: 20,
+              height: 20,
             }}
           />
         </IconButton>
