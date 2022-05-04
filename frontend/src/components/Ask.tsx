@@ -12,6 +12,12 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
+import {
+  Science as ScienceIcon,
+  AttachMoney as BusinessIcon,
+  Memory as TechnologyIcon,
+  Tag as GeneralIcon,
+} from '@mui/icons-material';
 
 // Data
 import styles from '../assets/sass/_variables.scss';
@@ -59,6 +65,27 @@ const Ask = ({}: Props) => {
     );
   };
 
+  const renderCategoryIcon = (category: string) => {
+    const style = {
+      width: 15,
+      height: 15,
+      marginTop: -3,
+      marginRight: 4,
+      marginLeft: -2,
+    };
+
+    switch (category) {
+      case 'Science':
+        return <ScienceIcon style={style} />;
+      case 'Technology':
+        return <TechnologyIcon style={style} />;
+      case 'Business':
+        return <BusinessIcon style={style} />;
+      default:
+        return <GeneralIcon style={style} />;
+    }
+  };
+
   const renderTopics = () => {
     return topics.map((topic) => {
       // is a subtopic
@@ -86,7 +113,10 @@ const Ask = ({}: Props) => {
                 topic.category === selectedTopic ? '' : styles.color_text_body,
             }}
           >
-            {topic.category}
+            <Stack direction={'row'} alignItems={'center'} spacing={1}>
+              {renderCategoryIcon(topic.category)}
+              {topic.category}
+            </Stack>
           </MenuItem>
         );
       }
