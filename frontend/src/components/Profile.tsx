@@ -125,7 +125,7 @@ export default function Profile() {
                 <TextField
                   multiline
                   value={bioInput}
-                  label={'Bio'}
+                  label={'Write a bio!'}
                   onChange={(e: any) => {
                     setBioInput(e.target.value);
                   }}
