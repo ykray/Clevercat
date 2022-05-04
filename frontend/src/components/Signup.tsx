@@ -41,9 +41,16 @@ export default function Signup() {
 
   useEffect(() => {
     if (usernameInput) {
-      API.Users.isUsernameAvailable(usernameInput).then((available) => {
-        setUsernameAvailable(available);
-      });
+      const usernameRegex =
+        /^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+
+      if (usernameRegex.test(usernameInput)) {
+        API.Users.isUsernameAvailable(usernameInput).then((available) => {
+          setUsernameAvailable(available);
+        });
+      } else {
+        setUsernameAvailable(false);
+      }
     }
   }, [usernameInput]);
 
@@ -55,7 +62,7 @@ export default function Signup() {
   };
 
   const handleSignup = () => {
-    var emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
     if (usernameInput && usernameAvailable) {
       if (emailInput && emailRegex.test(emailInput)) {
