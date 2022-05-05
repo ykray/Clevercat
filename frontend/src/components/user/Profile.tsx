@@ -1,22 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+
+// Components
+import Feed from '../../components/Feed';
 
 // Assets
-import styles from '../assets/sass/_variables.scss';
+import styles from '../../assets/sass/_variables.scss';
 
 // MUI
-import { Snackbar, Stack, TextField } from '@mui/material';
+import { Button, Snackbar, Stack, TextField } from '@mui/material';
 
 // Data
-import API from '../data/FrontendAPI';
+import API from '../../data/FrontendAPI';
 
 // Types
-import { QuestionPost, User } from '../utils/Types';
-import Feed from './Feed';
-import { UserContext } from '../App';
+import { QuestionPost, User } from '../../utils/Types';
+import { UserContext } from '../../App';
 
 export default function Profile() {
   const { username } = useParams();
+  const navigate = useNavigate();
 
   const currentUser = useContext(UserContext);
 
@@ -126,7 +129,7 @@ export default function Profile() {
             <Stack justifyContent={'center'} spacing={3}>
               <Stack direction={'row'} alignItems={'flex-start'} spacing={2}>
                 <Stack spacing={1}>
-                  <h1>{user.username}</h1>
+                  <h2>{user.username}</h2>
                   {renderStatus()}
                 </Stack>
                 <div className={'profile-karma'}>
@@ -146,24 +149,25 @@ export default function Profile() {
                 </div>
               </Stack>
 
+              <p>{user.bio}</p>
+              <p
+                style={{
+                  color: styles.color_muted_400,
+                  fontSize: '0.9rem',
+                }}
+              >
+                {user.city}, {user.state} • {user.country}
+              </p>
+
               {currentUser === user.uid ? (
-                <TextField
-                  multiline
-                  value={bioInput}
-                  label={'Write a bio!'}
-                  onChange={(e: any) => {
-                    setBioInput(e.target.value);
-                  }}
-                  onBlur={(e: any) => {
-                    API.Users.updateBio(e.target.value).then(() => {
-                      setSnackbarMessage('Your bio has been updated!');
-                      setSnackbarOpen(true);
-                    });
-                  }}
-                />
-              ) : (
-                <p>{user.bio}</p>
-              )}
+                <Button
+                  variant={'contained'}
+                  style={{ width: 'auto' }}
+                  onClick={() => navigate('/profile')}
+                >
+                  Edit Profile
+                </Button>
+              ) : null}
             </Stack>
           </Stack>
         </Stack>

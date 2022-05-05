@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 // Assets
-import styles from '../assets/sass/_variables.scss';
+import styles from '../../assets/sass/_variables.scss';
 
 // MUI
 import { Button, Stack, TextField } from '@mui/material';
 import { Lock as PasswordIcon } from '@mui/icons-material';
 
 // Data
-import API from '../data/FrontendAPI';
-import { AccountData } from '../utils/Types';
+import API from '../../data/FrontendAPI';
+import { AccountData } from '../../utils/Types';
 
 export default function Login() {
   const navigate = useNavigate();

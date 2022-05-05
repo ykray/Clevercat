@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-
-// Data
-import { Author, AuthorType } from '../utils/Types';
 
 // MUI
 import { Stack } from '@mui/material';
-import API from '../data/FrontendAPI';
+
+// Data
+import API from '../../data/FrontendAPI';
+
+// Utils
+import { Author, AuthorType } from '../../utils/Types';
+import { formatTimestamp } from '../../utils/Helpers';
 
 type Props = {
   uid: string | undefined; // to fetch user
@@ -32,14 +34,9 @@ const AuthorComponent = ({ uid, authorType = null, timestamp }: Props) => {
   // Functions
   const renderTimestamp = () => {
     if (author && author.timestamp) {
-      const timestamp = format(
-        new Date(author.timestamp),
-        "MMMM d, Y 'at' h:mm aaa"
-      );
-
       return (
         <div className={'timestamp'}>
-          <p>{timestamp}</p>
+          <p>{formatTimestamp(author.timestamp)}</p>
         </div>
       );
     } else {

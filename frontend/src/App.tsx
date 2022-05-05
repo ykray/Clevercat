@@ -14,18 +14,19 @@ import PublicWrapper from './utils/PublicWrapper';
 import PrivateWrapper from './utils/PrivateWrapper';
 
 // Components
-import Login from './components/Login';
-import Profile from './components/Profile';
+import Login from './components/auth/Login';
+import Profile from './components/user/Profile';
 import Sidebar from './components/sidebar/Sidebar';
-import SearchComponent from './components/SearchComponent';
-import PostComponent from './components/PostComponent';
+import SearchComponent from './components/search/SearchComponent';
+import PostComponent from './components/post/PostComponent';
 import HotQuestions from './components/HotQuestions';
 import Ask from './components/Ask';
 import FloatingAsk from './components/FloatingAsk';
 import TopicFeed from './components/TopicFeed';
 import ScrollToTop from './components/ScrollToTop';
-import Signup from './components/Signup';
+import Signup from './components/auth/Signup';
 import MainHeader from './components/header/MainHeader';
+import EditProfile from './components/user/EditProfile';
 
 export const UserContext = createContext<string | undefined>(undefined);
 
@@ -87,6 +88,7 @@ function App() {
                     <Route path={'/q/:qid'} element={<PostComponent />} />
                     <Route path={'/search'} element={<SearchComponent />} />
                     <Route element={<PrivateWrapper />}>
+                      <Route path={'/profile'} element={<EditProfile />} />
                       <Route path={'/ask'} element={<Ask />} />
                     </Route>
                     <Route path={'/@:username'} element={<Profile />} />

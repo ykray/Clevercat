@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  createSearchParams,
   generatePath,
   Link,
   useNavigate,
@@ -8,12 +7,14 @@ import {
 } from 'react-router-dom';
 
 // Components
-import Feed from './Feed';
+import Feed from '../../components/Feed';
+import HotQuestions from '../../components/HotQuestions';
 
 // Data
-import API from '../data/FrontendAPI';
-import { QuestionPost, SearchScope } from '../utils/Types';
-import HotQuestions from './HotQuestions';
+import API from '../../data/FrontendAPI';
+
+// Utils
+import { QuestionPost, SearchScope } from '../../utils/Types';
 
 const SearchComponent = () => {
   const navigate = useNavigate();

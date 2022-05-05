@@ -369,13 +369,56 @@ export default class API {
       });
     };
 
+    // Edit Profile
     static updateBio = (newBio: string) => {
       const body = {
         newBio: newBio.trim(),
       };
 
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/updateBio`, {
+        fetch(`${ENDPOINT}/update-bio`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => {
+            resolve(res.text());
+          })
+          .catch((error) => reject(error));
+      });
+    };
+
+    static updateEmail = (newEmail: string) => {
+      const body = {
+        newEmail: newEmail.trim(),
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/update-email`, {
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        })
+          .then((res) => {
+            resolve(res.text());
+          })
+          .catch((error) => reject(error));
+      });
+    };
+
+    static updateProfile = (field:string, newValue: string) => {
+      const body = {
+        newValue: newValue.trim(),
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/update-${field}`, {
           credentials: 'include',
           method: 'POST',
           headers: {

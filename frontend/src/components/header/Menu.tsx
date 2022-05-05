@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../assets/sass/_variables.scss';
+import { useLocation } from 'react-router-dom';
+
+// Assets
+import styles from '../../assets/sass/_variables.scss';
 
 // MUI
 import { Stack, Slide } from '@mui/material';
@@ -11,12 +14,11 @@ import {
 } from '@mui/icons-material';
 
 // Types
-import { Topic } from '../utils/Types';
+import { Topic } from '../../utils/Types';
 
 // Data
-import API from '../data/FrontendAPI';
-import { useLocation } from 'react-router-dom';
-import Footer from './Footer';
+import API from '../../data/FrontendAPI';
+import Footer from '../../components/Footer';
 
 type Props = {
   show?: boolean;

@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export const randomColor = (): string => {
   const colors: string[] = [
     '#5dda0a',
@@ -14,4 +16,8 @@ export const randomColor = (): string => {
   const randomColor: string = colors[Math.floor(Math.random() * colors.length)];
 
   return randomColor;
+};
+
+export const formatTimestamp = (timestamp: Date) => {
+  return format(new Date(timestamp), "MMMM d, Y 'at' h:mm aaa");
 };

@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 // Assets
-import styles from '../assets/sass/_variables.scss';
-import BestAnswerIcon from '../assets/images/best-answer-icon.png';
+import styles from '../../assets/sass/_variables.scss';
+import BestAnswerIcon from '../../assets/images/best-answer-icon.png';
 
 // Data
-import { Answer, KarmaVote, VoteType } from '../utils/Types';
-import API from '../data/FrontendAPI';
+import { Answer, KarmaVote, VoteType } from '../../utils/Types';
+import API from '../../data/FrontendAPI';
+import { UserContext } from '../../App';
 
 // MUI
 import { IconButton, Stack, Tooltip } from '@mui/material';
@@ -14,7 +15,6 @@ import {
   KeyboardArrowUp as UpvoteIcon,
   KeyboardArrowDown as DownvoteIcon,
 } from '@mui/icons-material';
-import { UserContext } from '../App';
 
 type Props = {
   answer: Answer;

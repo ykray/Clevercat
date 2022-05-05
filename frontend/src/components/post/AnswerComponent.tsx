@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
-import styles from '../assets/sass/_variables.scss';
-
-// Data
-import { Answer, AuthorType } from '../utils/Types';
+import { UserContext } from '../../App';
 
 // Components
-import KarmaVoter from './KarmaVoter';
-import AuthorComponent from './AuthorComponent';
+import KarmaVoter from '../../components/post/KarmaVoter';
+import AuthorComponent from '../../components/user/AuthorComponent';
 
 // MUI
 import { Stack } from '@mui/material';
-import { UserContext } from '../App';
+
+// Assets
+import styles from '../../assets/sass/_variables.scss';
+
+// Data
+import { Answer, AuthorType } from '../../utils/Types';
 
 type Props = {
   answer: Answer;

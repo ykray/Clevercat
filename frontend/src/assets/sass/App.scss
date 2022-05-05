@@ -511,12 +511,13 @@ a {
 
 .profile-container {
   h1 {
-    font-family: 'Roboto';
-    font-size: 1.6rem;
-    margin: 0;
+    // font-family: 'Roboto';
+    // font-size: 1.6rem;
+    // margin: 0;
   }
   h2 {
-    font-size: 1.8rem;
+    font-family: 'Roboto';
+    font-size: 1.6rem;
     margin: 0;
   }
   input {
@@ -524,7 +525,7 @@ a {
   }
 
   .MuiOutlinedInput-root {
-    width: 500px;
+    // min-width: 500px;
   }
 }
 

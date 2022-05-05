@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 // Assets
-import styles from '../assets/sass/_variables.scss';
+import styles from '../../assets/sass/_variables.scss';
 
 // MUI
 import {
@@ -18,9 +18,14 @@ import {
   Slide,
   Tooltip,
 } from '@mui/material';
-import { Search as SearchIcon, Close as ClearIcon } from '@mui/icons-material';
-import { SearchQuery, SearchScope } from '../utils/Types';
-import { Check as CheckIcon } from '@mui/icons-material';
+import {
+  Check as CheckIcon,
+  Search as SearchIcon,
+  Close as ClearIcon,
+} from '@mui/icons-material';
+
+// Utils
+import { SearchQuery, SearchScope } from '../../utils/Types';
 
 type Props = {
   mobile?: boolean;

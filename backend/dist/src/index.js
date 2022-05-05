@@ -126,7 +126,12 @@ app.get('/u/:uid', (req, res) => {
 });
 app.get('/u/:uid/questions', BackendAPI_1.default.Users.getUserQuestions);
 app.get('/u/:uid/answers', BackendAPI_1.default.Users.getUserAnswers);
-app.post('/updateBio', BackendAPI_1.default.Users.updateBio);
+// Update user profile
+app.post('/update-bio', BackendAPI_1.default.Users.updateBio);
+app.post('/update-email', BackendAPI_1.default.Users.updateEmail);
+app.post('/update-city', BackendAPI_1.default.Users.updateCity);
+app.post('/update-state', BackendAPI_1.default.Users.updateState);
+app.post('/update-country', BackendAPI_1.default.Users.updateCountry);
 app.post('/ask', BackendAPI_1.default.Users.askQuestion);
 // Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {

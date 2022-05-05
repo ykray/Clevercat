@@ -1,19 +1,21 @@
-import { Button, Snackbar, Stack } from '@mui/material';
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../App';
 
 // Assets
-import styles from '../assets/sass/_variables.scss';
+import styles from '../../assets/sass/_variables.scss';
+
+// MUI
+import { Button, Stack } from '@mui/material';
 
 // Data
-import API from '../data/FrontendAPI';
-import { QuestionPost } from '../utils/Types';
+import API from '../../data/FrontendAPI';
+import { QuestionPost } from '../../utils/Types';
+import { UserContext } from '../../App';
 
 // Components
-import AnswerComponent from './AnswerComponent';
-import PostAnswer from './PostAnswer';
-import QuestionComponent from './QuestionComponent';
+import AnswerComponent from '../../components/post/AnswerComponent';
+import PostAnswer from '../../components/post/PostAnswer';
+import QuestionComponent from '../../components/post/QuestionComponent';
 
 export default function PostComponent() {
   const navigate = useNavigate();

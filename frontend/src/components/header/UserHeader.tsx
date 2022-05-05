@@ -1,4 +1,8 @@
 import React, { useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+// Components
+import AuthorComponent from '../../components/user/AuthorComponent';
 
 // MUI
 import { Stack, Button, IconButton, Tooltip } from '@mui/material';
@@ -7,13 +11,9 @@ import { LogoutOutlined as LogoutIcon } from '@mui/icons-material';
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 
-// Components
-import AuthorComponent from '../AuthorComponent';
-
 // Data
 import API from '../../data/FrontendAPI';
 import { UserContext } from '../../App';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function UserHeader() {
   const location = useLocation();

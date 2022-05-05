@@ -5,7 +5,7 @@ import { ClickAwayListener, Stack } from '@mui/material';
 
 // Components
 import SidebarHeader from './SidebarHeader';
-import Menu from '../Menu';
+import Menu from '../header/Menu';
 
 export default function Sidebar() {
   // States

@@ -1,9 +1,9 @@
-// Utils
-import { AuthorType, Question } from '../utils/Types';
-
 // Components
-import AuthorComponent from './AuthorComponent';
-import TopicHierarchy from './TopicHierarchy';
+import AuthorComponent from '../../components/user/AuthorComponent';
+import TopicHierarchy from '../../components/TopicHierarchy';
+
+// Utils
+import { AuthorType, Question } from '../../utils/Types';
 
 type Props = {
   question: Question;

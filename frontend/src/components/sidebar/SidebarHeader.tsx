@@ -10,7 +10,7 @@ import { IconButton, Stack } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 
 // Components
-import SearchBar from '../SearchBar';
+import SearchBar from '../search/SearchBar';
 import UserHeader from '../header/UserHeader';
 
 type Props = {

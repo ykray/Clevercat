@@ -139,7 +139,14 @@ app.get('/u/:uid', (req, res) => {
 });
 app.get('/u/:uid/questions', API.Users.getUserQuestions);
 app.get('/u/:uid/answers', API.Users.getUserAnswers);
-app.post('/updateBio', API.Users.updateBio);
+
+// Update user profile
+app.post('/update-bio', API.Users.updateBio);
+app.post('/update-email', API.Users.updateEmail);
+app.post('/update-city', API.Users.updateCity);
+app.post('/update-state', API.Users.updateState);
+app.post('/update-country', API.Users.updateCountry);
+
 app.post('/ask', API.Users.askQuestion);
 
 // Search Routes

@@ -46,6 +46,10 @@ export enum AuthorType {
 export type User = {
   uid: string;
   username: string;
+  email: string;
+  city?: string;
+  state?: string;
+  country?: string;
   bio?: string;
   status: string;
   color: string;

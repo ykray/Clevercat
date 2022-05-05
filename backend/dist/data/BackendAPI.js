@@ -309,28 +309,127 @@ class API {
             });
         };
         static updateBio = (req, res) => {
-            const newBio = req.body.newBio;
-            Logger_1.default.debug(req.user);
+            const newValue = req.body.newValue;
             const query = {
                 text: `--sql
           UPDATE Users
           SET bio = $2
           WHERE uid::text = $1
           `,
-                values: [req.user, newBio.trim()],
+                values: [req.user, newValue.trim()],
             };
             pool_1.default
                 .query(query)
                 .then((results) => {
                 const test = {
                     uid: req.user,
-                    bio: newBio,
+                    bio: newValue,
                 };
                 console.log(chalk_1.default.blueBright(chalk_1.default.bold('UPDATED')), test);
                 res.status(200).send(results);
             })
                 .catch((error) => {
                 Logger_1.default.fatal('Failed to update bio:', error);
+                res.status(400).send(error);
+            });
+        };
+        static updateEmail = (req, res) => {
+            const newValue = req.body.newValue;
+            const query = {
+                text: `--sql
+          UPDATE Users
+          SET email = $2
+          WHERE uid::text = $1
+          `,
+                values: [req.user, newValue.trim()],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const test = {
+                    uid: req.user,
+                    email: newValue,
+                };
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('UPDATED')), test);
+                res.status(200).send(results);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal('Failed to update email:', error);
+                res.status(400).send(error);
+            });
+        };
+        static updateCity = (req, res) => {
+            const newValue = req.body.newValue;
+            const query = {
+                text: `--sql
+          UPDATE Users
+          SET city = $2
+          WHERE uid::text = $1
+          `,
+                values: [req.user, newValue.trim()],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const test = {
+                    uid: req.user,
+                    email: newValue,
+                };
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('UPDATED')), test);
+                res.status(200).send(results);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal('Failed to update city:', error);
+                res.status(400).send(error);
+            });
+        };
+        static updateState = (req, res) => {
+            const newValue = req.body.newValue;
+            const query = {
+                text: `--sql
+          UPDATE Users
+          SET state = $2
+          WHERE uid::text = $1
+          `,
+                values: [req.user, newValue.trim()],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const test = {
+                    uid: req.user,
+                    email: newValue,
+                };
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('UPDATED')), test);
+                res.status(200).send(results);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal('Failed to update state:', error);
+                res.status(400).send(error);
+            });
+        };
+        static updateCountry = (req, res) => {
+            const newValue = req.body.newValue;
+            const query = {
+                text: `--sql
+          UPDATE Users
+          SET country = $2
+          WHERE uid::text = $1
+          `,
+                values: [req.user, newValue.trim()],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const test = {
+                    uid: req.user,
+                    email: newValue,
+                };
+                console.log(chalk_1.default.blueBright(chalk_1.default.bold('UPDATED')), test);
+                res.status(200).send(results);
+            })
+                .catch((error) => {
+                Logger_1.default.fatal('Failed to update country:', error);
                 res.status(400).send(error);
             });
         };
