@@ -16,12 +16,14 @@ type Props = {
   answers?: Answer[];
   hideTopic?: boolean;
   showQuestionBody?: boolean;
+  hideMoreAnswers?: boolean;
 };
 export const Feed = ({
   searchQuery = null,
   posts,
   hideTopic = false,
   showQuestionBody = false,
+  hideMoreAnswers = false,
 }: Props) => {
   const postsNum = posts?.length || 0;
 
@@ -83,7 +85,7 @@ export const Feed = ({
                                 : answers[0].body}
                             </p>
 
-                            {answers.length > 1 ? (
+                            {!hideMoreAnswers && answers.length > 1 ? (
                               <span className={'feed-more-answers'}>
                                 + {answers.length - 1} more answer
                                 {answers.length - 1 === 1 ? '' : 's'}

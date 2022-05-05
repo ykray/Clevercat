@@ -92,7 +92,7 @@ export default function Profile() {
           {questionsAsked.length}
           {questionsAsked.length === 1 ? ' question' : ' questions'} asked
         </h2>
-        <Feed posts={questionsAsked} showQuestionBody />
+        <Feed posts={questionsAsked} showQuestionBody hideMoreAnswers />
       </>
     ) : null;
   };
@@ -104,7 +104,7 @@ export default function Profile() {
           {questionsAnswered.length}
           {questionsAnswered.length === 1 ? ' question' : ' questions'} answered
         </h2>
-        <Feed posts={questionsAnswered} />
+        <Feed posts={questionsAnswered} hideMoreAnswers />
       </>
     ) : null;
   };
