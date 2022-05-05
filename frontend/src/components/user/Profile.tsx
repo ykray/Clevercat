@@ -126,7 +126,7 @@ export default function Profile() {
         <Stack>
           <Stack direction={'row'} spacing={3}>
             {renderAvatar()}
-            <Stack justifyContent={'center'} spacing={3}>
+            <Stack justifyContent={'center'} spacing={2}>
               <Stack direction={'row'} alignItems={'flex-start'} spacing={2}>
                 <Stack spacing={1}>
                   <h2>{user.username}</h2>
@@ -162,7 +162,7 @@ export default function Profile() {
               {currentUser === user.uid ? (
                 <Button
                   variant={'contained'}
-                  style={{ width: 'auto' }}
+                  style={{ width: 140 }}
                   onClick={() => navigate('/profile')}
                 >
                   Edit Profile
