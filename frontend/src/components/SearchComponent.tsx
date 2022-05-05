@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import {
+  createSearchParams,
+  generatePath,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 
 // Components
 import Feed from './Feed';
@@ -10,6 +16,7 @@ import { QuestionPost, SearchScope } from '../utils/Types';
 import HotQuestions from './HotQuestions';
 
 const SearchComponent = () => {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<QuestionPost[]>([]);
   const [searchQuery, setSearchQuery] = useState<string | null>();
@@ -31,7 +38,9 @@ const SearchComponent = () => {
     const scope = searchParams.get('scope') as keyof typeof SearchScope;
 
     setSearchQuery(searchParams.get('q'));
-    setSearchScope(getEnumFromString(SearchScope, scope).toLowerCase());
+    setSearchScope(
+      getEnumFromString(SearchScope, scope).toLowerCase() || 'full'
+    );
   }, [searchParams]);
 
   useEffect(() => {
@@ -74,6 +83,7 @@ const SearchComponent = () => {
 
   const renderSpellingSuggestions = () => {
     if (spellingSuggestions && spellingSuggestions.length > 0) {
+      console.log(searchScope);
       return (
         <div className={'spelling-suggestions'}>
           <h4>Did you mean:</h4>
@@ -81,7 +91,12 @@ const SearchComponent = () => {
             {spellingSuggestions.map((suggestion, i) => {
               return (
                 <li key={i}>
-                  <Link to={`/search?q=${suggestion}&?scope=${searchScope}`}>
+                  <Link
+                    to={generatePath('/search?q=:q&scope=:scope', {
+                      q: suggestion,
+                      scope: searchScope,
+                    })}
+                  >
                     {suggestion}
                   </Link>
                 </li>
