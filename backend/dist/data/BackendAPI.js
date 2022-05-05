@@ -158,15 +158,12 @@ class API {
           WITH variables (term) AS (VALUES ($1))
           SELECT DISTINCT ON (q.qid) q.*,
             TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) AS tsv_search,
-            TS_RANK(TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')),
-            PLAINTO_TSQUERY(v.term)) AS rank
-          FROM
-            variables v,
-            questions q
-              JOIN answers a ON q.qid = a.qid
-          WHERE
-            TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
-          ORDER BY q.qid, rank DESC;
+            TS_RANK(TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')),PLAINTO_TSQUERY(v.term))  AS rank
+          FROM variables v, questions q
+          JOIN answers a ON q.qid = a.qid
+          WHERE TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
+            OR q.topic ~ ('*.' || INITCAP(v.term) || '.*')::lquery
+          ORDER BY q.qid, rank DESC
         `,
                 values: [searchQuery],
             };
