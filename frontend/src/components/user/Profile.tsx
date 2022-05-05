@@ -124,7 +124,7 @@ export default function Profile() {
     <div className={'profile-container'}>
       <Stack spacing={10}>
         <Stack>
-          <Stack direction={'row'} spacing={3}>
+          <Stack direction={'row'} alignItems={'flex-start'} spacing={3}>
             {renderAvatar()}
             <Stack justifyContent={'center'} spacing={2}>
               <Stack direction={'row'} alignItems={'flex-start'} spacing={2}>
@@ -149,7 +149,9 @@ export default function Profile() {
                 </div>
               </Stack>
 
-              <p>{user.bio}</p>
+              <div className={'profile-bio'}>
+                <p>{user.bio}</p>
+              </div>
               <p
                 style={{
                   color: styles.color_muted_400,

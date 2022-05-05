@@ -90,6 +90,10 @@ a {
     text-transform: uppercase;
     letter-spacing: 1px;
   }
+
+  h2 {
+    margin: 0;
+  }
 }
 
 .login-button {
@@ -319,7 +323,7 @@ a {
 .question-topic {
   display: inline-block;
   border-radius: $radius;
-  margin-bottom: 17px;
+  margin-bottom: 10px;
 
   ul {
     margin: 0;
@@ -550,7 +554,7 @@ a {
 .profile-avatar {
   $size: 140px;
 
-  border-radius: $radius * 2000.5;
+  border-radius: $size;
   width: $size;
   height: $size;
   text-align: center;
@@ -558,6 +562,12 @@ a {
   font-family: 'GilroySemibold';
   font-size: $size * 0.6;
   color: white;
+}
+
+.profile-bio {
+  p {
+    max-width: 600px;
+  }
 }
 
 .karma-container {
@@ -747,6 +757,7 @@ a {
     font-family: 'GilroySemibold';
     font-size: 1.35rem;
     color: $color-text-header;
+    margin-bottom: 15px;
   }
 
   font-family: 'Roboto';

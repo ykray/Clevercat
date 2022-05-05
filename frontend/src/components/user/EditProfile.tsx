@@ -36,7 +36,7 @@ export default function EditProfile() {
         setUser(res);
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -75,6 +75,12 @@ export default function EditProfile() {
             API.Users.updateProfile('color', '').then(() => {
               setSnackbarMessage('Your avatar color has been updated!');
               setSnackbarOpen(true);
+
+              if (currentUser) {
+                API.Users.getUser(currentUser).then((res) => {
+                  setUser((user: any) => ({ ...user, color: res.color }));
+                });
+              }
             });
           }}
           style={{
@@ -138,7 +144,7 @@ export default function EditProfile() {
                   setBioInput(e.target.value);
                 }}
                 onBlur={(e: any) => {
-                  API.Users.updateBio(e.target.value).then(() => {
+                  API.Users.updateProfile('bio', e.target.value).then(() => {
                     setSnackbarMessage('Your bio has been updated!');
                     setSnackbarOpen(true);
                   });
