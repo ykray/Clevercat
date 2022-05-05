@@ -193,24 +193,23 @@ export default class API {
   static Search = class {
     static search = (
       searchQuery: string,
-      searchScope: SearchScope
+      searchScope: string
     ): Promise<QuestionPost[]> => {
-      const scope = JSON.stringify(searchScope);
-
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/search/${scope}/${searchQuery}`)
+        fetch(`${ENDPOINT}/search/${searchScope}/${searchQuery}`)
           .then((res) => {
             return res.text();
           })
           .then((res) => {
             const results: QuestionPost[] = JSON.parse(res);
-
-            console.log(results);
-
-            // console.log('FrontendAPI:', results);
+            console.log(`Search in ${searchScope} for ${searchQuery}`, results);
             resolve(results);
           })
           .catch((error) => {
+            console.log(
+              `Search in ${searchScope} for ${searchQuery}: no results :(`
+            );
+
             reject(error);
           });
       });

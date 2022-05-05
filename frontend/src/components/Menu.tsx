@@ -28,7 +28,6 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
   const [topics, setTopics] = useState<Topic[]>([]);
 
   useEffect(() => {
-    console.log('menu:', localStorage.getItem('showMenu'));
     API.getAllTopics().then((topics) => setTopics(topics));
   }, []);
 

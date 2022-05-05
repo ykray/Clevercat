@@ -59,7 +59,7 @@ a {
 
 .container {
   padding-top: 25px;
-  padding-bottom: 0;
+  padding-bottom: 0px;
   padding-left: 40px;
   padding-right: 40px;
 }
@@ -73,7 +73,7 @@ a {
   overflow-y: scroll;
   padding-top: 48px;
   padding-bottom: 25px;
-  max-height: 82vh;
+  max-height: 83vh;
 }
 
 .main-header {
@@ -204,12 +204,18 @@ a {
 }
 
 .logo {
+  &:active {
+    transform: scale(0.96);
+    @include transition-enter;
+  }
+
   $size: 1.9rem;
   cursor: pointer;
   font-family: 'Gilroy-Semibold';
   letter-spacing: -0.7px;
   color: $color-text-header;
   @include disableSelect();
+  @include transition-exit;
 
   img {
     width: $size * 0.85;
@@ -484,6 +490,11 @@ a {
 }
 
 .author-avatar {
+  &:active {
+    transform: scale(0.9);
+    @include transition-enter;
+  }
+
   $size: 41px;
 
   cursor: pointer;
@@ -495,6 +506,7 @@ a {
   font-family: 'GilroySemibold';
   font-size: $size * 0.6;
   color: white;
+  @include transition-exit;
 }
 
 .profile-container {
@@ -509,6 +521,10 @@ a {
   }
   input {
     height: 12px;
+  }
+
+  .MuiOutlinedInput-root {
+    width: 500px;
   }
 }
 

@@ -143,14 +143,14 @@ export default class API {
   // Search API
   static Search = class {
     // Full text search all questions
-    static search = (searchQuery: string, searchScope: SearchScope) => {
+    static search = (searchQuery: string, searchScope: string) => {
       const query_questions = {
         text: `--sql
           SELECT q.*
           FROM Questions q
           WHERE q.title ILIKE '%' || $1 || '%'
           OR q.body ILIKE '%' || $1 || '%'
-          OR q.topic ILIKE '%' || $1 || '%'
+          OR q.topic::TEXT ILIKE '%' || $1 || '%'
         `,
         values: [searchQuery],
       };
@@ -198,20 +198,23 @@ export default class API {
         `,
         values: [searchQuery],
       };
-      // TODO: - Fix scope handling
-      // const query =
-      //   searchScope === SearchScope.Questions
-      //     ? query_questions
-      //     : SearchScope.Answers
-      //     ? query_answers
-      //     : query_all;
-      const query = query_all;
+      // TODO: - Fix scope handling & SearchScope type implementation to clean up
+      const queryType = () => {
+        switch (searchScope) {
+          case 'questions':
+            return query_questions;
+          case 'answers':
+            return query_answers;
+          default:
+            return query_all;
+        }
+      };
 
       return new Promise((resolve, reject) => {
         const searchResults: any[] = [];
 
         pool
-          .query(query)
+          .query(queryType())
           .then((res) => {
             // 1. Get all questions matching query
             const questions = res.rows;

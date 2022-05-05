@@ -144,8 +144,7 @@ app.post('/ask', API.Users.askQuestion);
 
 // Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {
-  const scope = JSON.parse(req.params.searchScope);
-  API.Search.search(req.params.searchQuery, scope)
+  API.Search.search(req.params.searchQuery, req.params.searchScope)
     .then((searchResults) => {
       res.status(200).send(searchResults);
     })

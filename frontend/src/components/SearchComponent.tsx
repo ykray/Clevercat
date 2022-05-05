@@ -17,10 +17,21 @@ const SearchComponent = () => {
 
   const [spellingSuggestions, setSpellingSuggestions] = useState<string[]>([]);
 
+  function getEnumFromString<T>(type: T, str: string): any {
+    const enumName = (Object.keys(type) as Array<keyof T>).find(
+      (k) => (type as any)[k].toLowerCase() === str.toLowerCase()
+    ) as keyof T;
+    var keyValue = isNaN(Number(enumName)) ? enumName : Number(enumName);
+    return keyValue;
+  }
+
   useEffect(() => {
     // TODO: - Fix params
+
+    const scope = searchParams.get('scope') as keyof typeof SearchScope;
+
     setSearchQuery(searchParams.get('q'));
-    setSearchScope(searchParams.get('scope') as SearchScope);
+    setSearchScope(getEnumFromString(SearchScope, scope).toLowerCase());
   }, [searchParams]);
 
   useEffect(() => {

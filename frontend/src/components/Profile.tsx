@@ -134,6 +134,7 @@ export default function Profile() {
                     {userKarma}
                     <span
                       style={{
+                        paddingLeft: 3,
                         fontFamily: 'GilroySemibold',
                         color: styles.color_text_body,
                       }}
@@ -183,11 +184,17 @@ export default function Profile() {
   ) : notFound ? (
     <>
       <h1>Nothing to see here.</h1>
-      <p>
-        User <span className={'highlight-2'}>@{username}</span> doesn't exist (
-        <span style={{ fontStyle: 'italic' }}>yet,</span>{' '}
-        {<Link to={`/signup?u=${username}`}>claim this username!</Link>}).
-      </p>
+      {currentUser ? (
+        <p>
+          User <span className={'highlight-2'}>@{username}</span> doesn't exist.
+        </p>
+      ) : (
+        <p>
+          User <span className={'highlight-2'}>@{username}</span> doesn't exist
+          (<span style={{ fontStyle: 'italic' }}>yet,</span>{' '}
+          {<Link to={`/signup?u=${username}`}>claim this username!</Link>}).
+        </p>
+      )}
     </>
   ) : null;
 }

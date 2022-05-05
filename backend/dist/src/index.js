@@ -130,8 +130,7 @@ app.post('/updateBio', BackendAPI_1.default.Users.updateBio);
 app.post('/ask', BackendAPI_1.default.Users.askQuestion);
 // Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {
-    const scope = JSON.parse(req.params.searchScope);
-    BackendAPI_1.default.Search.search(req.params.searchQuery, scope)
+    BackendAPI_1.default.Search.search(req.params.searchQuery, req.params.searchScope)
         .then((searchResults) => {
         res.status(200).send(searchResults);
     })
