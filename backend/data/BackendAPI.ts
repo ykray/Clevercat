@@ -428,7 +428,7 @@ export default class API {
         .then((results) => {
           const test = {
             uid: req.user,
-            email: newValue,
+            city: newValue,
           };
           console.log(chalk.blueBright(chalk.bold('UPDATED')), test);
           res.status(200).send(results);
@@ -456,7 +456,7 @@ export default class API {
         .then((results) => {
           const test = {
             uid: req.user,
-            email: newValue,
+            state: newValue,
           };
           console.log(chalk.blueBright(chalk.bold('UPDATED')), test);
           res.status(200).send(results);
@@ -484,13 +484,53 @@ export default class API {
         .then((results) => {
           const test = {
             uid: req.user,
-            email: newValue,
+            country: newValue,
           };
           console.log(chalk.blueBright(chalk.bold('UPDATED')), test);
           res.status(200).send(results);
         })
         .catch((error) => {
           log.fatal('Failed to update country:', error);
+          res.status(400).send(error);
+        });
+    };
+
+    static updateColor = (req: any, res: any) => {
+      const colors = [
+        '#5dda0a',
+        '#f858cd',
+        '#5c549d',
+        '#ffbc1a',
+        '#52e9dd',
+        '#ffad5c',
+        '#a3d837',
+        '#6f37d8',
+        '#1ac9bb',
+        '#52c3ed',
+      ];
+      const newColor = colors[Math.floor(Math.random() * colors.length)];
+
+      const query = {
+        text: `--sql
+          UPDATE Users
+          SET color = $2
+          WHERE uid::text = $1
+          `,
+        values: [req.user, newColor],
+      };
+
+      pool
+        .query(query)
+        .then((results) => {
+          const test = {
+            uid: req.user,
+            color: newColor,
+          };
+          console.log(chalk.blueBright(chalk.bold('UPDATED')), test);
+          res.status(200).send(results);
+        })
+        .catch((error) => {
+          log.fatal('Failed to update color:', error);
           res.status(400).send(error);
         });
     };

@@ -132,6 +132,7 @@ app.post('/update-email', BackendAPI_1.default.Users.updateEmail);
 app.post('/update-city', BackendAPI_1.default.Users.updateCity);
 app.post('/update-state', BackendAPI_1.default.Users.updateState);
 app.post('/update-country', BackendAPI_1.default.Users.updateCountry);
+app.post('/update-color', BackendAPI_1.default.Users.updateColor);
 app.post('/ask', BackendAPI_1.default.Users.askQuestion);
 // Search Routes
 app.get('/search/:searchScope/:searchQuery', (req, res) => {

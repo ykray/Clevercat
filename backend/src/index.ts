@@ -146,6 +146,7 @@ app.post('/update-email', API.Users.updateEmail);
 app.post('/update-city', API.Users.updateCity);
 app.post('/update-state', API.Users.updateState);
 app.post('/update-country', API.Users.updateCountry);
+app.post('/update-color', API.Users.updateColor);
 
 app.post('/ask', API.Users.askQuestion);
 

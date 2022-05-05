@@ -36,7 +36,7 @@ export default function EditProfile() {
         setUser(res);
       });
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (user) {
@@ -61,14 +61,31 @@ export default function EditProfile() {
 
   const renderAvatar = () => {
     return user ? (
-      <div
-        className={'profile-avatar'}
-        style={{
-          backgroundColor: user.color,
-        }}
-      >
-        {user.username[0].toUpperCase()}
-      </div>
+      <Stack alignItems={'center'} spacing={2}>
+        <div
+          className={'profile-avatar'}
+          style={{
+            backgroundColor: user.color,
+          }}
+        >
+          {user.username[0].toUpperCase()}
+        </div>
+        <p
+          onClick={() => {
+            API.Users.updateProfile('color', '').then(() => {
+              setSnackbarMessage('Your avatar color has been updated!');
+              setSnackbarOpen(true);
+            });
+          }}
+          style={{
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            color: styles.color_primary_500,
+          }}
+        >
+          Change color
+        </p>
+      </Stack>
     ) : null;
   };
 
