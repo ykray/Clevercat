@@ -677,11 +677,13 @@ class API {
         `,
                 values: [parsed.qid, parsed.uid],
             };
+            Logger_1.default.debug(parsed);
             return new Promise((resolve, reject) => {
                 pool_1.default
                     .query(query)
                     .then((res) => {
-                    const sum = Number(res.rows[0].sum) || 0;
+                    const sum = res.rows[0].sum;
+                    Logger_1.default.debug('sum', sum);
                     resolve(sum);
                 })
                     .catch((error) => {

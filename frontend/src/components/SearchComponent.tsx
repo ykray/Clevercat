@@ -49,17 +49,15 @@ const SearchComponent = () => {
         // Trim body to show searchQuery in answer body
         const cutoff = 200;
 
-        results.map((result) => {
+        results.forEach((result) => {
           if (result.answers) {
-            result.answers.map((answer) => {
+            result.answers.forEach((answer) => {
               const keywordIndex = answer.body.indexOf(searchQuery);
 
               if (keywordIndex > 200 && answer.body.length > cutoff) {
                 return (answer.body =
                   '...' +
-                  answer.body.substring(
-                    answer.body.indexOf(searchQuery) - 100
-                  ));
+                  answer.body.substring(answer.body.indexOf(searchQuery) - 50));
               }
             });
           }

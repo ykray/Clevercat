@@ -779,11 +779,14 @@ export default class API {
         values: [parsed.qid, parsed.uid],
       };
 
+      log.debug(parsed);
+
       return new Promise((resolve, reject) => {
         pool
           .query(query)
           .then((res) => {
-            const sum: number = Number(res.rows[0].sum) || 0;
+            const sum = res.rows[0].sum;
+            log.debug('sum', sum);
             resolve(sum);
           })
           .catch((error) => {

@@ -116,7 +116,7 @@ app.delete('/auth/logout', API.Auth.logout);
 app.get('/auth/current-user', API.Auth.currentUser);
 
 // Users Routes
-app.get('/karma/:uid', API.Users.getUserKarma);
+app.get('/user-karma/:uid', API.Users.getUserKarma);
 app.get('/available/:username', API.Users.isUsernameAvailable);
 app.get('/usernames/:username', (req, res) => {
   API.Users.getUserFromUsername(req.params.username)
@@ -177,7 +177,8 @@ app.get('/votes/:answerID/:voter_uid', (req, res) => {
 app.post('/post-answer', requiresLogin, API.Answers.post);
 app.post('/select-best-answer', requiresLogin, API.Answers.selectBestAnswer);
 
-app.get('/karma/:answerID', (req, res) => {
+app.get('/answer-karma/:answerID', (req, res) => {
+  console.log('hit');
   API.Answers.getKarmaCount(req.params.answerID)
     .then((count) => {
       res.status(200).send(count.toString());

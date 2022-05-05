@@ -11,7 +11,6 @@ import AuthorComponent from './AuthorComponent';
 // MUI
 import { Stack } from '@mui/material';
 import { UserContext } from '../App';
-import API from '../data/FrontendAPI';
 
 type Props = {
   answer: Answer;

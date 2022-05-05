@@ -280,11 +280,13 @@ export default class API {
       let _answerID = JSON.stringify(answerID);
 
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/karma/${_answerID}`)
+        fetch(`${ENDPOINT}/answer-karma/${_answerID}`)
           .then((res) => {
             return res.text();
           })
           .then((res: any) => {
+            console.log('vv:', res);
+
             resolve(Number(res));
           })
           .catch((error) => reject(error));
@@ -312,7 +314,7 @@ export default class API {
   static Users = class {
     static getUserKarma = (uid: string): Promise<number> => {
       return new Promise((resolve, reject) => {
-        fetch(`${ENDPOINT}/karma/${uid}`)
+        fetch(`${ENDPOINT}/user-karma/${uid}`)
           .then((res) => {
             return res.text();
           })
