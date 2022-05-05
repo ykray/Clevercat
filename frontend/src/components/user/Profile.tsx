@@ -91,10 +91,10 @@ export default function Profile() {
   const renderMyQuestions = () => {
     return questionsAsked ? (
       <>
-        <h2>
+        <h1>
           {questionsAsked.length}
           {questionsAsked.length === 1 ? ' question' : ' questions'} asked
-        </h2>
+        </h1>
         <Feed posts={questionsAsked} showQuestionBody hideMoreAnswers />
       </>
     ) : null;
@@ -103,10 +103,10 @@ export default function Profile() {
   const renderMyAnswers = () => {
     return questionsAnswered ? (
       <>
-        <h2>
+        <h1>
           {questionsAnswered.length}
           {questionsAnswered.length === 1 ? ' question' : ' questions'} answered
-        </h2>
+        </h1>
         <Feed posts={questionsAnswered} hideMoreAnswers />
       </>
     ) : null;
@@ -171,7 +171,7 @@ export default function Profile() {
             </Stack>
           </Stack>
         </Stack>
-        <Stack spacing={5}>
+        <Stack spacing={4}>
           {renderMyQuestions()}
           {renderMyAnswers()}
         </Stack>

@@ -92,7 +92,14 @@ export default function EditProfile() {
   return user ? (
     <div className={'profile-container'}>
       <Link to={`/@${user.username}`}>
-        <Stack direction={'row'} alignItems={'center'}>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          justifyContent={'flex-start'}
+          style={{
+            marginBottom: 30,
+          }}
+        >
           <ChevronLeft
             style={{
               width: 25,
@@ -100,11 +107,17 @@ export default function EditProfile() {
               color: styles.color_primary_500,
             }}
           />
-          Back to profile
+          <p
+            style={{
+              color: styles.color_primary_500,
+            }}
+          >
+            Back to profile
+          </p>
         </Stack>
       </Link>
 
-      <h1>Edit Profile</h1>
+      <h1 style={{ marginBottom: 30 }}>Edit Profile</h1>
       <Stack spacing={10}>
         <Stack>
           <Stack direction={'row'} spacing={3}>
