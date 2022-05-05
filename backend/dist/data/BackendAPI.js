@@ -815,8 +815,7 @@ class API {
                 pool_1.default
                     .query(query)
                     .then((res) => {
-                    const sum = res.rows[0].sum;
-                    Logger_1.default.debug('sum', sum);
+                    const sum = res.rows[0].sum ?? 0;
                     resolve(sum);
                 })
                     .catch((error) => {

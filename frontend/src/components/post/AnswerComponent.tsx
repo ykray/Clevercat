@@ -43,7 +43,7 @@ const AnswerComponent = ({ answer }: Props) => {
         <Stack
           direction={'column'}
           justifyContent={'flex-end'}
-          alignItems={'flex-end'}
+          alignItems={'flex-start'}
         >
           <div className="answer-body">
             <p>{answer.body}</p>

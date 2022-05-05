@@ -933,8 +933,7 @@ export default class API {
         pool
           .query(query)
           .then((res) => {
-            const sum = res.rows[0].sum;
-            log.debug('sum', sum);
+            const sum = res.rows[0].sum ?? 0;
             resolve(sum);
           })
           .catch((error) => {
