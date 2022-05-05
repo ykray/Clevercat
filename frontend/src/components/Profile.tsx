@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+// Assets
+import styles from '../assets/sass/_variables.scss';
+
 // MUI
 import { Snackbar, Stack, TextField } from '@mui/material';
 
@@ -20,6 +23,7 @@ export default function Profile() {
   // States
   const [notFound, setNotFound] = useState(false);
   const [user, setUser] = useState<User>();
+  const [userKarma, setUserKarma] = useState(0);
 
   const [questionsAsked, setQuestionsAsked] = useState<QuestionPost[]>([]);
   const [questionsAnswered, setQuestionsAnswered] = useState<QuestionPost[]>(
@@ -42,6 +46,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
+      API.Users.getUserKarma(user.uid).then((res) => {
+        setUserKarma(res);
+      });
       API.Users.getUserQuestions(user.uid).then((res) => {
         setQuestionsAsked(res);
       });
@@ -85,7 +92,7 @@ export default function Profile() {
           {questionsAsked.length}
           {questionsAsked.length === 1 ? ' question' : ' questions'} asked
         </h2>
-        <Feed posts={questionsAsked} />
+        <Feed posts={questionsAsked} showQuestionBody />
       </>
     ) : null;
   };
@@ -110,17 +117,34 @@ export default function Profile() {
     }
   };
 
-  return user ? (
+  return user && userKarma ? (
     <div className={'profile-container'}>
       <Stack spacing={10}>
         <Stack>
           <Stack direction={'row'} spacing={3}>
             {renderAvatar()}
             <Stack justifyContent={'center'} spacing={3}>
-              <Stack direction={'row'} alignItems={'center'} spacing={2}>
-                <h1>{user.username}</h1>
-                {renderStatus()}
+              <Stack direction={'row'} alignItems={'flex-start'} spacing={2}>
+                <Stack spacing={1}>
+                  <h1>{user.username}</h1>
+                  {renderStatus()}
+                </Stack>
+                <div className={'profile-karma'}>
+                  <p>
+                    {userKarma}
+                    <span
+                      style={{
+                        fontFamily: 'GilroySemibold',
+                        color: styles.color_text_body,
+                      }}
+                    >
+                      {' '}
+                      karma
+                    </span>
+                  </p>
+                </div>
               </Stack>
+
               {currentUser === user.uid ? (
                 <TextField
                   multiline

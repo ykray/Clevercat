@@ -51,6 +51,8 @@ export default function Login() {
         </p>
 
         <TextField
+          autoCorrect={'off'}
+          autoComplete={'off'}
           value={usernameInput}
           label={'Username'}
           placeholder={'username'}

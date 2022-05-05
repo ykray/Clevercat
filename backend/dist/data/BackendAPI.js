@@ -52,20 +52,18 @@ class API {
             res.status(400).send(error);
         });
     };
-    static getAllTopics = () => {
-        return new Promise((resolve, reject) => {
-            pool_1.default
-                .query(`--sql
+    static getAllTopics = (req, res) => {
+        pool_1.default
+            .query(`--sql
           SELECT t.topic_path
           FROM topics t;
         `)
-                .then((res) => {
-                resolve(res.rows);
-            })
-                .catch((error) => {
-                Logger_1.default.fatal(error);
-                reject(error);
-            });
+            .then((results) => {
+            res.status(200).send(results.rows);
+        })
+            .catch((error) => {
+            Logger_1.default.fatal(error);
+            res.status(400).send(error);
         });
     };
     static getSpellingSuggestions = (string) => {
@@ -76,44 +74,42 @@ class API {
             resolve(corrections);
         });
     };
-    static getHotQuestions = () => {
+    static getHotQuestions = (req, res) => {
         const query = {
             text: `--sql
         SELECT *
-        FROM Questions
+        FROM questions
         ORDER BY q_timestamp DESC
         LIMIT 10;
       `,
         };
-        return new Promise((resolve, reject) => {
-            const feedResults = [];
-            pool_1.default
-                .query(query)
-                .then((res) => {
-                // 1. Get all questions matching query
-                const questions = res.rows;
-                const q_promises = [];
-                // 2. For each question, get its' answers
-                questions.map((question) => {
-                    q_promises.push(new Promise((resolve, reject) => {
-                        API.Questions.getAnswers(question.qid).then((answers) => {
-                            feedResults.push({
-                                question,
-                                answers,
-                            });
-                            resolve(true);
+        const feedResults = [];
+        pool_1.default
+            .query(query)
+            .then((results) => {
+            // 1. Get all questions matching query
+            const questions = results.rows;
+            const q_promises = [];
+            // 2. For each question, get its' answers
+            questions.map((question) => {
+                q_promises.push(new Promise((resolve, reject) => {
+                    API.Questions.getAnswers(question.qid).then((answers) => {
+                        feedResults.push({
+                            question,
+                            answers,
                         });
-                    }));
-                });
-                Promise.all(q_promises).then(() => {
-                    // log.info(feedResults);
-                    resolve(feedResults);
-                });
-            })
-                .catch((error) => {
-                Logger_1.default.fatal(error);
-                reject(error);
+                        resolve(true);
+                    });
+                }));
             });
+            Promise.all(q_promises).then(() => {
+                // log.info(feedResults);
+                res.status(200).send(feedResults);
+            });
+        })
+            .catch((error) => {
+            Logger_1.default.fatal(error);
+            res.status(400).send(error);
         });
     };
     // Search API
@@ -268,6 +264,26 @@ class API {
     };
     // Users API
     static Users = class {
+        static getUserKarma = (req, res) => {
+            const query = {
+                text: `--sql
+          SELECT SUM(vote)
+          FROM karma
+          WHERE uid::TEXT = $1
+        `,
+                values: [req.params.uid],
+            };
+            pool_1.default
+                .query(query)
+                .then((results) => {
+                const userKarma = results.rows[0].sum;
+                Logger_1.default.debug(userKarma);
+                res.status(200).send(userKarma);
+            })
+                .catch((error) => {
+                res.sendStatus(error);
+            });
+        };
         static isUsernameAvailable = (req, res) => {
             const query = {
                 text: `--sql
@@ -463,8 +479,7 @@ class API {
         static getQuestionPost = (qid) => {
             const query = {
                 text: `--sql
-          SELECT
-            q.*
+          SELECT q.*
           FROM Questions q
           WHERE qid::TEXT = $1
           FETCH FIRST ROW ONLY;
@@ -508,7 +523,7 @@ class API {
                 text: `--sql
           SELECT *
           FROM bestanswers
-          WHERE qid = $1
+          WHERE qid::TEXT = $1
         `,
                 values: [qid],
             };
@@ -654,7 +669,7 @@ class API {
             const query = {
                 text: `--sql
           SELECT SUM(vote)
-          FROM Karma
+          FROM karma
           WHERE qid::TEXT = $1 AND uid::TEXT = $2;
         `,
                 values: [parsed.qid, parsed.uid],

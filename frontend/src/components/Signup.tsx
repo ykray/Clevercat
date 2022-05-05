@@ -111,7 +111,7 @@ export default function Signup() {
           spacing={1}
           marginBottom={'20px'}
         >
-          <p>Create your account, and join our community of curious cats</p>
+          <p>Create your account and join our community of curious cats</p>
           <img
             src={KittyImage}
             alt={'kitty'}
@@ -119,6 +119,8 @@ export default function Signup() {
           />
         </Stack>
         <TextField
+          autoCorrect={'off'}
+          autoComplete={'off'}
           value={usernameInput}
           error={errorUsername}
           placeholder={'username'}

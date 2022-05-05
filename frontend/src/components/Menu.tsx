@@ -90,8 +90,8 @@ export default function Menu({ show = true, topAnchor = 0 }: Props) {
 
     const renderCategoryIcon = (category: string) => {
       const style = {
-        width: 15,
-        height: 15,
+        width: 17,
+        height: 17,
         marginTop: -3,
         marginRight: 4,
         marginLeft: -2,

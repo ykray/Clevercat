@@ -311,6 +311,22 @@ export default class API {
 
   // Users API
   static Users = class {
+    static getUserKarma = (uid: string): Promise<number> => {
+      return new Promise((resolve, reject) => {
+        fetch(`${ENDPOINT}/karma/${uid}`)
+          .then((res) => {
+            return res.text();
+          })
+          .then((res: any) => {
+            resolve(JSON.parse(res));
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    };
+
     static isUsernameAvailable = (username: string): Promise<boolean> => {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/available/${username}`, {
@@ -405,6 +421,7 @@ export default class API {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/usernames/${username}`)
           .then((res) => {
+            console.log(res);
             return res.text();
           })
           .then((res) => {

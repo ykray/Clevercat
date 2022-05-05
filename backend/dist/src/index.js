@@ -104,6 +104,7 @@ app.post('/auth/login', passport_1.default.authenticate('local'), BackendAPI_1.d
 app.delete('/auth/logout', BackendAPI_1.default.Auth.logout);
 app.get('/auth/current-user', BackendAPI_1.default.Auth.currentUser);
 // Users Routes
+app.get('/karma/:uid', BackendAPI_1.default.Users.getUserKarma);
 app.get('/available/:username', BackendAPI_1.default.Users.isUsernameAvailable);
 app.get('/usernames/:username', (req, res) => {
     BackendAPI_1.default.Users.getUserFromUsername(req.params.username)
@@ -180,24 +181,8 @@ app.post('/vote', (req, res) => {
 });
 // Other Routes
 app.get('/topics/:topicPath', BackendAPI_1.default.getTopicFeed);
-app.get('/all-topics', (req, res) => {
-    BackendAPI_1.default.getAllTopics()
-        .then((topics) => {
-        res.status(200).send(topics);
-    })
-        .catch((error) => {
-        res.status(500).send(error);
-    });
-});
-app.get('/hot', (req, res) => {
-    BackendAPI_1.default.getHotQuestions()
-        .then((posts) => {
-        res.status(200).send(posts);
-    })
-        .catch((error) => {
-        res.status(500).send(error);
-    });
-});
+app.get('/all-topics', BackendAPI_1.default.getAllTopics);
+app.get('/hot', BackendAPI_1.default.getHotQuestions);
 app.get('/spellcheck/:string', (req, res) => {
     BackendAPI_1.default.getSpellingSuggestions(req.params.string).then((corrections) => {
         res.status(200).send(corrections);

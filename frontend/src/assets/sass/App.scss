@@ -156,7 +156,7 @@ a {
 
   .category {
     padding-top: 10px;
-    padding-bottom: 8px;
+    padding-bottom: 6px;
     font-size: 0.9rem;
     font-family: 'GilroySemibold';
     color: $color-text-body;
@@ -272,6 +272,10 @@ a {
   }
 }
 .floating-ask {
+  &:active {
+    transform: scale(0.9);
+  }
+
   cursor: pointer;
   position: fixed;
   bottom: 30px;
@@ -508,6 +512,23 @@ a {
   }
 }
 
+.profile-karma {
+  border-radius: 50px;
+  border: 1px solid $color-muted-100;
+  padding-left: 11px;
+  padding-right: 11px;
+  padding-top: 6px;
+  padding-bottom: 5px;
+
+  p {
+    font-family: 'GilroyBold';
+    line-height: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: $color-primary-500;
+  }
+}
+
 .profile-avatar {
   $size: 140px;
 
@@ -697,6 +718,8 @@ a {
   }
 
   .feed-more-answers {
+    margin: 0 auto;
+    padding-top: 15px;
     font-family: 'GilroySemibold';
     color: $color-primary-500;
     font-size: 0.9rem;

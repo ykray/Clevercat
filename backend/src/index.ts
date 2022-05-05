@@ -116,6 +116,7 @@ app.delete('/auth/logout', API.Auth.logout);
 app.get('/auth/current-user', API.Auth.currentUser);
 
 // Users Routes
+app.get('/karma/:uid', API.Users.getUserKarma);
 app.get('/available/:username', API.Users.isUsernameAvailable);
 app.get('/usernames/:username', (req, res) => {
   API.Users.getUserFromUsername(req.params.username)
@@ -198,24 +199,8 @@ app.post('/vote', (req, res) => {
 
 // Other Routes
 app.get('/topics/:topicPath', API.getTopicFeed);
-app.get('/all-topics', (req, res) => {
-  API.getAllTopics()
-    .then((topics) => {
-      res.status(200).send(topics);
-    })
-    .catch((error) => {
-      res.status(500).send(error);
-    });
-});
-app.get('/hot', (req, res) => {
-  API.getHotQuestions()
-    .then((posts) => {
-      res.status(200).send(posts);
-    })
-    .catch((error) => {
-      res.status(500).send(error);
-    });
-});
+app.get('/all-topics', API.getAllTopics);
+app.get('/hot', API.getHotQuestions);
 app.get('/spellcheck/:string', (req, res) => {
   API.getSpellingSuggestions(req.params.string).then((corrections) => {
     res.status(200).send(corrections);

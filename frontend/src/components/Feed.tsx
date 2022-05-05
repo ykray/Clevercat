@@ -15,11 +15,13 @@ type Props = {
   posts?: QuestionPost[];
   answers?: Answer[];
   hideTopic?: boolean;
+  showQuestionBody?: boolean;
 };
 export const Feed = ({
   searchQuery = null,
   posts,
   hideTopic = false,
+  showQuestionBody = false,
 }: Props) => {
   const postsNum = posts?.length || 0;
 
@@ -71,12 +73,14 @@ export const Feed = ({
                           )
                         ) : (
                           <Stack
-                            alignItems={'center'}
+                            alignItems={'flex-start'}
                             justifyContent={'center'}
                             spacing={2}
                           >
                             <p className={'feed-result-body'}>
-                              {answers[0].body}
+                              {showQuestionBody
+                                ? post.question.body
+                                : answers[0].body}
                             </p>
 
                             {answers.length > 1 ? (

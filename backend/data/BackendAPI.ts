@@ -66,23 +66,21 @@ export default class API {
       });
   };
 
-  static getAllTopics = () => {
-    return new Promise((resolve, reject) => {
-      pool
-        .query(
-          `--sql
+  static getAllTopics = (req: any, res: any) => {
+    pool
+      .query(
+        `--sql
           SELECT t.topic_path
           FROM topics t;
         `
-        )
-        .then((res) => {
-          resolve(res.rows);
-        })
-        .catch((error) => {
-          log.fatal(error);
-          reject(error);
-        });
-    });
+      )
+      .then((results) => {
+        res.status(200).send(results.rows);
+      })
+      .catch((error) => {
+        log.fatal(error);
+        res.status(400).send(error);
+      });
   };
 
   static getSpellingSuggestions = (string: string) => {
@@ -97,51 +95,49 @@ export default class API {
     });
   };
 
-  static getHotQuestions = () => {
+  static getHotQuestions = (req: any, res: any) => {
     const query = {
       text: `--sql
         SELECT *
-        FROM Questions
+        FROM questions
         ORDER BY q_timestamp DESC
         LIMIT 10;
       `,
     };
 
-    return new Promise((resolve, reject) => {
-      const feedResults: any[] = [];
+    const feedResults: any[] = [];
 
-      pool
-        .query(query)
-        .then((res) => {
-          // 1. Get all questions matching query
-          const questions = res.rows;
-          const q_promises: any = [];
+    pool
+      .query(query)
+      .then((results) => {
+        // 1. Get all questions matching query
+        const questions = results.rows;
+        const q_promises: any = [];
 
-          // 2. For each question, get its' answers
-          questions.map((question) => {
-            q_promises.push(
-              new Promise((resolve, reject) => {
-                API.Questions.getAnswers(question.qid).then((answers) => {
-                  feedResults.push({
-                    question,
-                    answers,
-                  });
-                  resolve(true);
+        // 2. For each question, get its' answers
+        questions.map((question) => {
+          q_promises.push(
+            new Promise((resolve, reject) => {
+              API.Questions.getAnswers(question.qid).then((answers) => {
+                feedResults.push({
+                  question,
+                  answers,
                 });
-              })
-            );
-          });
-
-          Promise.all(q_promises).then(() => {
-            // log.info(feedResults);
-            resolve(feedResults);
-          });
-        })
-        .catch((error) => {
-          log.fatal(error);
-          reject(error);
+                resolve(true);
+              });
+            })
+          );
         });
-    });
+
+        Promise.all(q_promises).then(() => {
+          // log.info(feedResults);
+          res.status(200).send(feedResults);
+        });
+      })
+      .catch((error) => {
+        log.fatal(error);
+        res.status(400).send(error);
+      });
   };
 
   // Search API
@@ -311,6 +307,28 @@ export default class API {
 
   // Users API
   static Users = class {
+    static getUserKarma = (req: any, res: any) => {
+      const query = {
+        text: `--sql
+          SELECT SUM(vote)
+          FROM karma
+          WHERE uid::TEXT = $1
+        `,
+        values: [req.params.uid],
+      };
+
+      pool
+        .query(query)
+        .then((results) => {
+          const userKarma = results.rows[0].sum;
+          log.debug(userKarma);
+          res.status(200).send(userKarma);
+        })
+        .catch((error) => {
+          res.sendStatus(error);
+        });
+    };
+
     static isUsernameAvailable = (req: any, res: any) => {
       const query = {
         text: `--sql
@@ -537,8 +555,7 @@ export default class API {
     static getQuestionPost = (qid: string) => {
       const query = {
         text: `--sql
-          SELECT
-            q.*
+          SELECT q.*
           FROM Questions q
           WHERE qid::TEXT = $1
           FETCH FIRST ROW ONLY;
@@ -593,7 +610,7 @@ export default class API {
         text: `--sql
           SELECT *
           FROM bestanswers
-          WHERE qid = $1
+          WHERE qid::TEXT = $1
         `,
         values: [qid],
       };
@@ -753,7 +770,7 @@ export default class API {
       const query = {
         text: `--sql
           SELECT SUM(vote)
-          FROM Karma
+          FROM karma
           WHERE qid::TEXT = $1 AND uid::TEXT = $2;
         `,
         values: [parsed.qid, parsed.uid],
