@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 import KittyImage from '../../assets/images/kitty.png';
-import KittyFilledImage from '../../assets/images/kitty-filled.png';
-
-// MUI
-import { IconButton, Stack } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
+// import KittyFilledImage from '../../assets/images/kitty-filled.png';
 
 // Components
 import SearchBar from '../search/SearchBar';
 import UserHeader from '../header/UserHeader';
+
+// MUI
+import { IconButton, Stack } from '@mui/material';
+import { Menu as MenuIcon } from '@mui/icons-material';
 
 type Props = {
   onClick?: any;
@@ -34,7 +34,6 @@ export default function SidebarHeader({ onClick }: Props) {
             justifyContent={'space-between'}
             alignItems={'flex-start'}
             spacing={2}
-            // zIndex={9999}
           >
             <Stack direction={'row'} alignItems={'center'} spacing={1}>
               <div className={'logo'} onClick={() => navigate('/')}>

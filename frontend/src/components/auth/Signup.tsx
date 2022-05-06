@@ -5,6 +5,10 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import KittyImage from '../../assets/images/kitty.png';
 import styles from '../../assets/sass/_variables.scss';
 
+// Data + Utils
+import API from '../../data/FrontendAPI';
+import { AccountData } from '../../utils/Types';
+
 // MUI
 import { Button, Stack, TextField } from '@mui/material';
 import {
@@ -13,10 +17,6 @@ import {
   Check as AvailableIcon,
   Close as TakenIcon,
 } from '@mui/icons-material';
-
-// Data
-import API from '../../data/FrontendAPI';
-import { AccountData } from '../../utils/Types';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -271,7 +271,9 @@ export default function Signup() {
           />
         </Stack>
         {errorSignup ? (
-          <p style={{ color: 'red' }}>Failed to create an account.</p>
+          <p style={{ color: styles.color_error }}>
+            Failed to create an account.
+          </p>
         ) : null}
         <Button
           variant={'contained'}

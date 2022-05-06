@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+// Data + Utils
+import API from '../../data/FrontendAPI';
+import { User } from '../../utils/Types';
+import { UserContext } from '../../App';
 
 // MUI
 import { Button, Stack, TextField } from '@mui/material';
-
-// Data
-import API from '../../data/FrontendAPI';
-import { Answer, User } from '../../utils/Types';
-import { UserContext } from '../../App';
 
 type Props = {
   qid: string | undefined;

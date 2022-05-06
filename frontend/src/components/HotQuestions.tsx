@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+// Components
+import Feed from './Feed';
 
 // Assets
 import styles from '../assets/sass/_variables.scss';
@@ -6,14 +9,10 @@ import styles from '../assets/sass/_variables.scss';
 // MUI
 import { Stack } from '@mui/material';
 import { Whatshot as HotIcon } from '@mui/icons-material';
-// Data
+
+// Data + Utils
 import API from '../data/FrontendAPI';
-
-// Utils
 import { QuestionPost } from '../utils/Types';
-
-// Components
-import Feed from './Feed';
 
 export default function HotQuestions() {
   const [posts, setPosts] = useState<QuestionPost[]>([]);

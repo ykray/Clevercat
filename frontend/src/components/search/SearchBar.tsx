@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {
   createSearchParams,
   useNavigate,
@@ -7,6 +7,9 @@ import {
 
 // Assets
 import styles from '../../assets/sass/_variables.scss';
+
+// Data + Utils
+import { SearchQuery, SearchScope } from '../../utils/Types';
 
 // MUI
 import {
@@ -23,9 +26,6 @@ import {
   Search as SearchIcon,
   Close as ClearIcon,
 } from '@mui/icons-material';
-
-// Utils
-import { SearchQuery, SearchScope } from '../../utils/Types';
 
 type Props = {
   mobile?: boolean;
@@ -52,7 +52,6 @@ export default function SearchBar({ mobile = false }: Props) {
   const [searchBarFocus, setSearchBarFocus] = useState(false);
 
   useEffect(() => {
-    // TODO: - Fix params
     const query = searchParams.get('q') ?? '';
     const scope =
       (searchParams.get('scope') ?? 'full') === 'questions'
@@ -75,7 +74,7 @@ export default function SearchBar({ mobile = false }: Props) {
     } else if (scopingAnswers) {
       setSearchQuery({ ...searchQuery, scope: SearchScope.Answers });
     } else {
-      // Default: full text search
+      // Default: full-text search
       setSearchQuery({ ...searchQuery, scope: SearchScope.Full });
     }
   }, [scopingQuestions, scopingAnswers]);
@@ -112,7 +111,6 @@ export default function SearchBar({ mobile = false }: Props) {
 
   const handleSearch = () => {
     if (searchQuery) {
-      console.log('...', searchQuery);
       // window.location.href = `/search?q=${searchQuery.query}&?scope=${searchQuery.scope}`;
       navigate({
         pathname: 'search',
@@ -156,7 +154,6 @@ export default function SearchBar({ mobile = false }: Props) {
             setSlideIn(false);
           }}
           onChange={handleChange}
-          // onBlur={() => setSearchQuery('')}
           onKeyDown={(e) => {
             // Handle "Enter" key press
             if (e.key === 'Enter') {

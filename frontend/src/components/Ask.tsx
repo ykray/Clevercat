@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
+// Assets
+import styles from '../assets/sass/_variables.scss';
 
 // MUI
 import {
@@ -19,17 +22,15 @@ import {
   Tag as GeneralIcon,
 } from '@mui/icons-material';
 
-// Data
-import styles from '../assets/sass/_variables.scss';
+// Data + Utils
 import API from '../data/FrontendAPI';
 import { Question, Topic } from '../utils/Types';
 
-type Props = {};
-
-const Ask = ({}: Props) => {
+const Ask = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // States
   const [topics, setTopics] = useState<Topic[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | undefined>(
     searchParams.get('topic') ?? undefined
@@ -40,11 +41,6 @@ const Ask = ({}: Props) => {
   const [errorBody, setErrorBody] = useState<boolean>(false);
   const [errorTopic, setErrorTopic] = useState<boolean>(false);
 
-  const handleTopicSelect = (e: SelectChangeEvent) => {
-    console.log(e.target.value);
-    setSelectedTopic(e.target.value);
-  };
-
   useEffect(() => {
     API.getAllTopics().then((topics) => setTopics(topics));
   }, []);
@@ -52,6 +48,12 @@ const Ask = ({}: Props) => {
   useEffect(() => {
     setErrorTopic(false);
   }, [selectedTopic]);
+
+  // Functions
+  const handleTopicSelect = (e: SelectChangeEvent) => {
+    console.log(e.target.value);
+    setSelectedTopic(e.target.value);
+  };
 
   const toTopicPath = (topic: Topic) => {
     return (

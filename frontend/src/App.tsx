@@ -8,7 +8,7 @@ import { Grid, Stack, ThemeProvider } from '@mui/material';
 import './assets/sass/App.scss';
 import Theme from './assets/Theme';
 
-// Data
+// Data + Utils
 import API from './data/FrontendAPI';
 import PublicWrapper from './utils/PublicWrapper';
 import PrivateWrapper from './utils/PrivateWrapper';
@@ -32,18 +32,19 @@ export const UserContext = createContext<string | undefined>(undefined);
 
 function App() {
   const location = useLocation();
-  // const largeScreen = useMediaQuery((theme: any) => theme.breakpoints.up('md'));
 
+  // States
   const [currentUser, setCurrentUser] = useState<string>();
-
-  const getCurrentUser = async () => {
-    const curr = await API.Auth.currentUser();
-    setCurrentUser(curr);
-  };
 
   useEffect(() => {
     getCurrentUser();
   });
+
+  // Functions
+  const getCurrentUser = async () => {
+    const curr = await API.Auth.currentUser();
+    setCurrentUser(curr);
+  };
 
   return (
     <UserContext.Provider value={currentUser}>
@@ -73,14 +74,14 @@ function App() {
                   direction={'column'}
                   alignItems={'flex-start'}
                   spacing={2}
-                  maxWidth={'70%'}
+                  width={'70%'}
                   pb={'50px'}
                 >
                   <Routes>
                     <Route path={'/'} element={<HotQuestions />} />
                     <Route element={<PublicWrapper />}>
                       {/*           ^^^^^^^^^^^^^^^^^ */}
-                      {/* TODO: - works, but clean up later */}
+                      {/* TODO: - works, but need to clean up later */}
                       <Route path={'/login'} element={<Login />} />
                       <Route path={'/signup'} element={<Signup />} />
                     </Route>
@@ -96,14 +97,6 @@ function App() {
                     <Route index element={<HotQuestions />} />
                   </Routes>
                 </Stack>
-
-                <div
-                  className={'hide-on-mobile'}
-                  style={{
-                    width: '30%',
-                    // backgroundColor: 'green',
-                  }}
-                ></div>
               </Stack>
               {location.pathname === '/ask' ||
               location.pathname === '/login' ||

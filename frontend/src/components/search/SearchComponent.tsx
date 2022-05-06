@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import {
-  generatePath,
-  Link,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { generatePath, Link, useSearchParams } from 'react-router-dom';
 
 // Components
 import Feed from '../../components/Feed';
 import HotQuestions from '../../components/HotQuestions';
 
-// Data
+// Data + Utils
 import API from '../../data/FrontendAPI';
-
-// Utils
 import { QuestionPost, SearchScope } from '../../utils/Types';
 
 const SearchComponent = () => {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = useState<QuestionPost[]>([]);
   const [searchQuery, setSearchQuery] = useState<string | null>();
@@ -34,8 +26,6 @@ const SearchComponent = () => {
   }
 
   useEffect(() => {
-    // TODO: - Fix params
-
     const scope = searchParams.get('scope') as keyof typeof SearchScope;
 
     setSearchQuery(searchParams.get('q'));

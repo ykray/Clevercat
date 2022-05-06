@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 
-// MUI
-import { Button, Stack } from '@mui/material';
-
-// Data
-import API from '../../data/FrontendAPI';
-import { QuestionPost } from '../../utils/Types';
-import { UserContext } from '../../App';
-
 // Components
 import AnswerComponent from '../../components/post/AnswerComponent';
 import PostAnswer from '../../components/post/PostAnswer';
 import QuestionComponent from '../../components/post/QuestionComponent';
+
+// Data + Utils
+import API from '../../data/FrontendAPI';
+import { QuestionPost } from '../../utils/Types';
+import { UserContext } from '../../App';
+
+// MUI
+import { Button, Stack } from '@mui/material';
 
 export default function PostComponent() {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ export default function PostComponent() {
   };
 
   return (
-    <Stack spacing={4}>
+    <Stack spacing={4} minWidth={'100%'}>
       {renderQuestion()}
       {renderAnswers()}
       {renderPostAnswer()}

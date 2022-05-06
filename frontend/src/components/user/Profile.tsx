@@ -1,21 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 
-// Components
-import Feed from '../../components/Feed';
-
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 
-// MUI
-import { Button, Snackbar, Stack, TextField } from '@mui/material';
+// Components
+import Feed from '../../components/Feed';
 
-// Data
+// Data + Utils
 import API from '../../data/FrontendAPI';
-
-// Types
 import { QuestionPost, User } from '../../utils/Types';
 import { UserContext } from '../../App';
+
+// MUI
+import { Button, Snackbar, Stack } from '@mui/material';
 
 export default function Profile() {
   const { username } = useParams();
@@ -37,7 +35,6 @@ export default function Profile() {
   const [snackbarMessage, setSnackbarMessage] = useState<string>();
 
   useEffect(() => {
-    console.log('VVV', username);
     API.Users.getUserFromUsername(String(username))
       .then((user) => {
         setUser(user);
@@ -49,9 +46,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
-      // API.Users.getUserKarma(user.uid).then((res) => {
-      //   setUserKarma(res);
-      // });
+      API.Users.getUserKarma(user.uid).then((res) => {
+        setUserKarma(res);
+      });
       API.Users.getUserQuestions(user.uid).then((res) => {
         setQuestionsAsked(res);
       });
