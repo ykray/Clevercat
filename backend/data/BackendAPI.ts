@@ -320,8 +320,7 @@ export default class API {
       pool
         .query(query)
         .then((results) => {
-          const userKarma = results.rows[0].sum;
-          log.debug(userKarma);
+          const userKarma = results.rows[0].sum ?? 0;
           res.status(200).send(userKarma);
         })
         .catch((error) => {

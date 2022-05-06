@@ -276,8 +276,7 @@ class API {
             pool_1.default
                 .query(query)
                 .then((results) => {
-                const userKarma = results.rows[0].sum;
-                Logger_1.default.debug(userKarma);
+                const userKarma = results.rows[0].sum ?? 0;
                 res.status(200).send(userKarma);
             })
                 .catch((error) => {

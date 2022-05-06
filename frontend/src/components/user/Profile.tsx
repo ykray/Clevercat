@@ -33,11 +33,11 @@ export default function Profile() {
     []
   );
 
-  const [bioInput, setBioInput] = useState<string>('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState<string>();
 
   useEffect(() => {
+    console.log('VVV', username);
     API.Users.getUserFromUsername(String(username))
       .then((user) => {
         setUser(user);
@@ -49,9 +49,9 @@ export default function Profile() {
 
   useEffect(() => {
     if (user) {
-      API.Users.getUserKarma(user.uid).then((res) => {
-        setUserKarma(res);
-      });
+      // API.Users.getUserKarma(user.uid).then((res) => {
+      //   setUserKarma(res);
+      // });
       API.Users.getUserQuestions(user.uid).then((res) => {
         setQuestionsAsked(res);
       });
@@ -59,8 +59,6 @@ export default function Profile() {
         console.log(res);
         setQuestionsAnswered(res);
       });
-
-      setBioInput(user.bio ?? '');
     }
   }, [user]);
 
@@ -120,7 +118,7 @@ export default function Profile() {
     }
   };
 
-  return user && userKarma ? (
+  return user ? (
     <div className={'profile-container'}>
       <Stack spacing={10}>
         <Stack>

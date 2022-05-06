@@ -412,7 +412,7 @@ export default class API {
       });
     };
 
-    static updateProfile = (field:string, newValue: string) => {
+    static updateProfile = (field: string, newValue: string) => {
       const body = {
         newValue: newValue.trim(),
       };
@@ -465,11 +465,11 @@ export default class API {
       return new Promise((resolve, reject) => {
         fetch(`${ENDPOINT}/usernames/${username}`)
           .then((res) => {
-            console.log(res);
             return res.text();
           })
           .then((res) => {
-            resolve(JSON.parse(res));
+            const user = JSON.parse(res);
+            resolve(user);
           })
           .catch((error) => {
             console.log(error);
