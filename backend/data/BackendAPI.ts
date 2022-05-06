@@ -9,7 +9,6 @@ import {
   BestAnswer,
   KarmaVote,
   Question,
-  SearchScope,
 } from '../src/Types';
 
 // Utils
