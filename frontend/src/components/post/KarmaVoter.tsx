@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import styles from '../../assets/sass/_variables.scss';
 import BestAnswerIcon from '../../assets/images/best-answer-icon.png';
 
-// Data
+// Data + Utils
 import { Answer, KarmaVote, VoteType } from '../../utils/Types';
 import API from '../../data/FrontendAPI';
 import { UserContext } from '../../App';
@@ -21,6 +21,7 @@ type Props = {
 };
 
 export const KarmaVoter = ({ answer }: Props) => {
+  // States
   const currentUser = useContext(UserContext);
   const [karmaCount, setKarmaCount] = useState<number>(0);
   const [vote, setVote] = useState<number>(0);
@@ -97,7 +98,7 @@ export const KarmaVoter = ({ answer }: Props) => {
 
   const renderBestAnswerBadge = () => {
     if (answer.q_uid === currentUser) {
-      // Allow best answer selection
+      // is client - Allow best answer selection
       return (
         <Tooltip
           title={answer.bestAnswer ? 'Best answer' : 'Select as best answer'}
@@ -122,7 +123,7 @@ export const KarmaVoter = ({ answer }: Props) => {
         </Tooltip>
       );
     } else {
-      // Viewer, show best answers but disable selection
+      // not client - show best answers but disable selection
       return answer.bestAnswer ? (
         <Tooltip title={'Best answer'} placement={'right'} arrow>
           <IconButton

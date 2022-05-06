@@ -80,7 +80,7 @@ const Theme = createTheme({
         },
       },
     },
-    // (styles MuiSelect)
+    // styles MuiSelect
     MuiMenu: {
       styleOverrides: {
         root: {
@@ -122,18 +122,15 @@ const Theme = createTheme({
       styleOverrides: {
         root: {
           '&.Mui-selected': {
-            // fontSize: '1.1rem',
             fontWeight: '500',
             color: 'white',
             backgroundColor: styles.color_primary_500,
-            // boxShadow: `0px 7px 7px ${styles.color_primary_400}`,
             zIndex: 9999,
           },
           '&:hover': {
             '&.Mui-selected': {
               color: 'white',
               backgroundColor: styles.color_primary_500,
-              // boxShadow: `0px 7px 7px ${styles.color_primary_400}`,
               zIndex: 9999,
             },
             color: styles.color_primary_500,
@@ -220,7 +217,7 @@ const Theme = createTheme({
       styleOverrides: {
         root: {
           '& .Mui-error': {
-            color: 'red',
+            color: styles.color_error,
           },
         },
       },

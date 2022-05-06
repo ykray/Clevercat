@@ -4,15 +4,13 @@ import { Link } from 'react-router-dom';
 // Assets
 import styles from '../../assets/sass/_variables.scss';
 
-// MUI
-import { Snackbar, Stack, TextField } from '@mui/material';
-
-// Data
+// Data + Utils
 import API from '../../data/FrontendAPI';
+import { User } from '../../utils/Types';
 import { UserContext } from '../../App';
 
-// Types
-import { User } from '../../utils/Types';
+// MUI
+import { Snackbar, Stack, TextField } from '@mui/material';
 import { ChevronLeft } from '@mui/icons-material';
 
 export default function EditProfile() {

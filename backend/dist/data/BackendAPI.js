@@ -280,7 +280,8 @@ class API {
                 res.status(200).send(userKarma);
             })
                 .catch((error) => {
-                res.sendStatus(error);
+                Logger_1.default.fatal(`Problem fetching karma for user: ${req.params.uid}`, error);
+                res.status(400).send(error);
             });
         };
         static isUsernameAvailable = (req, res) => {
@@ -308,7 +309,7 @@ class API {
             const newValue = req.body.newValue;
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET bio = $2
           WHERE uid::text = $1
           `,
@@ -333,7 +334,7 @@ class API {
             const newValue = req.body.newValue;
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET email = $2
           WHERE uid::text = $1
           `,
@@ -358,7 +359,7 @@ class API {
             const newValue = req.body.newValue;
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET city = $2
           WHERE uid::text = $1
           `,
@@ -383,7 +384,7 @@ class API {
             const newValue = req.body.newValue;
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET state = $2
           WHERE uid::text = $1
           `,
@@ -408,7 +409,7 @@ class API {
             const newValue = req.body.newValue;
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET country = $2
           WHERE uid::text = $1
           `,
@@ -445,7 +446,7 @@ class API {
             const newColor = colors[Math.floor(Math.random() * colors.length)];
             const query = {
                 text: `--sql
-          UPDATE Users
+          UPDATE users
           SET color = $2
           WHERE uid::text = $1
           `,
@@ -590,7 +591,7 @@ class API {
             const query = {
                 text: `--sql
           SELECT *
-          FROM Users
+          FROM users
           WHERE uid::text = $1;
           `,
                 values: [uid],
@@ -615,7 +616,7 @@ class API {
             const query = {
                 text: `--sql
           SELECT q.*
-          FROM Questions q
+          FROM questions q
           WHERE qid::TEXT = $1
           FETCH FIRST ROW ONLY;
         `,
@@ -682,8 +683,8 @@ class API {
             a.body,
             a.uid,
             a.a_timestamp
-          FROM Answers a
-            JOIN Questions q ON a.qid = q.qid
+          FROM answers a
+            JOIN questions q ON a.qid = q.qid
           WHERE a.qid::TEXT = $1
           `,
                 values: [qid],
@@ -708,8 +709,8 @@ class API {
             a.body,
             a.uid,
             a.a_timestamp
-          FROM Answers a
-            JOIN Questions q ON a.qid = q.qid
+          FROM answers a
+            JOIN questions q ON a.qid = q.qid
           WHERE a.qid::TEXT = $1
             AND a.uid::TEXT = $2
           `,
@@ -778,7 +779,7 @@ class API {
             const query = {
                 text: `--sql
           SELECT vote
-          FROM Karma
+          FROM karma
           WHERE
             qid::TEXT = $1 AND
             uid::TEXT = $2 AND
@@ -826,7 +827,7 @@ class API {
         static vote = (karmaVote) => {
             const query = {
                 text: `--sql
-          INSERT INTO Karma(qid, uid, voter_uid, vote)
+          INSERT INTO karma(qid, uid, voter_uid, vote)
           VALUES ($1, $2, $3, $4)
           ON CONFLICT (qid, uid, voter_uid)
             DO UPDATE SET vote = $4;

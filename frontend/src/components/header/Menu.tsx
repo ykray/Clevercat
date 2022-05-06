@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Assets
 import styles from '../../assets/sass/_variables.scss';
+
+// Components
+import Footer from '../../components/Footer';
+
+// Data + Utils
+import API from '../../data/FrontendAPI';
+import { Topic } from '../../utils/Types';
 
 // MUI
 import { Stack, Slide } from '@mui/material';
@@ -12,13 +19,6 @@ import {
   Memory as TechnologyIcon,
   Tag as GeneralIcon,
 } from '@mui/icons-material';
-
-// Types
-import { Topic } from '../../utils/Types';
-
-// Data
-import API from '../../data/FrontendAPI';
-import Footer from '../../components/Footer';
 
 type Props = {
   show?: boolean;

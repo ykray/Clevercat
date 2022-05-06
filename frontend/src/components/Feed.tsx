@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import reactStringReplace from 'react-string-replace';
+
+// Components
+import TopicHierarchy from './TopicHierarchy';
+import NoResults from './NoResults';
 
 // MUI
 import { Fade, Grow, Stack } from '@mui/material';
 
-// Data
+// Data + Utils
 import { Answer, QuestionPost } from '../utils/Types';
-import NoResults from './NoResults';
-import TopicHierarchy from './TopicHierarchy';
 
 type Props = {
   searchQuery?: string | null;
@@ -41,7 +43,6 @@ export const Feed = ({
         posts.map((post) => {
           const answers = post.answers ?? [];
 
-          // TODO: - Prioritize best answers
           return (
             <Grow in={growIn} timeout={500} key={post.question.qid}>
               <Fade in={fadeIn} timeout={800}>

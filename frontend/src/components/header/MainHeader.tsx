@@ -1,9 +1,9 @@
-// MUI
-import { Stack } from '@mui/material';
-
 // Components
 import SearchBar from '../../components/search/SearchBar';
 import UserHeader from '../../components/header/UserHeader';
+
+// MUI
+import { Stack } from '@mui/material';
 
 export default function MainHeader() {
   return (

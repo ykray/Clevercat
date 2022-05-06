@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import API from '../data/FrontendAPI';
 import { QuestionPost } from '../utils/Types';
@@ -19,9 +19,9 @@ export default function TopicFeed() {
   }, []);
 
   const renderPosts = () => {
-    const lastDelim = topicPath.lastIndexOf('.') + 1;
+    const lastDelimiter = topicPath.lastIndexOf('.') + 1;
     const topic = topicPath
-      .substring(lastDelim, topicPath.length)
+      .substring(lastDelimiter, topicPath.length)
       .replace(/([A-Z])/g, ' $1');
 
     return posts && posts.length > 0 ? (

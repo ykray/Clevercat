@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
 
-// MUI
-import { Stack } from '@mui/material';
-
-// Data
+// Data + Utils
 import API from '../../data/FrontendAPI';
-
-// Utils
 import { Author, AuthorType } from '../../utils/Types';
 import { formatTimestamp } from '../../utils/Helpers';
 
+// MUI
+import { Stack } from '@mui/material';
+
 type Props = {
-  uid: string | undefined; // to fetch user
+  uid: string | undefined;
   authorType?: AuthorType | null;
   timestamp?: Date;
 };

@@ -2,7 +2,7 @@
 import AuthorComponent from '../../components/user/AuthorComponent';
 import TopicHierarchy from '../../components/TopicHierarchy';
 
-// Utils
+// Data + Utils
 import { AuthorType, Question } from '../../utils/Types';
 
 type Props = {

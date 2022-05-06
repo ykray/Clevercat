@@ -1,5 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../../App';
+
+// Assets
+import styles from '../../assets/sass/_variables.scss';
 
 // Components
 import KarmaVoter from '../../components/post/KarmaVoter';
@@ -8,10 +11,7 @@ import AuthorComponent from '../../components/user/AuthorComponent';
 // MUI
 import { Stack } from '@mui/material';
 
-// Assets
-import styles from '../../assets/sass/_variables.scss';
-
-// Data
+// Data + Utils
 import { Answer, AuthorType } from '../../utils/Types';
 
 type Props = {
@@ -26,7 +26,6 @@ const AnswerComponent = ({ answer }: Props) => {
       className="answer-container"
       style={{
         backgroundColor: answer.bestAnswer ? styles.color_primary_300 : '',
-        // borderColor: answer.bestAnswer ? styles.color_primary_500 : '',
       }}
     >
       {currentUser === answer.uid}

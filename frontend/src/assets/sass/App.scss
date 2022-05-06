@@ -218,7 +218,7 @@ a {
   font-family: 'Gilroy-Semibold';
   letter-spacing: -0.7px;
   color: $color-text-header;
-  @include disableSelect();
+  @include disable-select();
   @include transition-exit;
 
   img {
