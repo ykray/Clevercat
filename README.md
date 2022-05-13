@@ -11,26 +11,26 @@ I've included some screenshots of the application below, but invite you to [read
 ## Screenshots
 
 <img src="assets/screenshots/home-screen.png" style="border-radius: 6px; margin: 0 auto"/>
-<center>Home Screen</center>
+<p align="center">Home Screen</p>
 
 <img src="assets/screenshots/browse-by-topic.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Browse by topic</center>
+<p align="center">Browse by topic</p>
 
 <img src="assets/screenshots/profile-screen.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Profile Screen</center>
+<p align="center">Profile Screen</p>
 
 <img src="assets/screenshots/ask-screen.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Ask (a question) Screen</center>
+<p align="center">Ask (a question) Screen</p>
 
 <img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Search Screen (keyword highlighting!)</center>
+<p align="center">Search Screen (keyword highlighting!)</p>
 
 <img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Search Screen (search scoping)</center>
+<p align="center">Search Screen (search scoping)</p>
 
 <img src="assets/screenshots/username-taken.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
 <img src="assets/screenshots/username-available.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<center>Real-time username validation</center>
+<p align="center">Real-time username validation</p>
 <br/>
 
 Check out the [full project report](https://docs.google.com/document/d/1zMaOHhK5QVISJhw-zEy4btloMn8hCeytYXa21A--pWg/edit?usp=sharing) for more screenshots and more technical frontend/backend details.
