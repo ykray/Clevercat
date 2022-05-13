@@ -1,4 +1,4 @@
-![Clevercat logo](/assets/logo.png)
+<img src="assets/logo.png" style="border-radius: 6px; margin: 0 auto"/>
 
 # Clevercat
 
@@ -10,24 +10,29 @@ I've included some screenshots of the application below, but invite you to [read
 
 ## Screenshots
 
-![Home Screen](/assets/screenshots/home-screen.png)
-_<center>Home Screen</center>_
+<img src="assets/screenshots/home-screen.png" style="border-radius: 6px; margin: 0 auto"/>
+<center>Home Screen</center>
 
-![Browse Topics](/assets/screenshots/browse-by-topic.png)
-_<center>Browse by topic</center>_
+<img src="assets/screenshots/browse-by-topic.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Browse by topic</center>
 
-![Profile Screen](/assets/screenshots/profile-screen.png)
-_<center>Profile Screen</center>_
+<img src="assets/screenshots/profile-screen.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Profile Screen</center>
 
-![Ask Screen](/assets/screenshots/ask-screen.png)
-_<center>Ask (a question) Screen</center>_
+<img src="assets/screenshots/ask-screen.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Ask (a question) Screen</center>
 
-![Search Screen](/assets/screenshots/search-4.png)
-_<center>Search Screen (keyword highlighting!)</center>_
+<img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Search Screen (keyword highlighting!)</center>
 
-![Search Scoping](/assets/screenshots/search-1.png)
-_<center>Search Screen (search scoping)</center>_
+<img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Search Screen (search scoping)</center>
 
-![Username Validation](/assets/screenshots/username-taken.png)
-![Username Validation](/assets/screenshots/username-available.png)
-_<center>Real-time username validation</center>_
+<img src="assets/screenshots/username-taken.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<img src="assets/screenshots/username-available.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<center>Real-time username validation</center>
+<br/>
+
+Check out the [full project report](https://docs.google.com/document/d/1zMaOHhK5QVISJhw-zEy4btloMn8hCeytYXa21A--pWg/edit?usp=sharing) for more screenshots and more technical frontend/backend details.
+
+<br/>
