@@ -162,7 +162,8 @@ class API {
           FROM variables v, questions q
           JOIN answers a ON q.qid = a.qid
           WHERE TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
-            OR q.topic ~ ('*.' || INITCAP(v.term) || '.*')::lquery
+            -- TODO: - can't handle spaces in search terms.
+            -- OR q.topic ~ ('*.' || INITCAP(v.term) || '.*')::lquery
           ORDER BY q.qid, rank DESC
         `,
                 values: [searchQuery],
@@ -296,6 +297,7 @@ class API {
             pool_1.default
                 .query(query)
                 .then((results) => {
+                // ...
                 const available = results.rowCount === 0;
                 Logger_1.default.debug(available);
                 res.status(200).send(available);

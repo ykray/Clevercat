@@ -4,12 +4,7 @@ import SpellChecker from 'spellchecker';
 import chalk from 'chalk';
 
 // Types
-import {
-  Answer,
-  BestAnswer,
-  KarmaVote,
-  Question,
-} from '../src/Types';
+import { Answer, BestAnswer, KarmaVote, Question } from '../src/Types';
 
 // Utils
 import log from '../utils/Logger';
@@ -153,6 +148,7 @@ export default class API {
         `,
         values: [searchQuery],
       };
+
       const query_answers = {
         text: `--sql
           SELECT q.*
@@ -189,7 +185,8 @@ export default class API {
           FROM variables v, questions q
           JOIN answers a ON q.qid = a.qid
           WHERE TO_TSVECTOR(q.title || '' || q.body || '' || COALESCE(a.body, '')) @@ PLAINTO_TSQUERY(v.term)
-            OR q.topic ~ ('*.' || INITCAP(v.term) || '.*')::lquery
+            -- TODO: - can't handle spaces in search terms.
+            -- OR q.topic ~ ('*.' || INITCAP(v.term) || '.*')::lquery
           ORDER BY q.qid, rank DESC
         `,
         values: [searchQuery],
@@ -344,6 +341,7 @@ export default class API {
       pool
         .query(query)
         .then((results) => {
+          // ...
           const available = results.rowCount === 0;
           log.debug(available);
           res.status(200).send(available);

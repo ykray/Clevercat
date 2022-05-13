@@ -119,6 +119,7 @@ export default function Signup() {
           />
         </Stack>
         <TextField
+          spellCheck={false}
           autoCorrect={'off'}
           autoComplete={'off'}
           value={usernameInput}
