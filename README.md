@@ -23,16 +23,16 @@ I've included some screenshots of the application below, but invite you to [read
 <p align="center">Ask (a question) Screen</p>
 
 <img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<p align="center">Search Screen (keyword highlighting!)</p>
+<p align="center">Search Screen (with keyword highlighting)</p>
 
-<img src="assets/screenshots/search-4.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
-<p align="center">Search Screen (search scoping)</p>
+<img src="assets/screenshots/search-3.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
+<p align="center">(and keyword "chasing")</p>
 
 <img src="assets/screenshots/username-taken.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
 <img src="assets/screenshots/username-available.png" style="border-radius: 6px; margin: 0 auto; margin-top: 20px"/>
 <p align="center">Real-time username validation</p>
 <br/>
 
-Check out the [full project report](https://docs.google.com/document/d/1zMaOHhK5QVISJhw-zEy4btloMn8hCeytYXa21A--pWg/edit?usp=sharing) for more screenshots and more technical frontend/backend details.
+Check out the [full project report](https://docs.google.com/document/d/1zMaOHhK5QVISJhw-zEy4btloMn8hCeytYXa21A--pWg/edit?usp=sharing) for more features and technical discussion about the frontend and backend.
 
 <br/>
