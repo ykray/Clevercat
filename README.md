@@ -2,7 +2,7 @@
 
 # Clevercat
 
-Clevercat is a question-and-answer platform built with **React** + **Material UI**, **Node.js** and **Postgres**.
+Clevercat is a question-and-answer platform built with **React** + **Material UI**, **Express** and **PostgreSQL**.
 
 I built this application as my final project for my _Principles of Database Systems_ course at New York University, going beyond the basic requirements and adding a variety of additional features including user-session management, profile exploration/discovery, search by scope & relevancy, username availability validation, password hashing, as well as many more.
 
